@@ -70,3 +70,9 @@ Route::middleware(['auth'])->group(function () {
     // Route pour la collaboration
     Route::get('/code-collab', [CodeCollabController::class, 'index'])->name('code.collab');
 });
+use App\Http\Controllers\CodeReviewController;
+
+Route::middleware(['auth'])->group(function () {
+    // Route for the Code Review view
+    Route::get('/code-review', [CodeReviewController::class, 'index'])->name('code.review');
+});
