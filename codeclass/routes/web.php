@@ -13,5 +13,11 @@ Route::get('/', function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
+
+// Google Authentication Routes
 Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
+
+// GitHub Authentication Routes
+Route::get('/auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github');
+Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback']);
