@@ -14,33 +14,38 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-public function register(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8|',
-        'role' => 'required|in:student,teacher',
-    ]);
 
-    if ($validator->fails()) {
-        return back()->withErrors($validator)->withInput();
-    }
-
-    try {
-        $user = User::create([
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:user,teacher', // Valider le rôle
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Valider l'avatar
+        ]);
+    
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+    
+        // Gérer l'upload de l'avatar
+        $avatarPath = null;
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        }
+    
+        // Créer l'utilisateur
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => $request->role, // Rôle défini par l'utilisateur
+            'avatar' => $avatarPath, // Chemin de l'avatar
         ]);
-    } catch (\Exception $e) {
-        return back()->withErrors(['error' => 'An error occurred while creating the user.'])->withInput();
+    
+        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
     }
-
-    return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
-}
-
     public function showLoginForm()
     {
         return view('auth.login');
