@@ -104,5 +104,10 @@
             }
         }
     </script>
+    @if (session('success'))
+    <div class="mb-4 text-green-600">
+        {{ session('success') }}
+    </div>
+@endif
 </body>
 </html>
