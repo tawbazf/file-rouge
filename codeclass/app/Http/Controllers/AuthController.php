@@ -78,14 +78,10 @@ class AuthController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ])->withInput();
     }
-    public function logout(Request $request)
+    public function logout()
     {
         Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/');
+        return redirect('/login')->with('success', 'You have been logged out.');
     }
     public function showForgotPasswordForm()
 {

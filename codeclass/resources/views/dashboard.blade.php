@@ -67,6 +67,13 @@
                     </svg>
                 </button>
                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="h-8 w-8 rounded-full">
+              <!-- Logout Button -->
+        <form method="POST" action="{{ route('logout') }}" class="ml-4">
+            @csrf
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md">
+                Logout
+            </button>
+        </form>
             </div>
         </header>
 
