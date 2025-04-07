@@ -22,6 +22,21 @@ use App\Http\Controllers\DashboardProfController;
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard-prof', [DashboardProfController::class, 'index'])->name('dashboard.prof');
 });
+use App\Http\Controllers\RoleSelectionController;
+// Route pour afficher la page de sélection de rôle
+Route::get('/choose-role', [RoleSelectionController::class, 'show'])->name('choose.role');
+
+// Route pour gérer la soumission du rôle sélectionné
+Route::post('/choose-role', [RoleSelectionController::class, 'store'])->name('choose.role.submit');
+
+// Routes protégées par le middleware auth
+Route::middleware(['auth'])->group(function () {
+    // Tableau de bord pour les utilisateurs
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Tableau de bord pour les enseignants
+    Route::get('/dashboard-prof', [DashboardProfController::class, 'index'])->name('dashboard.prof');
+});
 // Google Authentication Routes
 Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);

@@ -198,7 +198,7 @@
         function submitForm() {
             if (selectedRole === 'user') {
                 // Rediriger vers la page d'accueil des utilisateurs
-                window.location.href = "{{ route('user.dashboard') }}";
+                window.location.href = "{{ route('dashboard') }}";
             } else if (selectedRole === 'teacher') {
                 // Soumettre le formulaire d'enseignant
                 document.querySelector('#teacher-form form').submit();
