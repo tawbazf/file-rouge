@@ -64,3 +64,9 @@ Route::middleware(['auth'])->group(function () {
     // Route pour les statistiques générales
     Route::get('/general-statistics', [StatisticsController::class, 'index'])->name('general.statistics');
 });
+use App\Http\Controllers\CodeCollabController;
+
+Route::middleware(['auth'])->group(function () {
+    // Route pour la collaboration
+    Route::get('/code-collab', [CodeCollabController::class, 'index'])->name('code.collab');
+});
