@@ -14,26 +14,30 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+public function register(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+    if ($validator->fails()) {
+        return back()->withErrors($validator)->withInput();
+    }
 
+    try {
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+    } catch (\Exception $e) {
+        return back()->withErrors(['error' => 'An error occurred while creating the user.'])->withInput();
+    }
 
     return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
-    }
+}
 
     public function showLoginForm()
     {
@@ -46,25 +50,27 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
+    
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-
+    
         $credentials = $request->only('email', 'password');
         $remember = $request->filled('remember');
-
-        if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+    
+        try {
+            if (Auth::attempt($credentials, $remember)) {
+                $request->session()->regenerate();
+                return redirect()->intended('dashboard');
+            }
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'An error occurred during login.'])->withInput();
         }
-
+    
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->withInput();
     }
-
-   
     public function logout(Request $request)
     {
         Auth::logout();
