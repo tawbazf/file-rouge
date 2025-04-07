@@ -20,6 +20,7 @@ public function register(Request $request)
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
         'password' => 'required|string|min:8|',
+        'role' => 'required|in:student,teacher',
     ]);
 
     if ($validator->fails()) {
@@ -31,6 +32,7 @@ public function register(Request $request)
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
     } catch (\Exception $e) {
         return back()->withErrors(['error' => 'An error occurred while creating the user.'])->withInput();
