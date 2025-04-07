@@ -7,13 +7,14 @@ class DashboardProfController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $teacher = Auth::user();
+
 
         // Vérifier si l'utilisateur est un professeur
-        if ($user->role !== 'teacher') {
+        if ($teacher->role !== 'teacher') {
             return redirect()->route('dashboard')->with('error', 'Access denied.');
         }
 
-        return view('dashboardProf', compact('user'));
+        return view('dashboardProf', compact('teacher'));
     }
 }
