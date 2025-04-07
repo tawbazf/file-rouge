@@ -58,3 +58,9 @@ Route::middleware(['auth'])->group(function () {
     // Route pour les notifications des enseignants
     Route::get('/notifications/teacher', [NotificationController::class, 'teacherNotifications'])->name('notifications.teacher');
 });
+use App\Http\Controllers\StatisticsController;
+
+Route::middleware(['auth'])->group(function () {
+    // Route pour les statistiques générales
+    Route::get('/general-statistics', [StatisticsController::class, 'index'])->name('general.statistics');
+});
