@@ -17,6 +17,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+use App\Http\Controllers\DashboardProfController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard-prof', [DashboardProfController::class, 'index'])->name('dashboard.prof');
+});
 // Google Authentication Routes
 Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
