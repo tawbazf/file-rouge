@@ -21,3 +21,9 @@ Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleC
 // GitHub Authentication Routes
 Route::get('/auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github');
 Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback']);
+use Illuminate\Support\Facades\Auth;
+
+Auth::routes(); 
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
