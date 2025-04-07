@@ -64,7 +64,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('login');
     }
 
     public function logout(Request $request)
@@ -76,4 +76,22 @@ class AuthController extends Controller
 
         return redirect('/');
     }
+    public function showForgotPasswordForm()
+{
+    return view('auth.passwords.email'); // Assurez-vous que cette vue existe
+}
+
+public function sendResetLinkEmail(Request $request)
+{
+    $request->validate(['email' => 'required|email']);
+
+    // Utilisez Password::sendResetLink pour envoyer l'email de réinitialisation
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
+}
 }

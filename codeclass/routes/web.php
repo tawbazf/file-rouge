@@ -12,7 +12,10 @@ Route::get('/', function () {
     Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
-
+Route::middleware('guest')->group(function () {
+    Route::get('/password/reset', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+});
 
 // Google Authentication Routes
 Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
@@ -21,9 +24,8 @@ Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleC
 // GitHub Authentication Routes
 Route::get('/auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github');
 Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback']);
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 
-Auth::routes(); 
-Auth::routes();
+// Auth::routes(); 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
