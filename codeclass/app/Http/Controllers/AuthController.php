@@ -21,30 +21,33 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:user,teacher', // Valider le rôle
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Valider l'avatar
+            // 'role' => 'required|in:user,teacher', // Valider le rôle
+            // 'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Valider l'avatar
         ]);
     
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
     
-        // Gérer l'upload de l'avatar
-        $avatarPath = null;
-        if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-        }
+        // // Gérer l'upload de l'avatar
+        // $avatarPath = null;
+        // if ($request->hasFile('avatar')) {
+        //     $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        // }
     
         // Créer l'utilisateur
-        User::create([
+       $user= User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role, // Rôle défini par l'utilisateur
-            'avatar' => $avatarPath, // Chemin de l'avatar
+            // 'role' => $request->role, // Rôle défini par l'utilisateur
+            // 'avatar' => $avatarPath, // Chemin de l'avatar
         ]);
-    
-        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
+        Auth::login($user);
+
+        // Rediriger vers la page de sélection de rôle
+        return redirect()->route('choose.role');
+        // return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
     }
     public function showLoginForm()
     {
