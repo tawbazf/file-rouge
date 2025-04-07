@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SocialAuthController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,3 +12,6 @@ Route::get('/', function () {
     Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
+
+Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
