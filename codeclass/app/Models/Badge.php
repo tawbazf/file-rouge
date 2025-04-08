@@ -21,6 +21,9 @@ class Badge extends Model
         'category', // 'code_review', 'participation', 'achievement'
         'level', // 'beginner', 'intermediate', 'advanced'
         'points_required',
+        'points',
+        'time',
+        'projects',
     ];
 
     /**
