@@ -54,7 +54,7 @@ use App\Http\Controllers\NotificationController;
 Route::middleware(['auth'])->group(function () {
     // Route for student notifications
     Route::get('/notifications/students', [NotificationController::class, 'studentNotifications'])
-         ->name('notifications.students');
+         ->name('notifications.student');
 
     // Route for teacher notifications
     Route::middleware(['auth'])->group(function () {
