@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
 use Carbon\Carbon;
 
 class NotificationController extends Controller
 {
-    // Notifications pour les étudiants
+    // Notifications for students (already implemented)
     public function studentNotifications()
     {
         $notifications = [];
 
-        // Récupérer les projets dont la date limite est dans les prochaines 24 heures
+        // Get projects due in the next 24 hours (example)
         $projectsDueSoon = Project::where('deadline', '<=', Carbon::now()->addDay())->get();
         foreach ($projectsDueSoon as $project) {
             $notifications[] = [
@@ -25,7 +24,7 @@ class NotificationController extends Controller
             ];
         }
 
-        // Récupérer les projets approuvés
+        // Get approved projects (example)
         $approvedProjects = Project::where('approved', true)->get();
         foreach ($approvedProjects as $project) {
             $notifications[] = [
@@ -39,12 +38,13 @@ class NotificationController extends Controller
         return view('centre-notifications', compact('notifications'));
     }
 
-    // Notifications pour les enseignants
+    // Notifications for teachers
     public function teacherNotifications()
     {
         $notifications = [];
 
-        // Récupérer les projets qui ont eu de nouvelles collaborations dans les 4 dernières heures
+        // Example: Get projects with recent collaborations in the last 4 hours.
+        // (Ensure your "projects" table has a "last_collaboration" column.)
         $projectCollabs = Project::whereNotNull('last_collaboration')
             ->where('last_collaboration', '>=', Carbon::now()->subHours(4))
             ->get();
@@ -58,12 +58,12 @@ class NotificationController extends Controller
             ];
         }
 
-        // Ajouter un rappel fixe pour une réunion hebdomadaire (vous pouvez aussi le rendre dynamique)
+        // Add a fixed meeting reminder as an example
         $notifications[] = [
             'type'    => 'warning',
-            'title'   => 'Rappel: Réunion',
-            'message' => 'Réunion d\'équipe hebdomadaire dans 30 minutes.',
-            'time'    => 'Il y a 4 heures', // ou utilisez Carbon pour générer une valeur dynamique
+            'title'   => 'Rappel: Réunion d’équipe',
+            'message' => 'La réunion d’équipe commence dans 30 minutes.',
+            'time'    => Carbon::now()->diffForHumans(),
         ];
 
         return view('centre-notifications', compact('notifications'));

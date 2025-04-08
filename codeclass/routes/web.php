@@ -48,15 +48,17 @@ Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubC
 
 // Auth::routes(); 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');use App\Http\Controllers\NotificationController;
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+use App\Http\Controllers\NotificationController;
 
-// Routes protégées par le middleware auth
 Route::middleware(['auth'])->group(function () {
-    // Route pour les notifications des étudiants
-    Route::get('/notifications/student', [NotificationController::class, 'studentNotifications'])->name('notifications.student');
+    // Route for student notifications
+    Route::get('/notifications/students', [NotificationController::class, 'studentNotifications'])
+         ->name('notifications.students');
 
-    // Route pour les notifications des enseignants
-    Route::get('/notifications/teacher', [NotificationController::class, 'teacherNotifications'])->name('notifications.teacher');
+    // Route for teacher notifications
+    Route::get('/notifications/teacher', [NotificationController::class, 'teacherNotifications'])
+         ->name('notifications.teachers');
 });
 use App\Http\Controllers\StatisticsController;
 
