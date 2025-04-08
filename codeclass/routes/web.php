@@ -57,8 +57,9 @@ Route::middleware(['auth'])->group(function () {
          ->name('notifications.students');
 
     // Route for teacher notifications
-    Route::get('/notifications/teacher', [NotificationController::class, 'teacherNotifications'])
-         ->name('notifications.teachers');
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/notifications/teacher', [NotificationController::class, 'teacherNotifications'])->name('notifications.teacher');
+    });
 });
 use App\Http\Controllers\StatisticsController;
 
