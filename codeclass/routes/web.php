@@ -88,4 +88,9 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('projects', ProjetController::class);
+});use App\Http\Controllers\DroitController;
+
+Route::middleware(['auth'])->group(function () {
+    // Route to update user rights (only accessible by teachers)
+    Route::post('/users/{userId}/update-rights', [DroitController::class, 'updateUserRights'])->name('users.updateRights');
 });
