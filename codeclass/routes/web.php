@@ -76,3 +76,12 @@ Route::middleware(['auth'])->group(function () {
     // Route for the Code Review view
     Route::get('/code-review', [CodeReviewController::class, 'index'])->name('code.review');
 });
+use App\Http\Controllers\BadgeController;
+
+Route::middleware(['auth'])->group(function () {
+    // Route to display the badge creation form
+    Route::get('/badge/create', [BadgeController::class, 'create'])->name('badge.create');
+
+    // Route to handle badge creation form submission
+    Route::post('/badge/create', [BadgeController::class, 'store'])->name('badge.store');
+});
