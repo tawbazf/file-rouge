@@ -84,4 +84,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Route to handle badge creation form submission
     Route::post('/badge/create', [BadgeController::class, 'store'])->name('badge.store');
+});use App\Http\Controllers\ProjetController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('projects', ProjetController::class);
 });
