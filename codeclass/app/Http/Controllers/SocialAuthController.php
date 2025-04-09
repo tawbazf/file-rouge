@@ -16,7 +16,7 @@ class SocialAuthController extends Controller
     {
         $user = Socialite::driver('google')->user();
         // Logique pour connecter ou enregistrer l'utilisateur
-        return redirect()->route('home'); // Redirigez vers une page après connexion
+        return redirect()->route('dashboard'); // Redirigez vers une page après connexion
     }
 
     // GitHub Authentication
