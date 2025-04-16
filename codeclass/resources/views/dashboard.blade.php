@@ -81,56 +81,87 @@
             </div>
         </header>
 
-        <!-- Welcome Section -->
-        <div class="py-6 flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900">Bonjour, Thomas</h1>
-                <p class="text-gray-600">Continuez votre progression</p>
-            </div>
-            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-md">
-                Commencer
-            </button>
-        </div>
+       <!-- Welcome Section -->
+<div class="py-6 flex justify-between items-center">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Bonjour, {{ $user->name }}</h1>
+        <p class="text-gray-600">Continuez votre progression</p>
+    </div>
+    <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-md">
+        Commencer
+    </button>
+</div>
 
-        <!-- Stats Section -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Global Progress -->
+<!-- Stats Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Global Progress -->
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        <h2 class="text-gray-700 font-medium mb-4">Progression globale</h2>
+        <div class="flex justify-between items-center mb-2">
+            <span class="text-3xl font-bold text-indigo-600">{{ $globalProgress }}%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-bar-fill-blue" style="width: {{ $globalProgress }}%"></div>
+        </div>
+    </div>
+
+    <!-- Completed Projects -->
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        <h2 class="text-gray-700 font-medium mb-4">Projets complétés</h2>
+        <div class="flex justify-between items-center mb-2">
+            <span class="text-3xl font-bold text-green-600">{{ $completedProjects }}</span>
+        </div>
+        <p class="text-gray-600 text-sm">{{ $projectsThisWeek }} projets cette semaine</p>
+    </div>
+
+    <!-- Learning Time -->
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        <h2 class="text-gray-700 font-medium mb-4">Temps d'apprentissage</h2>
+        <div class="flex justify-between items-center mb-2">
+            <span class="text-3xl font-bold text-blue-600">{{ $learningTimeHours }}h</span>
+        </div>
+        <p class="text-gray-600 text-sm">+{{ $learningTimeThisWeek }}h depuis la semaine dernière</p>
+    </div>
+</div>
+
+<!-- Current Projects Section -->
+<div class="mb-8">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-gray-900">Projets en cours</h2>
+        <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Voir tout</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @foreach($projectCards as $project)
             <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h2 class="text-gray-700 font-medium mb-4">Progression globale</h2>
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-3xl font-bold text-indigo-600">75%</span>
+                <div class="flex justify-between items-start mb-4">
+                    @php
+                        // Choose badge class based on status
+                        $badgeClass = 'badge-blue';
+                        if ($project['status'] === 'À débuter') $badgeClass = 'badge-yellow';
+                        elseif ($project['status'] === 'Presque fini') $badgeClass = 'badge-green';
+                    @endphp
+                    <span class="{{ $badgeClass }} px-3 py-1 rounded-full text-xs font-medium">{{ $project['status'] }}</span>
+                    <button class="text-gray-400 hover:text-gray-600">
+                        <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                        </svg>
+                    </button>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $project['name'] }}</h3>
+                <div class="flex items-center text-gray-500 mb-4">
+                    <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-sm">{{ $project['time_remaining'] }}</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-bar-fill-blue" style="width: 75%"></div>
+                    <div class="{{ $project['progress'] >= 90 ? 'progress-bar-fill-green' : 'progress-bar-fill-blue' }}" style="width: {{ $project['progress'] }}%"></div>
                 </div>
             </div>
-
-            <!-- Completed Projects -->
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h2 class="text-gray-700 font-medium mb-4">Projets complétés</h2>
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-3xl font-bold text-green-600">12</span>
-                </div>
-                <p class="text-gray-600 text-sm">4 projets cette semaine</p>
-            </div>
-
-            <!-- Learning Time -->
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h2 class="text-gray-700 font-medium mb-4">Temps d'apprentissage</h2>
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-3xl font-bold text-blue-600">28h</span>
-                </div>
-                <p class="text-gray-600 text-sm">+5h depuis la semaine dernière</p>
-            </div>
-        </div>
-
-        <!-- Current Projects Section -->
-        <div class="mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900">Projets en cours</h2>
-                <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Voir tout</a>
-            </div>
-
+        @endforeach
+    </div>
+</div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- HTML/CSS Project -->
                 <div class="bg-white p-6 rounded-lg shadow-sm">
