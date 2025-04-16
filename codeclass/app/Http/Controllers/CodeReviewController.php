@@ -1,34 +1,34 @@
-<?php
+ <?php
+ namespace App\Http\Controllers; use Illuminate\Support\Facades\Auth; use Illuminate\Http\Request; use
+     App\Models\CodeReview; use App\Models\CodeReviewComment; class CodeReviewController extends Controller { public
+     function index($reviewId=null) { // Get the latest code review or a specific one $codeReview=$reviewId ?
+     $reviewId 
+         ? CodeReview::with(['comments.user'])->findOrFail($reviewId) 
+         : CodeReview::with(['comments.user'])->latest()->first();
 
-namespace App\Http\Controllers;
+     // Prepare comments for the view
+     $comments = $codeReview->comments->map(function ($comment) {
+     // Tag class mapping
+     $tagClasses = [
+     'Performance' => 'tag-performance',
+     'Style' => 'tag-style',
+     'Functionality' => 'tag-functionality',
+     ];
+     return [
+     'author' => $comment->user->name,
+     'avatar' => $comment->user->avatar ??
+     '[https://randomuser.me/api/portraits/men/32.jpg',](https://randomuser.me/api/portraits/men/32.jpg',)
+     'time' => $comment->created_at->diffForHumans(),
+     'tag' => $comment->tag,
+     'tagClass' => $tagClasses[$comment->tag] ?? 'tag-style',
+     'comment' => $comment->comment,
+     ];
+     });
 
-use Illuminate\Http\Request;
+     $filename = $codeReview->filename;
+     $code = $codeReview->code;
+     $user = Auth::user();
 
-class CodeReviewController extends Controller
-{
-    public function index()
-    {
-        // Example data for code review
-        $comments = [
-            [
-                'author' => 'Prof. Smith',
-                'avatar' => 'https://randomuser.me/api/portraits/men/45.jpg',
-                'time' => '2 hours ago',
-                'tag' => 'Performance',
-                'tagClass' => 'tag-performance',
-                'comment' => 'Consider using reduce() method instead of for loop for better performance and readability.',
-            ],
-            [
-                'author' => 'Alice Cooper',
-                'avatar' => 'https://randomuser.me/api/portraits/women/32.jpg',
-                'time' => '5 hours ago',
-                'tag' => 'Style',
-                'tagClass' => 'tag-style',
-                'comment' => 'The variable naming is clear and follows the conventions. Good job!',
-            ],
-        ];
-
-        // Pass the data to the view
-        return view('codereview', compact('comments'));
-    }
-}
+     return view('codereview', compact('filename', 'code', 'comments', 'user'));
+     }
+     }
