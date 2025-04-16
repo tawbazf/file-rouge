@@ -54,41 +54,37 @@ class NotificationController extends Controller
         return response()->json(['status' => 'not found'], 404);
     }
 
-     // Student notifications
-     public function studentNotifications()
-     {
-         $user = Auth::user();
- 
-         // Check if the user is a student
-         if ($user->role !== 'student') {
-             return redirect()->route('dashboard')->with('error', 'Access denied. Only students can view this page.');
-         }
- 
-         // Fetch notifications (using Laravel's built-in notifications)
-         $notifications = $user->notifications()->orderBy('created_at', 'desc')->take(20)->get();
- 
-         // Pass to a Blade view (create resources/views/notifications-student.blade.php)
-         return view('notifications-student', [
-             'notifications' => $notifications,
-         ]);
-     }
- 
-     // Teacher notifications
-     public function teacherNotifications()
-     {
-         $user = Auth::user();
- 
-         // Check if the user is a teacher
-         if ($user->role !== 'teacher') {
-             return redirect()->route('dashboard')->with('error', 'Access denied. Only teachers can view this page.');
-         }
- 
-         // Fetch notifications (using Laravel's built-in notifications)
-         $notifications = $user->notifications()->orderBy('created_at', 'desc')->take(20)->get();
- 
-         // Pass to a Blade view (create resources/views/notifications-teacher.blade.php)
-         return view('notifications-teacher', [
-             'notifications' => $notifications,
-         ]);
-     }
+    public function studentNotifications()
+{
+    $user = Auth::user();
+
+    if ($user->role !== 'student') {
+        return redirect()->route('dashboard')->with('error', 'Access denied. Only students can view this page.');
+    }
+
+    $notifications = $user->notifications()->orderBy('created_at', 'desc')->take(20)->get();
+
+    // Use the same view for both roles
+    return view('notifications', [
+        'notifications' => $notifications,
+        'userRole' => 'student',
+    ]);
+}
+
+public function teacherNotifications()
+{
+    $user = Auth::user();
+
+    if ($user->role !== 'teacher') {
+        return redirect()->route('dashboard')->with('error', 'Access denied. Only teachers can view this page.');
+    }
+
+    $notifications = $user->notifications()->orderBy('created_at', 'desc')->take(20)->get();
+
+    // Use the same view for both roles
+    return view('notifications', [
+        'notifications' => $notifications,
+        'userRole' => 'teacher',
+    ]);
+}
 }
