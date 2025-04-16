@@ -93,9 +93,10 @@ Route::post('/badges', [BadgeController::class, 'store'])->name('badge.store');
     // Home (optionnel)
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
-Route::get('/courses', function () {
-    return view('courses');
-})->name('courses');
+use App\Http\Controllers\CoursesController;
+
+Route::get('/courses', [CoursesController::class, 'index'])->name('courses');
+Route::post('/courses', [CoursesController::class, 'store'])->name('courses.store');
 
 use App\Http\Controllers\CommunityController;
 
