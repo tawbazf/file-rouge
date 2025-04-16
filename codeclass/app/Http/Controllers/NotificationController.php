@@ -65,7 +65,7 @@ class NotificationController extends Controller
     $notifications = $user->notifications()->orderBy('created_at', 'desc')->take(20)->get();
 
     // Use the same view for both roles
-    return view('notifications', [
+    return view('centre-notifications', [
         'notifications' => $notifications,
         'userRole' => 'student',
     ]);
@@ -82,7 +82,7 @@ public function teacherNotifications()
     $notifications = $user->notifications()->orderBy('created_at', 'desc')->take(20)->get();
 
     // Use the same view for both roles
-    return view('notifications', [
+    return view('centre-notifications', [
         'notifications' => $notifications,
         'userRole' => 'teacher',
     ]);
