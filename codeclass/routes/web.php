@@ -73,10 +73,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/code-review', [CodeReviewController::class, 'index'])->name('code.review');
     
     // Badges
-    Route::prefix('badge')->group(function () {
-        Route::get('/create', [BadgeController::class, 'create'])->name('badge.create');
-        Route::post('/create', [BadgeController::class, 'store'])->name('badge.store');
-    });
+Route::get('/badges/create', [BadgeController::class, 'create'])->name('badge.create');
+Route::post('/badges', [BadgeController::class, 'store'])->name('badge.store');
     
     // Projets
     Route::resource('projects', ProjetController::class);
