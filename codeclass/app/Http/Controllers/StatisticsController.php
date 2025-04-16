@@ -3,46 +3,70 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Carbon\Carbon;
 
 class StatisticsController extends Controller
 {
     public function index()
     {
-        // Exemple de données pour les statistiques générales
-        $classAverage = 15.8;
-        $activeStudents = 28;
-        $totalStudents = 30;
-        $homeworkCompletion = 92; // En pourcentage
-        $globalProgress = 78; // En pourcentage
+        // Fetch all students (assuming 'role' field exists)
+        $students = User::where('role', 'student')->get();
 
-        // Liste des étudiants avec leurs informations
-        $students = [
-            [
-                'id' => '2025001',
-                'name' => 'Emma Bernard',
-                'avatar' => 'https://randomuser.me/api/portraits/women/32.jpg',
-                'average' => 17.5,
-                'progress' => 85,
-                'lastActivity' => 'Il y a 2 heures',
-            ],
-            [
-                'id' => '2025002',
-                'name' => 'Lucas Martin',
-                'avatar' => 'https://randomuser.me/api/portraits/men/45.jpg',
-                'average' => 14.8,
-                'progress' => 70,
-                'lastActivity' => 'Hier',
-            ],
+        $totalStudents = $students->count();
+        $activeStudents = $students->filter(function($student) {
+            // Consider as active if last_activity is within the last 24 hours
+            return isset($student->last_activity) && Carbon::parse($student->last_activity)->gt(Carbon::now()->subDay());
+        })->count();
+
+        // Class average (assuming 'average' field exists)
+        $classAverage = $students->avg('average') ? round($students->avg('average'), 1) : 0;
+
+        // Homework completion (static or calculated if you have a field)
+        $homeworkCompletion = 92; // Static fallback
+
+        // Global progress (assuming 'progress' field exists)
+        $globalProgress = $students->avg('progress') ? round($students->avg('progress')) : 0;
+
+        // Subject progress (static for now)
+        $subjectProgress = [
+            'math' => 85,
+            'science' => 72,
+            'history' => 68,
         ];
 
-        // Passer les données à la vue
-        return view('general-statistics', compact(
-            'classAverage',
-            'activeStudents',
-            'totalStudents',
-            'homeworkCompletion',
-            'globalProgress',
-            'students'
-        ));
+        // Grade distribution (static for now)
+        $gradeDistribution = [
+            '0-5' => 2,
+            '6-10' => 5,
+            '11-14' => 12,
+            '15-17' => 8,
+            '18-20' => 3,
+        ];
+
+        // Student list for the view
+        $studentList = $students->map(function ($student) {
+            return [
+                'id' => $student->student_id ?? $student->id,
+                'name' => $student->name,
+                'avatar' => $student->avatar ?? '[https://randomuser.me/api/portraits/men/32.jpg',](https://randomuser.me/api/portraits/men/32.jpg',)
+                'average' => $student->average ?? 0,
+                'progress' => $student->progress ?? 0,
+                'lastActivity' => $student->last_activity
+                    ? Carbon::parse($student->last_activity)->diffForHumans()
+                    : 'Inconnu',
+            ];
+        });
+
+        return view('general-statistics', [
+            'classAverage' => $classAverage,
+            'activeStudents' => $activeStudents,
+            'totalStudents' => $totalStudents,
+            'homeworkCompletion' => $homeworkCompletion,
+            'globalProgress' => $globalProgress,
+            'students' => $studentList,
+            'subjectProgress' => $subjectProgress,
+            'gradeDistribution' => $gradeDistribution,
+        ]);
     }
 }
