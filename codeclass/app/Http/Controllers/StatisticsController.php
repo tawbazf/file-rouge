@@ -49,7 +49,7 @@ class StatisticsController extends Controller
             return [
                 'id' => $student->student_id ?? $student->id,
                 'name' => $student->name,
-                'avatar' => $student->avatar ?? '[https://randomuser.me/api/portraits/men/32.jpg',](https://randomuser.me/api/portraits/men/32.jpg',)
+                'avatar' => $student->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg',
                 'average' => $student->average ?? 0,
                 'progress' => $student->progress ?? 0,
                 'lastActivity' => $student->last_activity
