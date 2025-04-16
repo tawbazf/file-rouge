@@ -3,69 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Project;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    // Notifications for students (already implemented)
-    public function studentNotifications()
+    // Show the notification center
+    public function index(Request $request)
     {
-        $notifications = [];
+        $user = Auth::user();
 
-        // Get projects due in the next 24 hours (example)
-        $projectsDueSoon = Project::where('deadline', '<=', Carbon::now()->addDay())->get();
-        foreach ($projectsDueSoon as $project) {
-            $notifications[] = [
-                'type'    => 'urgent',
-                'title'   => "Échéance Projet: {$project->title}",
-                'message' => "Le projet \"{$project->title}\" doit être livré avant " . Carbon::parse($project->deadline)->format('H:i d/m/Y') . ".",
-                'time'    => Carbon::parse($project->deadline)->diffForHumans(),
-            ];
+        // Determine filter (default: all)
+        $filter = $request->query('filter', 'all');
+
+        // Get notifications, you may use Eloquent or Laravel's built-in notification system
+        $query = $user->notifications()->orderBy('created_at', 'desc');
+
+        if ($filter === 'unread') {
+            $query->whereNull('read_at');
+        } elseif ($filter === 'important') {
+            $query->where('data->type', 'urgent'); // assuming 'type' is stored in data JSON
         }
 
-        // Get approved projects (example)
-        $approvedProjects = Project::where('approved', true)->get();
-        foreach ($approvedProjects as $project) {
-            $notifications[] = [
-                'type'    => 'success',
-                'title'   => "Validation Réussie: {$project->title}",
-                'message' => "Votre projet \"{$project->title}\" a été approuvé.",
-                'time'    => Carbon::now()->diffForHumans(),
+        $notifications = $query->take(20)->get()->map(function ($notification) {
+            // Map notification fields for blade
+            return [
+                'id'      => $notification->id,
+                'type'    => $notification->data['type'] ?? 'default',
+                'title'   => $notification->data['title'] ?? 'Notification',
+                'message' => $notification->data['message'] ?? '',
+                'time'    => $notification->created_at->diffForHumans(),
             ];
-        }
+        });
 
-        return view('centre-notifications', compact('notifications'));
+        return view('centre-notifications', [
+            'notifications' => $notifications,
+        ]);
     }
 
-    // Notifications for teachers
-    public function teacherNotifications()
+    // Mark a notification as read (AJAX)
+    public function markAsRead($id)
     {
-        $notifications = [];
+        $user = Auth::user();
+        $notification = $user->notifications()->where('id', $id)->first();
 
-        // Example: Get projects with recent collaborations in the last 4 hours.
-        // (Ensure your "projects" table has a "last_collaboration" column.)
-        $projectCollabs = Project::whereNotNull('last_collaboration')
-            ->where('last_collaboration', '>=', Carbon::now()->subHours(4))
-            ->get();
-
-        foreach ($projectCollabs as $project) {
-            $notifications[] = [
-                'type'    => 'info',
-                'title'   => "Nouvelle Collaboration: {$project->title}",
-                'message' => "Un nouveau collaborateur a rejoint votre projet \"{$project->title}\".",
-                'time'    => Carbon::parse($project->last_collaboration)->diffForHumans(),
-            ];
+        if ($notification) {
+            $notification->markAsRead();
+            return response()->json(['status' => 'ok']);
         }
 
-        // Add a fixed meeting reminder as an example
-        $notifications[] = [
-            'type'    => 'warning',
-            'title'   => 'Rappel: Réunion d’équipe',
-            'message' => 'La réunion d’équipe commence dans 30 minutes.',
-            'time'    => Carbon::now()->diffForHumans(),
-        ];
-
-        return view('centre-notifications', compact('notifications'));
+        return response()->json(['status' => 'not found'], 404);
     }
 }
