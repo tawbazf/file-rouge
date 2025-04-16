@@ -97,10 +97,10 @@ Route::get('/courses', function () {
     return view('courses');
 })->name('courses');
 
-Route::get('/community', function () {
-    return view('community');
-})->name('community');
+use App\Http\Controllers\CommunityController;
 
+Route::get('/community', [CommunityController::class, 'index'])->name('community');
+Route::post('/community', [CommunityController::class, 'store'])->name('community.store');
 
 
 use App\Http\Controllers\ChallengesController;
