@@ -109,7 +109,7 @@ Route::get('/certifications', function () {
     return view('certifications');
 })->name('certifications');
 
-Route::view('/dashboard', 'dashboard')->name('dashboard');
+
 Route::view('/projects', 'projects')->name('projects');
 Route::view('/ressources', 'ressources')->name('ressources');
 Route::view('/community', 'community')->name('community');

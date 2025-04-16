@@ -12,7 +12,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-
+        $certifications = [];
         // Example: Get all projects for the user
         $projects = Project::where('user_id', $user->id)->get();
 
@@ -54,6 +54,7 @@ class DashboardController extends Controller
             'learningTimeHours' => $learningTimeHours,
             'learningTimeThisWeek' => $learningTimeThisWeek,
             'projectCards' => $projectCards,
+            'certifications' => $certifications,
         ]);
     }
 }
