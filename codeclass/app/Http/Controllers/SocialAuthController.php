@@ -1,63 +1,51 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Log;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class SocialAuthController extends Controller
 {
-    // Google Authentication
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
-    public function handleGoogleCallback()
-    {
-        $user = Socialite::driver('google')->user();
-        // Logique pour connecter ou enregistrer l'utilisateur
-        return redirect()->route('dashboard'); // Redirigez vers une page après connexion
-    }
-
-    // GitHub Authentication
+   
+    
     public function redirectToGithub()
     {
-        return Socialite::driver('github')->scopes(['user:email'])->redirect();
-
+        try {
+            return Socialite::driver('github')
+                ->stateless()
+                ->redirect();
+        } catch (\Exception $e) {
+            return redirect()->route('login')
+                   ->withErrors('Failed to connect to GitHub');
+        }
     }
+
     public function handleGithubCallback()
     {
         try {
-            $user = Socialite::driver('github')
-                ->stateless() // Optional, if you're not using sessions
-                ->user();
-    
-            // Your user logic: find or create the user in your database
-            $existingUser = User::where('github_id', $user->getId())->first();
+            $githubUser = Socialite::driver('github')->stateless()->user();
             
-            if ($existingUser) {
-                // Log in the user or update their info
-                Auth::login($existingUser);
-            } else {
-                // Register the user
-                $newUser = User::create([
-                    'name' => $user->getName(),
-                    'email' => $user->getEmail(),
-                    'github_id' => $user->getId(),
-                    // Add any other fields you need
-                ]);
-    
-                Auth::login($newUser);
-            }
-    
-            return redirect()->route('home'); // Redirect wherever needed
+            $user = User::updateOrCreate(
+                ['github_id' => $githubUser->getId()],
+                [
+                    'name' => $githubUser->getName() ?? $githubUser->getNickname(),
+                    'email' => $githubUser->getEmail(),
+                    'password' => Hash::make(Str::random(24)),
+                ]
+            );
+
+            Auth::login($user, true);
+
+            return redirect()->route('dashboard');
+
         } catch (\Exception $e) {
-            // Log error for debugging
-            Log::error('GitHub callback error: '.$e->getMessage());
-            return redirect()->route('login')->withErrors('Authentication failed. Please try again.');
+            \Log::error('GitHub Auth Error: '.$e->getMessage());
+            return redirect()->route('login')
+                   ->withErrors('Failed to authenticate with GitHub');
         }
     }
-    
 }
