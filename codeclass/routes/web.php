@@ -105,10 +105,10 @@ Route::get('/challenges', function () {
     return view('challenges');
 })->name('challenges');
 
-Route::get('/certifications', function () {
-    return view('certifications');
-})->name('certifications');
 
+use App\Http\Controllers\CertificationsController;
+
+Route::get('/certifications', [CertificationsController::class, 'index'])->name('certifications');
 
 Route::view('/projects', 'projects')->name('projects');
 Route::view('/ressources', 'ressources')->name('ressources');
