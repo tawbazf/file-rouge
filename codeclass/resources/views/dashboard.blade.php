@@ -242,9 +242,9 @@
                 </div>
                 <h3 class="text-xl font-bold mb-2">Cours</h3>
                 <p class="text-indigo-100 mb-6">Accédez à tous vos cours</p>
-                <button class="bg-white text-indigo-600 hover:bg-indigo-50 font-medium py-2 px-4 rounded-md text-sm">
+                <a href="{{ route('courses') }}"class="bg-white text-indigo-600 hover:bg-indigo-50 font-medium py-2 px-4 rounded-md text-sm">
                     Explorer
-                </button>
+    </a>
             </div>
 
             <!-- Community Card -->
@@ -256,9 +256,9 @@
                 </div>
                 <h3 class="text-xl font-bold mb-2">Community</h3>
                 <p class="text-blue-100 mb-6">Rejoignez les discussions</p>
-                <button class="bg-white text-blue-600 hover:bg-blue-50 font-medium py-2 px-4 rounded-md text-sm">
+                <a href="{{ route('community') }}" class="bg-white text-blue-600 hover:bg-blue-50 font-medium py-2 px-4 rounded-md text-sm">
                     Participer
-                </button>
+    </a>
             </div>
 
             <!-- Challenges Card -->
@@ -270,9 +270,9 @@
                 </div>
                 <h3 class="text-xl font-bold mb-2">Challenges</h3>
                 <p class="text-purple-100 mb-6">Testez vos compétences</p>
-                <button class="bg-white text-purple-600 hover:bg-purple-50 font-medium py-2 px-4 rounded-md text-sm">
+                <a href="{{ route('challenges') }}" class="bg-white text-purple-600 hover:bg-purple-50 font-medium py-2 px-4 rounded-md text-sm">
                     Défier
-                </button>
+                </a>
             </div>
 
             <!-- Certifications Card -->
@@ -284,9 +284,9 @@
                 </div>
                 <h3 class="text-xl font-bold mb-2">Certifications</h3>
                 <p class="text-green-100 mb-6">Obtenez vos badges</p>
-                <button class="bg-white text-green-600 hover:bg-green-50 font-medium py-2 px-4 rounded-md text-sm">
+                <a href="{{ route('certifications') }}" class="bg-white text-green-600 hover:bg-green-50 font-medium py-2 px-4 rounded-md text-sm">
                     Découvrir
-                </button>
+                </a>
             </div>
         </div>
     </div>
