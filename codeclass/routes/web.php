@@ -113,5 +113,7 @@ use App\Http\Controllers\CertificationsController;
 Route::get('/certifications', [CertificationsController::class, 'index'])->name('certifications');
 use App\Http\Controllers\ProjectsController;
 Route::get('/projects', [ProjectsController::class, 'index'])->name('projects');
-Route::view('/ressources', 'ressources')->name('ressources');
+use App\Http\Controllers\RessourcesController;
+Route::get('/ressources', [RessourcesController::class, 'index'])->name('ressources');
+Route::post('/ressources', [RessourcesController::class, 'store'])->name('ressources.store');
 Route::view('/community', 'community')->name('community');
