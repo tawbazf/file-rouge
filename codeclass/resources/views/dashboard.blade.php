@@ -54,11 +54,11 @@
             <div class="flex items-center">
                 <a href="#" class="text-2xl font-bold text-indigo-600">codeclass</a>
                 <nav class="hidden md:flex ml-10 space-x-8">
-                    <a href="#" class="text-gray-900 font-medium">Dashboard</a>
-                    <a href="#" class="text-gray-500 hover:text-gray-900">Projets</a>
-                    <a href="#" class="text-gray-500 hover:text-gray-900">Ressources</a>
-                    <a href="#" class="text-gray-500 hover:text-gray-900">Community</a>
-                </nav>
+    <a href="{{ route('dashboard') }}" class="text-gray-900 font-medium">Dashboard</a>
+    <a href="{{ route('projects') }}" class="text-gray-500 hover:text-gray-900">Projets</a>
+    <a href="{{ route('ressources') }}" class="text-gray-500 hover:text-gray-900">Ressources</a>
+    <a href="{{ route('community') }}" class="text-gray-500 hover:text-gray-900">Community</a>
+</nav>
             </div>
             <div class="flex items-center">
                 <!-- Bouton Notifications -->
