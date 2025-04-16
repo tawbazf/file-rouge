@@ -37,12 +37,19 @@ Route::middleware('guest')->group(function () {
 });
 
 // Authentification sociale (doit être en dehors du middleware guest)
+// Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+// Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
+
+// Route::get('/auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github'); 
+
+// Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback']);
+// GitHub
+Route::get('/auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github');
+Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback'])->name('auth.github.callback');
+
+// Google
 Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
-Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
-
-Route::get('/auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github'); 
-
-Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback']);
+Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 // Routes protégées par authentification
 Route::middleware('auth')->group(function () {
