@@ -93,3 +93,18 @@ Route::post('/badges', [BadgeController::class, 'store'])->name('badge.store');
     // Home (optionnel)
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
+Route::get('/courses', function () {
+    return view('courses');
+})->name('courses');
+
+Route::get('/community', function () {
+    return view('community');
+})->name('community');
+
+Route::get('/challenges', function () {
+    return view('challenges');
+})->name('challenges');
+
+Route::get('/certifications', function () {
+    return view('certifications');
+})->name('certifications');
