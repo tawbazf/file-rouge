@@ -20,6 +20,8 @@ class DashboardProfController extends Controller
         }
 
         // 1. Projects managed by this teacher
+        // For example, if projects are linked by user_id:
+// $projects = Project::where('user_id', $teacher->id)->get();
         $projects = Project::where('teacher_id', $teacher->id)->with(['students'])->get();
 
         // Build project cards for the dashboard
