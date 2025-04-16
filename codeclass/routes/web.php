@@ -101,11 +101,12 @@ Route::get('/community', function () {
     return view('community');
 })->name('community');
 
-Route::get('/challenges', function () {
-    return view('challenges');
-})->name('challenges');
 
 
+use App\Http\Controllers\ChallengesController;
+
+Route::get('/challenges', [ChallengesController::class, 'index'])->name('challenges');
+Route::post('/challenges', [ChallengesController::class, 'store'])->name('challenges.store');
 use App\Http\Controllers\CertificationsController;
 
 Route::get('/certifications', [CertificationsController::class, 'index'])->name('certifications');
