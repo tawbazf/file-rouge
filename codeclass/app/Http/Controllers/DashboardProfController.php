@@ -63,7 +63,7 @@ class DashboardProfController extends Controller
             return [
                 'project_name' => $repo->project->name,
                 'student_name' => $repo->student->name,
-                'student_avatar' => $repo->student->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg'
+                'student_avatar' => $repo->student->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg',
                 'last_commit' => $repo->updated_at->diffForHumans(),
                 'status' => $repo->status, // e.g. 'Actif'
                 'actions' => route('repo.view', $repo->id),
