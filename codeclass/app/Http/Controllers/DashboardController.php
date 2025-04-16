@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Certification;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -12,7 +13,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $certifications = [];
+        $certifications = Certification::where('user_id', $user->id)->get();
         // Example: Get all projects for the user
         $projects = Project::where('user_id', $user->id)->get();
 
