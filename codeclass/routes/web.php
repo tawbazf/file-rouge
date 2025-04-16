@@ -111,7 +111,7 @@ Route::post('/challenges', [ChallengesController::class, 'store'])->name('challe
 use App\Http\Controllers\CertificationsController;
 
 Route::get('/certifications', [CertificationsController::class, 'index'])->name('certifications');
-
-Route::view('/projects', 'projects')->name('projects');
+use App\Http\Controllers\ProjectsController;
+Route::get('/projects', [ProjectsController::class, 'index'])->name('projects');
 Route::view('/ressources', 'ressources')->name('ressources');
 Route::view('/community', 'community')->name('community');
