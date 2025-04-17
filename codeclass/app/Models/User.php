@@ -77,5 +77,32 @@ class User extends Authenticatable
     {
         return $this->role === 'teacher';
     }
+    // Projects assigned to the user (as student)
+public function assignedProjects()
+{
+    return $this->belongsToMany(Project::class, 'project_user', 'user_id', 'project_id')
+        ->withPivot('assigned_by')
+        ->withTimestamps();
+}
+
+// Courses assigned to the user (as student)
+public function assignedCourses()
+{
+    return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id')
+        ->withPivot('assigned_by')
+        ->withTimestamps();
+}
+
+// Projects assigned by the teacher
+public function projectsAssigned()
+{
+    return $this->hasManyThrough(Project::class, 'project_user', 'assigned_by', 'id', 'id', 'project_id');
+}
+
+// Courses assigned by the teacher
+public function coursesAssigned()
+{
+    return $this->hasManyThrough(Course::class, 'course_user', 'assigned_by', 'id', 'id', 'course_id');
+}
 
 }

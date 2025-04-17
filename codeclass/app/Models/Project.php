@@ -15,4 +15,10 @@ class Project extends Model
         'progress',
         'time_remaining',
     ];
+    public function users()
+{
+    return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
+        ->withPivot('assigned_by')
+        ->withTimestamps();
+}
 }
