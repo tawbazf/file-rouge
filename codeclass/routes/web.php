@@ -27,7 +27,7 @@ use App\Http\Controllers\DroitController;
 */
 
 // Routes accessibles sans authentification
-Route::middleware('guest')->group(function () {
+Route::middleware('guest')->group(function (): void {
     Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -52,7 +52,7 @@ Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->n
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 // Routes protégées par authentification
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function (): void {
     // Déconnexion
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     

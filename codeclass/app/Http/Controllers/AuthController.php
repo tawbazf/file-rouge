@@ -24,17 +24,17 @@ class AuthController extends Controller
             // 'role' => 'required|in:user,teacher', // Valider le rôle
             // 'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Valider l'avatar
         ]);
-    
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-    
+
         // // Gérer l'upload de l'avatar
         // $avatarPath = null;
         // if ($request->hasFile('avatar')) {
         //     $avatarPath = $request->file('avatar')->store('avatars', 'public');
         // }
-    
+
         // Créer l'utilisateur
        $user= User::create([
             'name' => $request->name,

@@ -54,7 +54,7 @@ class DashboardProfController extends Controller
 
         // 2. GitHub repositories table (adapt model/relations as needed)
         $repositories = GithubRepository::with(['project', 'student'])
-            ->whereHas('project', function ($q) use ($teacher) {
+            ->whereHas('project', function ($q) use ($teacher): void {
                 $q->where('teacher_id', $teacher->id);
             })
             ->latest('updated_at')
