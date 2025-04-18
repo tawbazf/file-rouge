@@ -69,6 +69,7 @@ class User extends Authenticatable
             ->withPivot('awarded_at')
             ->withTimestamps();
     }
+    
 
     /**
      * Check if the user is a teacher.
