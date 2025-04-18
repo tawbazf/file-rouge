@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
 {
     $this->call([
-        ProjectSeeder::class,
+        UsersTableSeeder::class, // Seed users first
+        ProjectSeeder::class, // Seed projects
     ]);
     $this->call(BadgesTableSeeder::class);
 }

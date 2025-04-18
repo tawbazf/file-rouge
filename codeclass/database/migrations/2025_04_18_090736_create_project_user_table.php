@@ -1,3 +1,4 @@
+-- Active: 1740653067349@@127.0.0.1@5433@codeclass
 <?php
 
 use Illuminate\Database\Migrations\Migration;
