@@ -67,7 +67,7 @@
         <!-- Action Buttons -->
         <div class="py-6 flex flex-wrap items-center justify-between">
             <div class="flex space-x-4 mb-4 sm:mb-0">
-                <button class="btn-purple py-2 px-4 rounded-md flex items-center">
+                <button   onclick="document.getElementById('createProjectModal').classList.remove('hidden')" class="btn-purple py-2 px-4 rounded-md flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
@@ -193,6 +193,50 @@
         </table>
     </div>
 </div>
-        
+<!-- Modal for Creating a Project -->
+<div id="createProjectModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-xl font-bold mb-4">Créer un projet</h2>
+        <form method="POST" action="{{ route('projects.store') }}">
+            @csrf
+            <div class="mb-4">
+                <label class="block mb-1 font-medium">Titre</label>
+                <input type="text" name="title" class="w-full border rounded px-3 py-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1 font-medium">Description</label>
+                <textarea name="description" class="w-full border rounded px-3 py-2"></textarea>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1 font-medium">Statut</label>
+                <select name="status" class="w-full border rounded px-3 py-2" required>
+                    <option value="not_started">Non commencé</option>
+                    <option value="in_progress">En cours</option>
+                    <option value="completed">Terminé</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1 font-medium">Progression (%)</label>
+                <input type="number" name="progress" min="0" max="100" value="0" class="w-full border rounded px-3 py-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1 font-medium">Temps restant</label>
+                <input type="text" name="time_remaining" class="w-full border rounded px-3 py-2" placeholder="ex: 2 semaines">
+            </div>
+            <div class="flex justify-end gap-2">
+                <button type="button" onclick="document.getElementById('createProjectModal').classList.add('hidden')" class="px-4 py-2 rounded bg-gray-200">Annuler</button>
+                <button type="submit" class="px-4 py-2 rounded bg-indigo-600 text-white">Créer</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('createProjectModal');
+    if (modal && !modal.classList.contains('hidden') && !modal.contains(event.target) && event.target.tagName !== 'BUTTON') {
+        modal.classList.add('hidden');
+    }
+});
+</script>
 </body>
 </html>
