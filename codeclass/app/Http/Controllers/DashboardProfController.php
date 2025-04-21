@@ -53,28 +53,26 @@ class DashboardProfController extends Controller
         });
     
         // 2. GitHub repositories table (optional, adapt if needed)
-        $repoTable = [];
-        if (class_exists('\App\Models\GithubRepository')) {
-            $repositories = \App\Models\GithubRepository::with(['project', 'student'])
-                ->whereHas('project', function ($q) use ($teacher) {
-                    $q->where('teacher_id', $teacher->id);
-                })
-                ->latest('updated_at')
-                ->limit(10)
-                ->get();
-    
-            $repoTable = $repositories->map(function ($repo) {
-                return [
-                    'project_name' => $repo->project->title ?? '',
-                    'student_name' => $repo->student->name ?? '',
-                    'student_avatar' => $repo->student->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg',
-                    'last_commit' => $repo->updated_at->diffForHumans(),
-                    'status' => $repo->status ?? '',
-                    'actions' => route('repo.view', $repo->id),
-                ];
-            });
-        }
-    
+      // Fetch latest GitHub repositories for this teacher's projects
+$repositories = \App\Models\GithubRepository::with(['project', 'student']) // adjust relation names if needed
+->whereHas('project', function ($q) use ($teacher) {
+    $q->where('teacher_id', $teacher->id);
+})
+->latest('updated_at')
+->limit(10)
+->get();
+
+// Map data for the Blade table
+$repoTable = $repositories->map(function ($repo) {
+return [
+    'project_name' => $repo->project->title ?? '',
+    'student_name' => $repo->student->name ?? '',
+    'student_avatar' => $repo->student->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg',
+    'last_commit' => $repo->updated_at->diffForHumans(),
+    'status' => $repo->status ?? '',
+    'actions' => route('repo.view', $repo->id), // adjust route if needed
+];
+});
         return view('dashboardProf', [
             'teacher' => $teacher,
             'projectCards' => $projectCards,

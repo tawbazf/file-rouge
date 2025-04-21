@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\GithubRepository;
 
 class Project extends Model
 {
@@ -28,5 +29,9 @@ public function students()
         ->where('role', 'user')
         ->withPivot('assigned_by')
         ->withTimestamps();
+}
+public function repositories()
+{
+    return $this->hasMany(GithubRepository::class, 'project_id');
 }
 }

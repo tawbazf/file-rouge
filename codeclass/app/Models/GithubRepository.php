@@ -17,13 +17,10 @@ protected $fillable = [
 'status',
 ];
 
-public function project()
-{
-return $this->belongsTo(Project::class);
+public function project() {
+    return $this->belongsTo(Project::class, 'project_id');
 }
-
-public function student()
-{
-return $this->belongsTo(User::class, 'student_id');
+public function student() {
+    return $this->belongsTo(User::class, 'student_id');
 }
 }
