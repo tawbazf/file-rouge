@@ -54,7 +54,7 @@
         .grade-high {
             background-color: #dbeafe;
             color: #1e40af;
-        }
+        
     </style>
 </head>
 <body>
@@ -86,8 +86,8 @@
                     </svg>
                 </div>
                 <div class="flex items-end">
-                    <span class="text-3xl font-bold text-gray-900">15.8</span>
-                    <span class="ml-2 text-sm text-green-500">+2.3%</span>
+                <span class="text-3xl font-bold text-gray-900">{{ $classAverage }}</span>
+                <span class="ml-2 text-sm text-green-500">{{ $classAverageChange }}</span>
                 </div>
             </div>
 
@@ -100,8 +100,8 @@
                     </svg>
                 </div>
                 <div class="flex items-end">
-                    <span class="text-3xl font-bold text-gray-900">28</span>
-                    <span class="ml-2 text-sm text-gray-500">/ 30</span>
+                <span class="text-3xl font-bold text-gray-900">{{ $activeStudents }}</span>
+                <span class="ml-2 text-sm text-gray-500">/ {{ $totalStudents }}</span>
                 </div>
             </div>
 
@@ -114,7 +114,7 @@
                     </svg>
                 </div>
                 <div class="flex items-end">
-                    <span class="text-3xl font-bold text-gray-900">92%</span>
+                <span class="text-3xl font-bold text-gray-900">{{ $homeworkSubmitted }}%</span>
                 </div>
             </div>
 
@@ -127,7 +127,7 @@
                     </svg>
                 </div>
                 <div class="flex items-end">
-                    <span class="text-3xl font-bold text-gray-900">78%</span>
+                <span class="text-3xl font-bold text-gray-900">{{ $globalProgress }}%</span>
                 </div>
             </div>
         </div>
@@ -178,7 +178,7 @@
                 <div class="grid grid-cols-5 gap-2">
                     <div class="text-center">
                         <div class="grade-low rounded-md p-3 mb-2">
-                            <span class="text-lg font-bold">2</span>
+                            <span class="text-lg font-bold">{{ $gradeDistribution['0-5'] }}</span>
                         </div>
                         <span class="text-xs text-gray-500">0-5</span>
                     </div>
@@ -243,65 +243,37 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <!-- Emma Bernard -->
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10">
-                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/32.jpg" alt="">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Emma Bernard</div>
-                                        <div class="text-sm text-gray-500">ID: 2025001</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 text-sm text-green-800 bg-green-100 rounded-full">17.5</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="w-48 progress-bar">
-                                    <div class="progress-emma h-full rounded-full" style="width: 85%"></div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                Il y a 2 heures
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                                <a href="#" class="hover:text-blue-800">Détails</a>
-                            </td>
-                        </tr>
-                        
-                        <!-- Lucas Martin -->
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10">
-                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/45.jpg" alt="">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Lucas Martin</div>
-                                        <div class="text-sm text-gray-500">ID: 2025002</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 text-sm text-yellow-800 bg-yellow-100 rounded-full">14.8</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="w-48 progress-bar">
-                                    <div class="progress-lucas h-full rounded-full" style="width: 70%"></div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                Hier
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                                <a href="#" class="hover:text-blue-800">Détails</a>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody>
+@foreach($studentRows as $student)
+<tr>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <div class="flex-shrink-0 h-10 w-10">
+                <img class="h-10 w-10 rounded-full" src="{{ $student['avatar'] }}" alt="">
+            </div>
+            <div class="ml-4">
+                <div class="text-sm font-medium text-gray-900">{{ $student['name'] }}</div>
+                <div class="text-sm text-gray-500">ID: {{ $student['id'] }}</div>
+            </div>
+        </div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <span class="px-2 py-1 text-sm text-green-800 bg-green-100 rounded-full">{{ $student['average'] }}</span>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="w-48 progress-bar">
+            <div class="progress-emma h-full rounded-full" style="width: {{ $student['progress'] }}%"></div>
+        </div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {{ $student['last_activity'] }}
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+        <a href="#" class="hover:text-blue-800">Détails</a>
+    </td>
+</tr>
+@endforeach
+</tbody>
                 </table>
             </div>
 
