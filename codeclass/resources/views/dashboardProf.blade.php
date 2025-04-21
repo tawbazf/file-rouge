@@ -87,7 +87,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
-                    <input type="text" placeholder="Rechercher..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <input id="projectSearchInput" type="text" placeholder="Rechercher..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 </div>
                 <div class="relative inline-block text-left">
                     <button type="button" class="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
@@ -101,7 +101,7 @@
         </div>
 
         <!-- Projects Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div  id="projectCardsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     @forelse($projectCards as $project)
         <div class="bg-white p-6 rounded-lg shadow-sm">
             <div class="flex justify-between items-start mb-4">
@@ -236,6 +236,34 @@ document.addEventListener('click', function(event) {
     if (modal && !modal.classList.contains('hidden') && !modal.contains(event.target) && event.target.tagName !== 'BUTTON') {
         modal.classList.add('hidden');
     }
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('projectSearchInput');
+    const grid = document.getElementById('projectCardsGrid');
+    if (!input || !grid) return;
+
+    input.addEventListener('input', function () {
+        const filter = input.value.toLowerCase();
+        // Get all direct children (cards) of the grid
+        const cards = grid.querySelectorAll('div.bg-white.p-6.rounded-lg.shadow-sm');
+        let anyVisible = false;
+        cards.forEach(card => {
+            // Find the project name and description in the card
+            const name = card.querySelector('h2')?.textContent.toLowerCase() || '';
+            const desc = card.querySelector('p')?.textContent.toLowerCase() || '';
+            if (name.includes(filter) || desc.includes(filter)) {
+                card.style.display = '';
+                anyVisible = true;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        // Handle the "Aucun projet trouvé" message
+        const emptyMsg = grid.querySelector('.col-span-3.text-center.text-gray-500');
+        if (emptyMsg) {
+            emptyMsg.style.display = anyVisible ? 'none' : '';
+        }
+    });
 });
 </script>
 </body>
