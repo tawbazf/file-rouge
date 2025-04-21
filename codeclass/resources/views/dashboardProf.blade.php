@@ -101,153 +101,98 @@
         </div>
 
         <!-- Projects Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Projet Web Full-Stack -->
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-medium text-gray-900">Projet Web Full-Stack</h2>
-                    <span class="badge-green px-3 py-1 rounded-full text-xs font-medium">En cours</span>
-                </div>
-                <p class="text-gray-600 text-sm mb-4">Développement d'une application web complète avec React et Node.js</p>
-                <div class="flex items-center text-gray-500 mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span class="text-sm">Échéance: 15 Mai 2025</span>
-                </div>
-                <div class="flex items-center text-gray-500 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
-                    </svg>
-                    <span class="text-sm">3 dépôts</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <div class="flex -space-x-2">
-                        <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/women/32.jpg" alt="">
-                        <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/men/45.jpg" alt="">
-                        <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/women/68.jpg" alt="">
-                    </div>
-                    <button class="text-gray-400 hover:text-gray-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                        </svg>
-                    </button>
-                </div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    @forelse($projectCards as $project)
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-lg font-medium text-gray-900">{{ $project['name'] }}</h2>
+                <span class="px-3 py-1 rounded-full text-xs font-medium badge-{{ $project['badge']['color'] }}">
+                    {{ $project['badge']['text'] }}
+                </span>
             </div>
-
-            <!-- API REST -->
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-medium text-gray-900">API REST</h2>
-                    <span class="badge-yellow px-3 py-1 rounded-full text-xs font-medium">À venir</span>
-                </div>
-                <p class="text-gray-600 text-sm mb-4">Création d'une API REST avec authentification</p>
-                <div class="flex items-center text-gray-500 mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span class="text-sm">Échéance: 30 Mai 2025</span>
-                </div>
-                <div class="flex items-center text-gray-500 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
-                    </svg>
-                    <span class="text-sm">2 dépôts</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <div class="flex -space-x-2">
-                        <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/men/22.jpg" alt="">
-                        <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/women/45.jpg" alt="">
-                    </div>
-                    <button class="text-gray-400 hover:text-gray-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                        </svg>
-                    </button>
-                </div>
+            <p class="text-gray-600 text-sm mb-4">{{ $project['description'] }}</p>
+            <div class="flex items-center text-gray-500 mb-3">
+                <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span class="text-sm">Échéance: {{ $project['deadline'] ?? '—' }}</span>
             </div>
-
-            <!-- Base de Données NoSQL -->
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-medium text-gray-900">Base de Données NoSQL</h2>
-                    <span class="badge-red px-3 py-1 rounded-full text-xs font-medium">Urgent</span>
+            <div class="flex items-center text-gray-500 mb-4">
+                <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                </svg>
+                <span class="text-sm">{{ $project['repo_count'] }} dépôts</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <div class="flex -space-x-2">
+                    @foreach($project['students'] as $student)
+                        <img class="h-8 w-8 rounded-full ring-2 ring-white" src="{{ $student['avatar'] }}" alt="{{ $student['name'] }}">
+                    @endforeach
                 </div>
-                <p class="text-gray-600 text-sm mb-4">Conception et implémentation d'une base MongoDB</p>
-                <div class="flex items-center text-gray-500 mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <button class="text-gray-400 hover:text-gray-600">
+                    <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                     </svg>
-                    <span class="text-sm">Échéance: 10 Mai 2025</span>
-                </div>
-                <div class="flex items-center text-gray-500 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
-                    </svg>
-                    <span class="text-sm">4 dépôts</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <div class="flex -space-x-2">
-                        <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/women/22.jpg" alt="">
-                        <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
-                        <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/women/55.jpg" alt="">
-                        <div class="h-8 w-8 rounded-full ring-2 ring-white bg-gray-200 flex items-center justify-center text-xs text-gray-500">+2</div>
-                    </div>
-                    <button class="text-gray-400 hover:text-gray-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                        </svg>
-                    </button>
-                </div>
+                </button>
             </div>
         </div>
-
-        <!-- GitHub Repositories -->
-        <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Dépôts GitHub</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Projet</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Étudiant</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dernier Commit</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                                    </svg>
-                                    <span class="text-sm text-gray-900">projet-web-2025</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img class="h-8 w-8 rounded-full mr-2" src="https://randomuser.me/api/portraits/women/32.jpg" alt="">
-                                    <span class="text-sm text-gray-900">Alice Martin</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                Il y a 2 heures
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Actif
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">
-                                <a href="#" class="hover:text-indigo-900">Voir</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    @empty
+        <div class="col-span-3 text-center text-gray-500">Aucun projet trouvé.</div>
+    @endforelse
+</div>
+      
+  <!-- GitHub Repositories -->
+<div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-6">Dépôts GitHub</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Projet</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Étudiant</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dernier Commit</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @forelse($repoTable as $repo)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-5 w-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                </svg>
+                                <span class="text-sm text-gray-900">{{ $repo['project_name'] }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <img class="h-8 w-8 rounded-full mr-2" src="{{ $repo['student_avatar'] }}" alt="">
+                                <span class="text-sm text-gray-900">{{ $repo['student_name'] }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ $repo['last_commit'] }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                {{ $repo['status'] }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">
+                            <a href="{{ $repo['actions'] }}" class="hover:text-indigo-900">Voir</a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center text-gray-500 py-4">Aucun dépôt trouvé.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
+</div>
+        
 </body>
 </html>
