@@ -30,9 +30,13 @@ class ProjetController extends Controller
             'time_remaining' => 'nullable|string',
         ]);
 
-        Project::create($request->all());
+    
+    $data = $request->all();
+    $data['teacher_id'] = auth()->id();
 
-        return redirect()->route('projects.index')->with('success', 'Projet créé avec succès.');
+    Project::create($data);
+
+        return redirect()->route('dashboardProf')->with('success', 'Projet créé avec succès.');
     }
 
     // Afficher un projet spécifique

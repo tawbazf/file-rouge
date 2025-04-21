@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function (): void {
     
     // Tableaux de bord
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard-prof', [DashboardProfController::class, 'index'])->name('dashboard.prof');
+    Route::get('/dashboard-prof', [DashboardProfController::class, 'index'])->name('dashboardProf');
     
     // Sélection de rôle
     Route::get('/choose-role', [RoleSelectionController::class, 'show'])->name('choose.role');
@@ -90,7 +90,7 @@ Route::get('/badges', [BadgeController::class, 'index'])->name('badges.index');
 Route::get('/badge/create', [BadgeController::class, 'create'])->name('badge.create');
 Route::post('/badge', [BadgeController::class, 'store'])->name('badge.store');
     // Projets
-    Route::resource('projects', ProjetController::class);
+    Route::post('/projects', [ProjetController::class, 'store'])->name('projects.store');
     
     // Droits utilisateurs
     Route::post('/users/{userId}/update-rights', [DroitController::class, 'updateUserRights'])
