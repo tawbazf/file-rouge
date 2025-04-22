@@ -30,6 +30,11 @@
         .color-red { background-color: #ef4444; }
     </style>
 </head>
+@if(session('error'))
+    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+        {{ session('error') }}
+    </div>
+@endif
 <body class="bg-gray-50">
     <div class="min-h-screen flex flex-col">
         <!-- Header -->
@@ -96,7 +101,20 @@
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                
+                                <div>
+    <label for="name">Nom du badge</label>
+    <input type="text" name="name" id="name" value="{{ old('name') }}" required>
+    @error('name')
+        <span class="text-red-500 text-sm">{{ $message }}</span>
+    @enderror
+</div>
+<div>
+    <label for="points">Points</label>
+    <input type="number" name="points" id="points" value="{{ old('points') }}" required>
+    @error('points')
+        <span class="text-red-500 text-sm">{{ $message }}</span>
+    @enderror
+</div>
                                 <div>
                                     <label for="badge-category" class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
                                     <div class="relative">
@@ -291,7 +309,7 @@
             // Initial preview
             updateBadgePreview();
         });
-        
+
         document.addEventListener('DOMContentLoaded', function() {
    
     const form = document.getElementById('badgeCreateForm');

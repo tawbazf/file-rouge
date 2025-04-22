@@ -36,14 +36,27 @@ class BadgeController extends Controller
             'projects' => 'required|integer|min:0',
             'color' => 'required|string',
         ]);
-
-        $badge = Badge::create($validated);
-
-        if ($request->ajax()) {
-            return response()->json(['success' => true, 'badge' => $badge]);
-        }
+        try {
+            $badge = new Badge();
+            $badge->name = $validated['name'];
+            $badge->points = $validated['points'];
+            $badge->description = $validated['description'];
+            $badge->category = $validated['category'];
+            // set other fields...
+            $badge->save();
     
-        return redirect()->route('badges')->with('success', 'Badge créé avec succès !');
+            return redirect()->route('dashboardProf')->with('success', 'Badge créé avec succès !');
+        } catch (\Exception $e) {
+            // Optionally log the error: \Log::error($e);
+            return redirect()->back()->with('error', 'Erreur lors de la création du badge.');
+        }
+        // $badge = Badge::create($validated);
+
+        // if ($request->ajax()) {
+        //     return response()->json(['success' => true, 'badge' => $badge]);
+        // }
+    
+        // return redirect()->route('badges')->with('success', 'Badge créé avec succès !');
 
     }
 
