@@ -28,7 +28,7 @@ $user->save();
 if ($request->role === 'user') {
 return redirect()->route('dashboard');
 } elseif ($request->role === 'teacher') {
-return redirect()->route('dashboard.prof');
+return redirect()->route('dashboardProf');
 }
 }
 }

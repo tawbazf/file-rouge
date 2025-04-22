@@ -93,8 +93,7 @@ Route::post('/badge', [BadgeController::class, 'store'])->name('badge.store');
     Route::post('/projects', [ProjetController::class, 'store'])->name('projects.store');
     
     // Droits utilisateurs
-    Route::post('/users/{userId}/update-rights', [DroitController::class, 'updateUserRights'])
-         ->name('users.updateRights');
+    Route::post('/droits/assign/{userId}', [DroitController::class, 'updateUserRights'])->name('droits.assign');
     
     // Home (optionnel)
     Route::get('/home', [HomeController::class, 'index'])->name('home');

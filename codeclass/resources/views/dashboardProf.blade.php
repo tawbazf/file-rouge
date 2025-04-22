@@ -245,7 +245,7 @@
             </svg>
         </button>
         <h2 class="text-xl font-semibold mb-4 text-center">Attribuer des Droits</h2>
-        <form id="droitForm" action="{{ route('droits.assign') }}" method="POST">
+        <form id="droitForm" action="{{ route('droits.assign', ['userId' => $user->id]) }}" method="POST">
             @csrf
             <div class="mb-4">
                 <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1">Sélectionner l'utilisateur</label>
