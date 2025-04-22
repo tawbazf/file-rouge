@@ -281,40 +281,39 @@
 <div id="assignModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
         <h2 class="text-lg font-semibold mb-4">Assigner un cours ou un projet</h2>
-        <form method="POST" action="{{ route('assign.project') }}">
-            @csrf
-            <div class="mb-4">
-                <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1">Utilisateur</label>
-                <select name="user_id" id="user_id" class="block w-full border border-gray-300 rounded-md px-3 py-2">
-                    @foreach($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="mb-4">
-                <label for="item_type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                <select name="item_type" id="item_type" class="block w-full border border-gray-300 rounded-md px-3 py-2">
-                    <option value="course">Cours</option>
-                    <option value="project">Projet</option>
-                </select>
-            </div>
-            <div class="mb-4">
-                <label for="item_id" class="block text-sm font-medium text-gray-700 mb-1">Sélectionner</label>
-                <select name="item_id" id="item_id" class="block w-full border border-gray-300 rounded-md px-3 py-2">
-                    <!-- You can populate with courses or projects via JS or show both grouped -->
-                    @foreach($courses as $course)
-                        <option value="{{ $course->id }}" data-type="course">[Cours] {{ $course->title }}</option>
-                    @endforeach
-                    @foreach($projects as $project)
-                        <option value="{{ $project->id }}" data-type="project">[Projet] {{ $project->title }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="flex justify-end">
-                <button type="button" onclick="document.getElementById('assignModal').classList.add('hidden')" class="mr-2 px-4 py-2 bg-gray-200 rounded">Annuler</button>
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Assigner</button>
-            </div>
-        </form>
+        <form method="POST" id="assignForm" action="{{ route('assign.project') }}">
+    @csrf
+    <div class="mb-4">
+        <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1">Utilisateur</label>
+        <select name="user_id" id="user_id" class="block w-full border border-gray-300 rounded-md px-3 py-2">
+            @foreach($users as $user)
+                <option value="{{ $user->id }}">{{ $user->name }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="mb-4">
+        <label for="item_type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+        <select name="item_type" id="item_type" class="block w-full border border-gray-300 rounded-md px-3 py-2">
+            <option value="course">Cours</option>
+            <option value="project">Projet</option>
+        </select>
+    </div>
+    <div class="mb-4">
+        <label for="item_id" class="block text-sm font-medium text-gray-700 mb-1">Sélectionner</label>
+        <select name="item_id" id="item_id" class="block w-full border border-gray-300 rounded-md px-3 py-2">
+            @foreach($courses as $course)
+                <option value="{{ $course->id }}" data-type="course">[Cours] {{ $course->title }}</option>
+            @endforeach
+            @foreach($projects as $project)
+                <option value="{{ $project->id }}" data-type="project">[Projet] {{ $project->title }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="flex justify-end">
+        <button type="button" onclick="document.getElementById('assignModal').classList.add('hidden')" class="mr-2 px-4 py-2 bg-gray-200 rounded">Annuler</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Assigner</button>
+    </div>
+</form>
     </div>
 </div>
 <script>
@@ -358,6 +357,31 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === this) this.classList.add('hidden');
     });
 });
+document.getElementById('item_type').addEventListener('change', function() {
+    var type = this.value;
+    var form = document.getElementById('assignForm');
+    var itemSelect = document.getElementById('item_id');
+
+    // Change form action and input name based on type
+    if (type === 'course') {
+        form.action = "{{ route('assign.course') }}";
+        itemSelect.name = "course_id";
+        // Optionally, filter/select only course options
+        for (let option of itemSelect.options) {
+            option.style.display = option.getAttribute('data-type') === 'course' ? '' : 'none';
+        }
+        itemSelect.value = itemSelect.querySelector('option[data-type="course"]').value;
+    } else {
+        form.action = "{{ route('assign.project') }}";
+        itemSelect.name = "project_id";
+        for (let option of itemSelect.options) {
+            option.style.display = option.getAttribute('data-type') === 'project' ? '' : 'none';
+        }
+        itemSelect.value = itemSelect.querySelector('option[data-type="project"]').value;
+    }
+});
+// Trigger change on page load to set correct initial state
+document.getElementById('item_type').dispatchEvent(new Event('change'));
 </script>
 </body>
 </html>
