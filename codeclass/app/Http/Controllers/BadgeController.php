@@ -34,7 +34,7 @@ class BadgeController extends Controller
             'points_required' => 'required|integer|min:0',
             'time' => 'required|integer|min:0',
             'projects' => 'required|integer|min:0',
-            'color' => 'required|string', // New field for badge color
+            'color' => 'required|string',
         ]);
 
         $badge = Badge::create([
