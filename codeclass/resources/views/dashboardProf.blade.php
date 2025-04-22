@@ -85,6 +85,17 @@
     </svg>
     Créer un Badge
 </a>
+<!-- Assign Button -->
+<button
+    type="button"
+    onclick="document.getElementById('assignModal').classList.remove('hidden')"
+    class="btn-blue py-2 px-4 rounded-md flex items-center ml-2"
+>
+    <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path  stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+    Assigner un cours/projet
+</button>
             </div>
             <div class="flex space-x-4 w-full sm:w-auto">
                 <div class="relative flex-grow max-w-xs">
@@ -263,6 +274,46 @@
                 </select>
             </div>
             <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md">Attribuer</button>
+        </form>
+    </div>
+</div>
+<!-- Assign Modal -->
+<div id="assignModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+        <h2 class="text-lg font-semibold mb-4">Assigner un cours ou un projet</h2>
+        <form method="POST" action="{{ route('assign.project') }}">
+            @csrf
+            <div class="mb-4">
+                <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1">Utilisateur</label>
+                <select name="user_id" id="user_id" class="block w-full border border-gray-300 rounded-md px-3 py-2">
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="item_type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                <select name="item_type" id="item_type" class="block w-full border border-gray-300 rounded-md px-3 py-2">
+                    <option value="course">Cours</option>
+                    <option value="project">Projet</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="item_id" class="block text-sm font-medium text-gray-700 mb-1">Sélectionner</label>
+                <select name="item_id" id="item_id" class="block w-full border border-gray-300 rounded-md px-3 py-2">
+                    <!-- You can populate with courses or projects via JS or show both grouped -->
+                    @foreach($courses as $course)
+                        <option value="{{ $course->id }}" data-type="course">[Cours] {{ $course->title }}</option>
+                    @endforeach
+                    @foreach($projects as $project)
+                        <option value="{{ $project->id }}" data-type="project">[Projet] {{ $project->title }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="flex justify-end">
+                <button type="button" onclick="document.getElementById('assignModal').classList.add('hidden')" class="mr-2 px-4 py-2 bg-gray-200 rounded">Annuler</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Assigner</button>
+            </div>
         </form>
     </div>
 </div>

@@ -14,6 +14,7 @@ use App\Http\Controllers\CodeReviewController;
 use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\DroitController;
+use App\Http\Controllers\AssignmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,3 +126,6 @@ Route::view('/community', 'community')->name('community');
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+// assignemnt routes
+Route::post('/assign-project', [AssignmentController::class, 'assignProject'])->name('assign.project');
+Route::post('/assign-course', [AssignmentController::class, 'assignCourse'])->name('assign.course');
