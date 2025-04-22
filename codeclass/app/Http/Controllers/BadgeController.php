@@ -25,7 +25,7 @@ class BadgeController extends Controller
             return redirect()->route('dashboard')->with('error', 'Access denied. Only teachers can create badges.');
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category' => 'required|string',
@@ -37,26 +37,21 @@ class BadgeController extends Controller
             'color' => 'required|string',
         ]);
 
-        $badge = Badge::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'image_path' => $this->generateBadgeImage($request->input('color'), $request->input('level')), // Generate image dynamically
-            'category' => $request->input('category'),
-            'level' => $request->input('level'),
-            'points_required' => $request->input('points_required'),
-            'points' => $request->input('points'),
-            'time' => $request->input('time'),
-            'projects' => $request->input('projects'),
-        ]);
+        $badge = Badge::create($validated);
 
-        return redirect()->route('badge.create')->with('success', 'Badge créé avec succès !');
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'badge' => $badge]);
+        }
+    
+        return redirect()->route('badges')->with('success', 'Badge créé avec succès !');
+
     }
 
     // List all badges
     public function index()
     {
         $badges = Badge::all();
-        return view('badges.index', compact('badges'));
+        return view('badges', compact('badges'));
     }
 
     // Assign badge to eligible users
