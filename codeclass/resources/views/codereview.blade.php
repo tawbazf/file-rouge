@@ -80,12 +80,12 @@
                 <h2 class="text-lg font-medium text-gray-900 mb-4">Filter Comments</h2>
                 
                 <!-- Filter Tabs -->
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <button class="px-3 py-1 bg-blue-100 text-blue-800 rounded-md text-sm font-medium">All</button>
-                    <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">Functionality</button>
-                    <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">Performance</button>
-                    <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">Style</button>
-                </div>
+                <div class="flex flex-wrap gap-2 mb-6" id="commentFilterTabs">
+    <button class="px-3 py-1 bg-blue-100 text-blue-800 rounded-md text-sm font-medium filter-btn" data-filter="all">All</button>
+    <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="functionality">Functionality</button>
+    <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="performance">Performance</button>
+    <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="style">Style</button>
+</div>
                 
                 <!-- Comments List -->
                 <div class="space-y-6">
@@ -126,5 +126,31 @@
             </div>
         </div>
     </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const comments = document.querySelectorAll('.comment-item');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove highlight from all buttons
+            filterBtns.forEach(b => b.classList.remove('bg-blue-100', 'text-blue-800'));
+            filterBtns.forEach(b => b.classList.add('bg-gray-100', 'text-gray-700'));
+            // Highlight the active button
+            btn.classList.remove('bg-gray-100', 'text-gray-700');
+            btn.classList.add('bg-blue-100', 'text-blue-800');
+
+            const filter = btn.getAttribute('data-filter');
+            comments.forEach(comment => {
+                if (filter === 'all' || comment.getAttribute('data-tag') === filter) {
+                    comment.style.display = '';
+                } else {
+                    comment.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
 </body>
 </html>
