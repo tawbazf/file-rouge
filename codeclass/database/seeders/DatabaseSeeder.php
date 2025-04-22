@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
         ProjectSeeder::class, // Seed projects
     ]);
     $this->call(BadgesTableSeeder::class);
+    $this->call(AssignmentSeeder::class);
 }
 }
