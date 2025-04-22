@@ -66,7 +66,7 @@ class BadgeController extends Controller
     public function index()
     {
         $badges = Badge::all();
-        return view('badges', compact('badges'));
+        return view('badge', compact('badge'));
     }
 
     // Assign badge to eligible users
