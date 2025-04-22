@@ -16,7 +16,7 @@ class DroitController extends Controller
 
     $request->validate([
         'user_id' => 'required|exists:users,id',
-        'role' => 'required|in:student,teacher,admin',
+        'role' => 'required|in:teacher,user',
         'permissions' => 'nullable|array',
     ]);
 
