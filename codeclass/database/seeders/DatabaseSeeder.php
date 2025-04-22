@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
     ]);
     $this->call(BadgesTableSeeder::class);
     $this->call(AssignmentSeeder::class);
+    $this->call(AssignmentPivotSeeder::class);
 }
 }
