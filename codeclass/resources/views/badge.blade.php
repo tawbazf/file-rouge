@@ -102,15 +102,23 @@
                                     @enderror
                                 </div>
                                 <div>
-    <label for="name">Nom du badge</label>
-    <input type="text" name="name" id="name" value="{{ old('name') }}" required>
+
+
     @error('name')
         <span class="text-red-500 text-sm">{{ $message }}</span>
     @enderror
 </div>
-<div>
-    <label for="points">Points</label>
-    <input type="number" name="points" id="points" value="{{ old('points') }}" required>
+<div class="mb-4">
+    <label for="points" class="block text-sm font-medium text-gray-700 mb-1">Points</label>
+    <input
+        type="number"
+        name="points"
+        id="points"
+        value="{{ old('points') }}"
+        required
+        class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Ex: 100"
+    >
     @error('points')
         <span class="text-red-500 text-sm">{{ $message }}</span>
     @enderror
@@ -132,6 +140,36 @@
                                         </div>
                                     </div>
                                     @error('category')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-4">
+                                    <label for="min_points" class="block text-sm font-medium text-gray-700 mb-1">Points minimum requis</label>
+                                    <input
+                                        type="number"
+                                        name="min_points"
+                                        id="min_points"
+                                        value="{{ old('min_points') }}"
+                                        required
+                                        class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Ex: 80"
+                                    >
+                                    @error('min_points')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-4">
+                                    <label for="min_activity_hours" class="block text-sm font-medium text-gray-700 mb-1">Temps d'activité minimum (heures)</label>
+                                    <input
+                                        type="number"
+                                        name="min_activity_hours"
+                                        id="min_activity_hours"
+                                        value="{{ old('min_activity_hours') }}"
+                                        required
+                                        class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Ex: 10"
+                                    >
+                                    @error('min_activity_hours')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -191,7 +229,9 @@
                                     @enderror
                                 </div>
                             </div>
+                            
                         </div>
+
                     </div>
 
                     <!-- Right Column - Badge Preview -->
@@ -252,6 +292,15 @@
                     <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Confidentialité</a>
                 </div>
             </div>
+            @if ($errors->any())
+    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
         </footer>
     </div>
 

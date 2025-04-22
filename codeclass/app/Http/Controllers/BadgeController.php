@@ -32,6 +32,8 @@ class BadgeController extends Controller
             'level' => 'required|string|in:Bronze,Argent,Or',
             'points' => 'required|integer|min:0',
             'points_required' => 'required|integer|min:0',
+            'min_points' => 'required|integer|min:0',
+            'min_activity_hours' => 'required|integer|min:0',
             'time' => 'required|integer|min:0',
             'projects' => 'required|integer|min:0',
             'color' => 'required|string',
