@@ -73,7 +73,7 @@
                     </svg>
                     Nouveau Projet
                 </button>
-                <button class="btn-green py-2 px-4 rounded-md flex items-center">
+                <button type="button" onclick="document.getElementById('droitModal').classList.remove('hidden')" class="btn-green py-2 px-4 rounded-md flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
@@ -236,6 +236,37 @@
         </form>
     </div>
 </div>
+<!-- Modal: Attribuer des Droits -->
+<div id="droitModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+        <button onclick="document.getElementById('droitModal').classList.add('hidden')" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+            <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <h2 class="text-xl font-semibold mb-4 text-center">Attribuer des Droits</h2>
+        <form id="droitForm" action="{{ route('droits.assign') }}" method="POST">
+            @csrf
+            <div class="mb-4">
+                <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1">Sélectionner l'utilisateur</label>
+                <select id="user_id" name="user_id" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    @foreach(App\Models\User::all() as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Rôle</label>
+                <select id="role" name="role" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    <option value="admin">Admin</option>
+                    <option value="teacher">Enseignant</option>
+                    <option value="user">Étudiant</option>
+                </select>
+            </div>
+            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md">Attribuer</button>
+        </form>
+    </div>
+</div>
 <script>
 document.addEventListener('click', function(event) {
     const modal = document.getElementById('createProjectModal');
@@ -269,6 +300,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (emptyMsg) {
             emptyMsg.style.display = anyVisible ? 'none' : '';
         }
+    });
+});
+// les droits
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('droitModal').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.add('hidden');
     });
 });
 </script>
