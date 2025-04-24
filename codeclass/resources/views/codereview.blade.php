@@ -46,84 +46,79 @@
         </header>
 
         <div class="flex flex-col md:flex-row gap-6">
-            <!-- Code Panel -->
-            <div class="bg-white rounded-lg shadow-sm p-6 flex-1">
-                <div class="flex justify-between items-center mb-4">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <span class="font-mono text-gray-700">main.js</span>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                            Download
-                        </button>
-                        <button class="flex items-center px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                            Add Comment
-                        </button>
-                    </div>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-md overflow-x-auto">
-                    <pre class="code-font text-sm text-gray-800">function calculateTotal(items) { let total = 0; for (let i = 0; i < items.length; i++) { total += items[i].price; } return total; }</pre>
-                </div>
-            </div>
-
-            <!-- Comments Panel -->
-            <div class="bg-white rounded-lg shadow-sm p-6 w-full md:w-96">
-                <h2 class="text-lg font-medium text-gray-900 mb-4">Filter Comments</h2>
-                
-                <!-- Filter Tabs -->
-                <div class="flex flex-wrap gap-2 mb-6" id="commentFilterTabs">
-    <button class="px-3 py-1 bg-blue-100 text-blue-800 rounded-md text-sm font-medium filter-btn" data-filter="all">All</button>
-    <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="functionality">Functionality</button>
-    <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="performance">Performance</button>
-    <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="style">Style</button>
+           
+                   <!-- Code Panel -->
+<div class="bg-white rounded-lg shadow-sm p-6 flex-1">
+    <!-- File Selector -->
+    <div class="mb-4">
+        <form method="GET" action="{{ route('codereview') }}">
+            <select name="fileId" onchange="this.form.submit()" class="border rounded p-2">
+                @foreach($files as $file)
+                    <option value="{{ $file->id }}" {{ $selectedFile && $selectedFile->id == $file->id ? 'selected' : '' }}>
+                        {{ $file->filename }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
+    </div>
+    <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center">
+            <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span class="font-mono text-gray-700">{{ $selectedFile->filename ?? '' }}</span>
+        </div>
+        <div class="flex space-x-2">
+            <button class="flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download
+            </button>
+            <button class="flex items-center px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
+                <svg xmlns="[http://www.w3.org/2000/svg"](http://www.w3.org/2000/svg") class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Add Comment
+            </button>
+        </div>
+    </div>
+    <div class="bg-gray-50 p-4 rounded-md overflow-x-auto">
+        <pre class="code-font text-sm text-gray-800">{{ $selectedFile->content ?? '' }}</pre>
+    </div>
 </div>
-                
-                <!-- Comments List -->
-                <div class="space-y-6">
-                    <!-- Comment 1 -->
-                    <div class="border-b border-gray-200 pb-4">
-                        <div class="flex items-start mb-2">
-                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Prof. Smith" class="h-8 w-8 rounded-full mr-3">
-                            <div class="flex-1">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="font-medium text-gray-900">Prof. Smith</span>
-                                    <span class="text-xs text-gray-500">2 hours ago</span>
-                                </div>
-                                <span class="tag-performance text-xs px-2 py-1 rounded-full inline-block mb-2">Performance</span>
-                                <p class="text-sm text-gray-700">
-                                    Consider using reduce() method instead of for loop for better performance and readability.
-                                </p>
-                            </div>
+
+<!-- Comments Panel -->
+<div class="bg-white rounded-lg shadow-sm p-6 w-full md:w-96">
+    <h2 class="text-lg font-medium text-gray-900 mb-4">Filter Comments</h2>
+    <!-- Filter Tabs -->
+    <div class="flex flex-wrap gap-2 mb-6" id="commentFilterTabs">
+        <button class="px-3 py-1 bg-blue-100 text-blue-800 rounded-md text-sm font-medium filter-btn" data-filter="all">All</button>
+        <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="functionality">Functionality</button>
+        <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="performance">Performance</button>
+        <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="style">Style</button>
+    </div>
+    <!-- Comments List -->
+    <div class="space-y-6">
+        @foreach($comments as $comment)
+            <div class="border-b border-gray-200 pb-4 comment-item" data-tag="{{ $comment->tag }}">
+                <div class="flex items-start mb-2">
+                    <img src="{{ $comment->user->avatar ?? 'default-avatar.png' }}" alt="{{ $comment->user->name ?? 'User' }}" class="h-8 w-8 rounded-full mr-3">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-medium text-gray-900">{{ $comment->user->name ?? 'User' }}</span>
+                            <span class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
                         </div>
-                    </div>
-                    
-                    <!-- Comment 2 -->
-                    <div class="border-b border-gray-200 pb-4">
-                        <div class="flex items-start mb-2">
-                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Alice Cooper" class="h-8 w-8 rounded-full mr-3">
-                            <div class="flex-1">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="font-medium text-gray-900">Alice Cooper</span>
-                                    <span class="text-xs text-gray-500">5 hours ago</span>
-                                </div>
-                                <span class="tag-style text-xs px-2 py-1 rounded-full inline-block mb-2">Style</span>
-                                <p class="text-sm text-gray-700">
-                                    The variable naming is clear and follows the conventions. Good job!
-                                </p>
-                            </div>
-                        </div>
+                        <span class="tag-{{ $comment->tag }} text-xs px-2 py-1 rounded-full inline-block mb-2">{{ ucfirst($comment->tag) }}</span>
+                        <p class="text-sm text-gray-700">
+                            {{ $comment->text }}
+                        </p>
                     </div>
                 </div>
             </div>
+        @endforeach
+    </div>
+</div>
         </div>
     </div>
     <script>

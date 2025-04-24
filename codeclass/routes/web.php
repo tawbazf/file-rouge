@@ -12,20 +12,11 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\CodeCollabController;
 use App\Http\Controllers\CodeReviewController;
 use App\Http\Controllers\BadgeController;
-use App\Http\Controllers\ProjetController;
+use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\DroitController;
 use App\Http\Controllers\AssignmentController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+
 
 // Routes accessibles sans authentification
 Route::middleware('guest')->group(function (): void {
@@ -117,7 +108,7 @@ Route::post('/challenges', [ChallengesController::class, 'store'])->name('challe
 use App\Http\Controllers\CertificationsController;
 
 Route::get('/certifications', [CertificationsController::class, 'index'])->name('certifications');
-use App\Http\Controllers\ProjectsController;
+
 Route::get('/projects', [ProjectsController::class, 'index'])->name('projects');
 use App\Http\Controllers\RessourcesController;
 Route::get('/ressources', [RessourcesController::class, 'index'])->name('ressources');
@@ -129,3 +120,4 @@ Route::get('/', function () {
 // assignemnt routes
 Route::post('/assign-project', [AssignmentController::class, 'assignProject'])->name('assign.project');
 Route::post('/assign-course', [AssignmentController::class, 'assignCourse'])->name('assign.course');
+Route::get('/codereview/{fileId?}', [ProjectsController::class, 'codeReview'])->name('codereview');
