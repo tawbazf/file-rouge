@@ -18,9 +18,15 @@
                         <td class="px-6 py-4">{{ $item['skill']->name }}</td>
                         <td class="px-6 py-4">{{ $item['level'] }}/100</td>
                         <td class="px-6 py-4">
-                            <a href="{{ $item['udemy_url'] }}" target="_blank" class="text-indigo-600 hover:underline font-semibold">
-                                Voir les cours Udemy pour "{{ $item['skill']->name }}"
-                            </a>
+                            @if(isset($item['course']) && isset($item['course']['url']))
+                                <a href="{{ $item['course']['url'] }}" target="_blank" class="text-indigo-600 hover:underline font-semibold">
+                                    {{ $item['course']['title'] ?? 'Voir les cours Udemy' }}
+                                </a>
+                            @else
+                                <a href="https://www.udemy.com/courses/search/?q={{ urlencode($item['skill']->name) }}" target="_blank" class="text-indigo-600 hover:underline font-semibold">
+                                    Voir les cours Udemy pour "{{ $item['skill']->name }}"
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @empty

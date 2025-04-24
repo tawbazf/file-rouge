@@ -45,4 +45,8 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+'udemy' => [
+    'client_id' => env('UDEMY_CLIENT_ID'),
+    'client_secret' => env('UDEMY_CLIENT_SECRET'),
+],
 ];
