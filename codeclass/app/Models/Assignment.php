@@ -18,8 +18,8 @@ class Assignment extends Model
         'title',
         'description',
         'due_date',
-        'created_by', // user_id of the teacher
-        'status', // 'draft', 'published', 'archived'
+        'created_by',
+        'status', 
     ];
 
     /**
@@ -31,17 +31,12 @@ class Assignment extends Model
         'due_date' => 'datetime',
     ];
 
-    /**
-     * Get the teacher who created the assignment.
-     */
+    
     public function teacher()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    /**
-     * Get the code submissions for this assignment.
-     */
     public function codeSubmissions()
     {
         return $this->hasMany(CodeSubmission::class);

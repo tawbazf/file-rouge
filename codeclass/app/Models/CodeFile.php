@@ -19,20 +19,16 @@ class CodeFile extends Model
         'filename',
         'file_path',
         'content',
-        'language', // 'javascript', 'php', 'python', etc.
+        'language', 
     ];
 
-    /**
-     * Get the code submission that owns the file.
-     */
+    
     public function codeSubmission()
     {
         return $this->belongsTo(CodeSubmission::class);
     }
 
-    /**
-     * Get the line-specific comments for this file.
-     */
+  
     public function lineComments()
     {
         return $this->hasMany(LineComment::class);
