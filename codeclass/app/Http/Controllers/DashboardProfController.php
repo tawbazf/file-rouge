@@ -22,15 +22,15 @@ class DashboardProfController extends Controller
         // For assignment modal
         $users = User::all();
         $courses = Course::all();
-        $projects = Project::all();
-
+        // $projects = Project::all();
+        $projects = Project::where('teacher_id', auth()->user()->id)->get();
       
         $teacherProjects = Project::where('teacher_id', $teacher->id)
             ->with(['students', 'repositories'])
             ->orderBy('created_at', 'desc')
             ->get();
 
-    
+            // dd($teacherProjects);
         $projectCards = $teacherProjects->map(function ($project) {
             // Badge logic based on status
             switch ($project->status) {
@@ -92,6 +92,7 @@ class DashboardProfController extends Controller
             'projects'     => $projects,
             'projectCards' => $projectCards,
             'repoTable'    => $repoTable,
+            'githubRepos' => $githubRepos,
         ]);
     }
 }

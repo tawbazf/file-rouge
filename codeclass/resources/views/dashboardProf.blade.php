@@ -165,7 +165,7 @@
 </div>
       
   <!-- GitHub Repositories -->
-<div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+{{-- <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
     <h2 class="text-xl font-bold text-gray-900 mb-6">Dépôts GitHub</h2>
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
@@ -212,6 +212,32 @@
                         <td colspan="5" class="text-center text-gray-500 py-4">Aucun dépôt trouvé.</td>
                     </tr>
                 @endforelse
+            </tbody>
+        </table>
+    </div>
+</div> --}}
+<!-- Example: Display all repos from config -->
+<div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-6">Dépôts GitHub (Static Config)</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3">Nom</th>
+                    <th class="px-6 py-3">Description</th>
+                    <th class="px-6 py-3">URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($githubRepos as $repo)
+                    <tr>
+                        <td class="px-6 py-4">{{ $repo['name'] }}</td>
+                        <td class="px-6 py-4">{{ $repo['description'] }}</td>
+                        <td class="px-6 py-4">
+                            <a href="{{ $repo['html_url'] }}" class="text-blue-600" target="_blank">Voir sur GitHub</a>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -389,5 +415,14 @@ document.getElementById('item_type').addEventListener('change', function() {
 // Trigger change on page load to set correct initial state
 document.getElementById('item_type').dispatchEvent(new Event('change'));
 </script>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 </body>
 </html>

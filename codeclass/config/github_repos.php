@@ -512,5 +512,6 @@
 }
 
 ]';
+$githubRepos = json_decode($githubReposJson, true); 
 
-$githubRepos = json_decode($githubReposJson, true);
+return $githubRepos;
