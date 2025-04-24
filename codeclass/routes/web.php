@@ -121,3 +121,4 @@ Route::get('/', function () {
 Route::post('/assign-project', [AssignmentController::class, 'assignProject'])->name('assign.project');
 Route::post('/assign-course', [AssignmentController::class, 'assignCourse'])->name('assign.course');
 Route::get('/codereview/{fileId?}', [ProjectsController::class, 'codeReview'])->name('codereview');
+Route::post('/run-code/{fileId}', [ProjectsController::class, 'runCode']);
