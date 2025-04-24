@@ -59,6 +59,7 @@ class DashboardProfController extends Controller
         });
 
         // 2. GitHub repositories table
+        $githubRepos = config('github_repos');
         $repositories = GithubRepository::with(['project', 'user'])
             ->whereHas('project', function ($q) use ($teacher) {
                 $q->where('teacher_id', $teacher->id);
@@ -67,14 +68,15 @@ class DashboardProfController extends Controller
             ->limit(10)
             ->get();
 
-        $repoTable = $repositories->map(function ($repo) {
+        $repoTable = $repositories->map(function ($repo) use ($githubRepos){
+            $randomRepo = $githubRepos[array_rand($githubRepos)];
             return [
                 'project_name' => $repo->project->title ?? '',
                 'student_name' => $repo->user->name ?? '',
                 'student_avatar' => $repo->user->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg',
                 'last_commit' => $repo->updated_at ? $repo->updated_at->diffForHumans() : '',
                 'status' => $repo->status ?? '',
-                'actions' => $repo->url ?? '#',
+                'actions' => $randomRepo['html_url'] ?? '#',
             ];  
         });
 
