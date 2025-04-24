@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Course;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller
 {
@@ -28,21 +29,25 @@ class StatisticsController extends Controller
             ];
         });
       
-        $progressBySubject = [
-            'math' => 85,
-            'science' => 72,
-            'history' => 68,
-        ];
+        $subjects = \DB::table('subjects')->pluck('name', 'id');
+        $grades = \DB::table('grades')
+            ->select('subject_id', \DB::raw('AVG(grade) as average'))
+            ->groupBy('subject_id')
+            ->pluck('average', 'subject_id');
+        
+        $progressBySubject = [];
+        foreach ($subjects as $id => $name) {
+            $progressBySubject[$name] = isset($grades[$id]) ? $grades[$id] : 0;
+        }
     
        
         $gradeDistribution = [
-            '0-5' => 2,
-            '6-10' => 5,
-            '11-14' => 12,
-            '15-17' => 8,
-            '18-20' => 3,
+            '0-5' => \DB::table('grades')->whereBetween('grade', [0, 5])->count(),
+            '6-10' => \DB::table('grades')->whereBetween('grade', [6, 10])->count(),
+            '11-14' => \DB::table('grades')->whereBetween('grade', [11, 14])->count(),
+            '15-17' => \DB::table('grades')->whereBetween('grade', [15, 17])->count(),
+            '18-20' => \DB::table('grades')->whereBetween('grade', [18, 20])->count(),
         ];
-    
         // List of students (with their stats)
         $studentRows = $students->map(function ($student) {
             return [
