@@ -19,7 +19,7 @@ class ProjectSeeder extends Seeder
         // Insert sample projects
         $projects = [
             [
-                'id' => 1,
+                
                 'title' => 'Introduction au HTML/CSS',
                 'description' => 'Apprendre les bases du HTML et CSS pour créer des pages web.',
                 'status' => 'completed',
@@ -34,7 +34,7 @@ class ProjectSeeder extends Seeder
                 'teacher_id' => 2, // Teacher
             ],
             [
-                'id' => 2,
+                
                 'title' => 'JavaScript Basics',
                 'description' => 'Introduction aux concepts fondamentaux de JavaScript.',
                 'status' => 'not_started',
@@ -50,7 +50,7 @@ class ProjectSeeder extends Seeder
                 'teacher_id' => 2,
             ],
             [
-                'id' => 3,
+                
                 'title' => 'Responsive Design',
                 'description' => 'Créer des interfaces adaptatives avec CSS Grid et Flexbox.',
                 'status' => 'in_progress',
@@ -66,7 +66,7 @@ class ProjectSeeder extends Seeder
                 'teacher_id' => 2,
             ],
             [
-                'id' => 4,
+                
                 'title' => 'Portfolio Website',
                 'description' => 'Construire un site portfolio personnel.',
                 'status' => 'completed',
@@ -82,7 +82,7 @@ class ProjectSeeder extends Seeder
                 'teacher_id' => 2,
             ],
             [
-                'id' => 5,
+                
                 'title' => 'API Integration',
                 'description' => 'Intégrer une API REST dans une application web.',
                 'status' => 'completed',

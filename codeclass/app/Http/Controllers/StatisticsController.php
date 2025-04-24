@@ -4,31 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Course;
 use Carbon\Carbon;
 
 class StatisticsController extends Controller
 {
     public function index()
     {
-        // Example: adjust these queries to fit your schema!
-        $students = \App\Models\User::where('role', 'user')->get();
-        $activeStudents = $students->where('is_active', true)->count(); // If you have an 'is_active' column
-        $totalStudents = $students->count();
+       
+        $users= \App\Models\User::where('role', 'user')->get();
+        $activeStudents = $users->where('is_active', true)->count(); 
+        $totalStudents = $users->count();
+        $courses = Course::all();
+        $classAverage = round($users->avg('average_grade'), 1); 
+        $classAverageChange = '+2.3%'; 
     
-        $classAverage = round($students->avg('average_grade'), 1); // If you have an 'average_grade' column
-        $classAverageChange = '+2.3%'; // Compute as needed
-    
-        $homeworkSubmitted = 92; // Compute as needed (e.g., from a homeworks table)
-        $globalProgress = 78; // Compute as needed
-    
-        // Progress by subject (assuming you have a grades table)
+        $homeworkSubmitted = 92; 
+        $globalProgress = 78; 
+        $courseProgress = $courses->map(function($course) {
+            return [
+                'name' => $course->name,
+                'progress' => $course->progress ?? 0,
+            ];
+        });
+      
         $progressBySubject = [
             'math' => 85,
             'science' => 72,
             'history' => 68,
         ];
     
-        // Grade distribution (example: count students in each range)
+       
         $gradeDistribution = [
             '0-5' => 2,
             '6-10' => 5,
@@ -59,6 +65,8 @@ class StatisticsController extends Controller
             'progressBySubject' => $progressBySubject,
             'gradeDistribution' => $gradeDistribution,
             'studentRows' => $studentRows,
+            'courseProgress' => $courseProgress,
         ]);
     }
+
 }

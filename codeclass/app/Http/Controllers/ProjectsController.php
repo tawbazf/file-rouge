@@ -71,4 +71,26 @@ public function runCode($fileId)
         return response()->json(['error' => 'Execution failed'], 500);
     }
 }
+public function store(\Illuminate\Http\Request $request)
+{
+    
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'status' => 'required|string',
+        'progress' => 'required|integer|min:0|max:100',
+        'time_remaining' => 'nullable|string',
+    ]);
+
+    $project = new \App\Models\Project();
+    $project->title = $validated['title'];
+    $project->description = $validated['description'] ?? null;
+    $project->status = $validated['status'];
+    $project->progress = $validated['progress'];
+    $project->time_remaining = $validated['time_remaining'] ?? null;
+    $project->user_id = auth()->id(); 
+    $project->save();
+
+    return redirect()->back()->with('success', 'Projet créé avec succès.');
+}
 }

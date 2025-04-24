@@ -74,7 +74,7 @@ Route::get('/badges', [BadgeController::class, 'index'])->name('badges.index');
 Route::get('/badge/create', [BadgeController::class, 'create'])->name('badge.create');
 Route::post('/badge', [BadgeController::class, 'store'])->name('badge.store');
     // Projets
-    Route::post('/projects', [ProjetController::class, 'store'])->name('projects.store');
+    Route::post('/projects', [ProjectsController::class, 'store'])->name('projects.store');
     
     // Droits utilisateurs
     Route::post('/droits/assign/', [DroitController::class, 'updateUserRights'])->name('droits.assign');
