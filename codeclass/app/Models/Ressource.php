@@ -6,5 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ressource extends Model
 {
-    //
+    protected $fillable = [
+        'user_id',
+        'title',
+        'description',
+        'url',
+    ];
+
+  
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

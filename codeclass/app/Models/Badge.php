@@ -18,17 +18,15 @@ class Badge extends Model
         'name',
         'description',
         'image_path',
-        'category', // 'code_review', 'participation', 'achievement'
-        'level', // 'beginner', 'intermediate', 'advanced'
+        'category',
+        'level', 
         'points_required',
         'points',
         'time',
         'projects',
     ];
 
-    /**
-     * Get the users that have earned this badge.
-     */
+  
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_badges')
