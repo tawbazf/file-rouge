@@ -85,6 +85,12 @@
     </div>
     <div class="bg-gray-50 p-4 rounded-md overflow-x-auto">
         <pre class="code-font text-sm text-gray-800">{{ $selectedFile->content ?? '' }}</pre>
+       
+<form id="run-code-form" class="mb-2">
+    <input type="hidden" name="fileId" value="{{ $selectedFile->id }}">
+    <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded-md text-sm hover:bg-green-700">Run Code</button>
+</form>
+<div id="run-output" class="bg-gray-100 p-2 rounded text-sm text-gray-800"></div>
     </div>
 </div>
 
@@ -118,6 +124,7 @@
             </div>
         @endforeach
     </div>
+    
 </div>
         </div>
     </div>
@@ -146,6 +153,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+document.getElementById('run-code-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fileId = this.fileId.value;
+    fetch('/run-code/' + fileId, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('run-output').innerText = data.output || data.error || 'No output';
+    })
+    .catch(err => {
+        document.getElementById('run-output').innerText = 'Error: ' + err;
+    });
+});
+
 </script>
 </body>
 </html>
