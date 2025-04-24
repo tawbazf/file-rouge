@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CodeFile;
 
 class ProjectsController extends Controller
 {
@@ -25,4 +26,15 @@ class ProjectsController extends Controller
 
         return redirect()->back()->with('success', 'Projet complété !');
     }
+ 
+
+public function codeReview($fileId = null)
+{
+    $files = CodeFile::all();
+    $selectedFile = $fileId ? CodeFile::findOrFail($fileId) : $files->first();
+
+    $comments = $selectedFile ? $selectedFile->lineComments()->with('user')->get() : collect();
+
+    return view('codereview', compact('files', 'selectedFile', 'comments'));
+}
 }
