@@ -11,7 +11,7 @@ use HasFactory;
 
 protected $fillable = [
 'project_id',
-'student_id',
+'user_id',
 'name',
 'url',
 'status',
@@ -20,7 +20,7 @@ protected $fillable = [
 public function project() {
     return $this->belongsTo(Project::class, 'project_id');
 }
-public function student() {
+public function user() {
     return $this->belongsTo(User::class, 'student_id');
 }
 }
