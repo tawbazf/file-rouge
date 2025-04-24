@@ -13,7 +13,7 @@ class CertificationsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $certifications = Certification::where('user_id', $user->id)->paginate(10); // 10 per page, adjust as needed
+        $certifications = Certification::paginate(10); // 10 per page, adjust as needed
         return view('certifications', compact('certifications'));
     }
 

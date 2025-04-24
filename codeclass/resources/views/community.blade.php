@@ -34,7 +34,7 @@
         </section>
 
         <footer class="text-center mt-12">
-            <p class="text-gray-500 text-sm">&copy; 2023 Community. All rights reserved.</p>
+            <p class="text-gray-500 text-sm">&copy; 2025  codeclass Community. All rights reserved.</p>
         </footer>
     </div>
 </body>

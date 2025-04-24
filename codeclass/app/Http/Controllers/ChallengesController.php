@@ -11,7 +11,7 @@ class ChallengesController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $challenges = Challenge::where('user_id', $user->id)->paginate(10);
+        $challenges = Challenge::paginate(10);
         return view('challenges', compact('challenges'));
     }
 

@@ -11,7 +11,7 @@ class CoursesController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $courses = Course::where('user_id', $user->id)->paginate(10);
+        $courses = Course::paginate(10);
         return view('courses', compact('courses'));
     }
 
