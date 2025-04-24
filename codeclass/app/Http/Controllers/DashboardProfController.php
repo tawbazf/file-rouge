@@ -7,7 +7,6 @@ use App\Models\Project;
 use App\Models\GithubRepository;
 use App\Models\User;
 use App\Models\Course;
-use Carbon\Carbon;
 
 class DashboardProfController extends Controller
 {
@@ -25,40 +24,45 @@ class DashboardProfController extends Controller
         $courses = Course::all();
         $projects = Project::all();
 
-        // 1. Projects managed by this teacher
+      
         $teacherProjects = Project::where('teacher_id', $teacher->id)
             ->with(['students', 'repositories'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        // Build project cards for the dashboard
+    
         $projectCards = $teacherProjects->map(function ($project) {
             // Badge logic based on status
-            if ($project->status === 'in_progress') {
-                $badge = ['text' => 'En cours', 'color' => 'green'];
-            } elseif ($project->status === 'completed') {
-                $badge = ['text' => 'Terminé', 'color' => 'gray'];
-            } elseif ($project->status === 'not_started') {
-                $badge = ['text' => 'Non commencé', 'color' => 'yellow'];
-            } else {
-                $badge = ['text' => ucfirst($project->status), 'color' => 'gray'];
+            switch ($project->status) {
+                case 'in_progress':
+                    $badge = ['text' => 'En cours', 'color' => 'green'];
+                    break;
+                case 'completed':
+                    $badge = ['text' => 'Terminé', 'color' => 'gray'];
+                    break;
+                case 'not_started':
+                    $badge = ['text' => 'Non commencé', 'color' => 'yellow'];
+                    break;
+                default:
+                    $badge = ['text' => ucfirst($project->status), 'color' => 'gray'];
             }
 
             return [
                 'name' => $project->title,
                 'description' => $project->description,
-                'deadline' => $project->deadline ?? null,
+                'deadline' => $project->time_remaining ?? null, // Use 'time_remaining' if that's what you want to show
                 'badge' => $badge,
                 'repo_count' => $project->repositories ? $project->repositories->count() : 0,
                 'students' => $project->students ? $project->students->map(function ($student) {
-    return [
-        'name' => $student->name,
-        'avatar' => $student->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg'
-    ];
-}) : [],
+                    return [
+                        'name' => $student->name,
+                        'avatar' => $student->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg'
+                    ];
+                }) : [],
             ];
         });
 
-        // 2. GitHub repositories table
+        // GitHub repositories table
         $githubRepos = config('github_repos');
         $repositories = GithubRepository::with(['project', 'user'])
             ->whereHas('project', function ($q) use ($teacher) {
@@ -68,8 +72,8 @@ class DashboardProfController extends Controller
             ->limit(10)
             ->get();
 
-        $repoTable = $repositories->map(function ($repo) use ($githubRepos){
-            $randomRepo = $githubRepos[array_rand($githubRepos)];
+        $repoTable = $repositories->map(function ($repo) use ($githubRepos) {
+            $randomRepo = $githubRepos ? $githubRepos[array_rand($githubRepos)] : ['html_url' => '#'];
             return [
                 'project_name' => $repo->project->title ?? '',
                 'student_name' => $repo->user->name ?? '',
@@ -77,10 +81,10 @@ class DashboardProfController extends Controller
                 'last_commit' => $repo->updated_at ? $repo->updated_at->diffForHumans() : '',
                 'status' => $repo->status ?? '',
                 'actions' => $randomRepo['html_url'] ?? '#',
-            ];  
+            ];
         });
 
-        // Pass everything needed to the view
+        
         return view('dashboardProf', [
             'teacher'      => $teacher,
             'users'        => $users,
