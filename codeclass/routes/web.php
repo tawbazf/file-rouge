@@ -15,6 +15,7 @@ use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\DroitController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\SkillController;
 
 
 
@@ -122,3 +123,7 @@ Route::post('/assign-project', [AssignmentController::class, 'assignProject'])->
 Route::post('/assign-course', [AssignmentController::class, 'assignCourse'])->name('assign.course');
 Route::get('/codereview/{fileId?}', [ProjectsController::class, 'codeReview'])->name('codereview');
 Route::post('/run-code/{fileId}', [ProjectsController::class, 'runCode']);
+
+// Skill routes
+Route::get('/skills', [SkillController::class, 'mySkills'])->middleware('auth');
+Route::get('/skills/all', [SkillController::class, 'allSkills'])->middleware('auth');
