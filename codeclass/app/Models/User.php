@@ -105,5 +105,8 @@ public function coursesAssigned()
 {
     return $this->hasManyThrough(Course::class, 'course_user', 'assigned_by', 'id', 'id', 'course_id');
 }
-
+public function skills()
+{
+    return $this->belongsToMany(Skill::class)->withPivot('level')->withTimestamps();
+}
 }
