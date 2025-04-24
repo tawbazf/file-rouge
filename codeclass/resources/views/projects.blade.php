@@ -48,5 +48,18 @@
             </table>
         </div>
     </div>
+    @if($projects->isEmpty())
+    <tr>
+        <td colspan="3" class="text-center text-gray-500">Aucun projet trouvé.</td>
+    </tr>
+@else
+    @foreach($projects as $project)
+        <tr>
+            <td>{{ $project->title }}</td>
+            <td>{{ $project->status }}</td>
+            <td>{{ $project->progress }}%</td>
+        </tr>
+    @endforeach
+@endif
 </body>
 </html>

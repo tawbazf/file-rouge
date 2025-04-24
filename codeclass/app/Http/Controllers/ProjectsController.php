@@ -14,9 +14,8 @@ class ProjectsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        // $projects = Project::all();
-        $project->teacher_id = auth()->user()->id;
-$project->save();
+
+        $projects = Project::where('teacher_id', $user->id)->get();
         return view('projects', compact('projects'));
     }
     public function complete(Request $request, Project $project)
@@ -75,14 +74,25 @@ public function runCode($fileId)
 }
 public function store(Request $request)
 {
+    
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'status' => 'nullable|string',
+        'progress' => 'nullable|numeric|min:0|max:100',
+        'time_remaining' => 'nullable|string|max:255',
+    ]);
+
+   
     $project = new Project();
-    $project->title = $request->input('title');
-    $project->description = $request->input('description');
-    $project->status = $request->input('status');
-    $project->progress = $request->input('progress');
-    $project->time_remaining = $request->input('time_remaining');
-    $project->teacher_id = auth()->user()->id;
+    $project->title = $validated['title'];
+    $project->description = $validated['description'] ?? null;
+    $project->status = $validated['status'] ?? 'not_started';
+    $project->progress = $validated['progress'] ?? 0;
+    $project->time_remaining = $validated['time_remaining'] ?? null;
+    $project->teacher_id = auth()->id();
     $project->save();
+
 
     return redirect()->route('dashboardProf')->with('success', 'Projet créé avec succès!');
 }
