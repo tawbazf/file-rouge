@@ -29,14 +29,7 @@ Route::middleware('guest')->group(function (): void {
     Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
 });
 
-// Authentification sociale (doit être en dehors du middleware guest)
-// Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
-// Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
 
-// Route::get('/auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github'); 
-
-// Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback']);
-// GitHub
 Route::get('/auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github');
 Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback'])->name('auth.github.callback');
 
@@ -75,9 +68,7 @@ Route::middleware('auth')->group(function (): void {
     // Badges
 // Route::get('/badges/create', [BadgeController::class, 'create'])->name('badge.create');
 // Route::post('/badges', [BadgeController::class, 'store'])->name('badge.store');
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 Route::get('/badges', [BadgeController::class, 'index'])->name('badges.index');
 Route::get('/badge/create', [BadgeController::class, 'create'])->name('badge.create');

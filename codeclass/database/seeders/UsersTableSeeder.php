@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
     { DB::table('users')->truncate();
         DB::table('users')->insert([
             [
-                'id' => 1,
+                
                 'name' => 'Student User',
                 'email' => 'student@example.com',
                 'github_id' => 'student123', // Example GitHub ID
@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => 2,
+               
                 'name' => 'Teacher User',
                 'email' => 'teacher@example.com',
                 'github_id' => 'teacher456', // Example GitHub ID
