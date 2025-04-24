@@ -14,7 +14,7 @@ class ProjectsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $projects = Project::where('user_id', $user->id)->get();
+        $projects = Project::all();
         return view('projects', compact('projects'));
     }
     public function complete(Request $request, Project $project)
