@@ -59,7 +59,7 @@ class DashboardProfController extends Controller
         });
 
         // 2. GitHub repositories table
-        $repositories = GithubRepository::with(['project', 'student'])
+        $repositories = GithubRepository::with(['project', 'user'])
             ->whereHas('project', function ($q) use ($teacher) {
                 $q->where('teacher_id', $teacher->id);
             })
@@ -70,12 +70,12 @@ class DashboardProfController extends Controller
         $repoTable = $repositories->map(function ($repo) {
             return [
                 'project_name' => $repo->project->title ?? '',
-                'student_name' => $repo->student->name ?? '',
-                'student_avatar' => $repo->student->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg',
+                'student_name' => $repo->user->name ?? '',
+                'student_avatar' => $repo->user->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg',
                 'last_commit' => $repo->updated_at ? $repo->updated_at->diffForHumans() : '',
                 'status' => $repo->status ?? '',
-                'actions' => route('repo.view', $repo->id), // adjust route if needed
-            ];
+                'actions' => $repo->url ?? '#',
+            ];  
         });
 
         // Pass everything needed to the view
