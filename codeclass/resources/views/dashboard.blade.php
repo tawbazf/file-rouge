@@ -74,6 +74,9 @@
         </svg>
         Mes Compétences
     </a>
+    <a href="{{ route('skills.gaps_recommendations') }}" class="btn-green py-2 px-4 rounded-md flex items-center">
+    Recommandations pour mes lacunes
+</a>
                 <!-- Avatar -->
                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="h-8 w-8 rounded-full">
             

@@ -127,3 +127,4 @@ Route::post('/run-code/{fileId}', [ProjectsController::class, 'runCode']);
 // Skill routes
 Route::get('/skills', [SkillController::class, 'mySkills'])->middleware('auth');
 Route::get('/skills/all', [SkillController::class, 'allSkills'])->middleware('auth');
+Route::get('/skills/gaps/recommendations', [SkillController::class, 'skillGapsRecommendations'])->middleware('auth')->name('skills.gaps_recommendations');
