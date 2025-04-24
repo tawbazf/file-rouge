@@ -15,8 +15,8 @@ class DashboardController extends Controller
         $user = Auth::user();
         $certifications = Certification::where('user_id', $user->id)->get();
         // Example: Get all projects for the user
-        $projects = Project::where('user_id', $user->id)->get();
-
+        // $projects = Project::where('user_id', $user->id)->get();
+        $projects = Project::all();
         // Calculate global progress (example logic, adapt as needed)
         $totalProjects = $projects->count();
         $completedProjects = $projects->where('status', 'completed')->count();
