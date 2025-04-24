@@ -12,11 +12,11 @@ class StatisticsController extends Controller
     public function index()
     {
        
-        $users= \App\Models\User::where('role', 'user')->get();
-        $activeStudents = $users->where('is_active', true)->count(); 
-        $totalStudents = $users->count();
+        $students = User::where('role', 'user')->paginate(10); 
+        $activeStudents = $students->where('is_active', true)->count(); 
+        $totalStudents = $students->count();
         $courses = Course::all();
-        $classAverage = round($users->avg('average_grade'), 1); 
+        $classAverage = round($students->avg('average_grade'), 1); 
         $classAverageChange = '+2.3%'; 
     
         $homeworkSubmitted = 92; 
@@ -64,6 +64,7 @@ class StatisticsController extends Controller
             'globalProgress' => $globalProgress,
             'progressBySubject' => $progressBySubject,
             'gradeDistribution' => $gradeDistribution,
+            'students' => $students,
             'studentRows' => $studentRows,
             'courseProgress' => $courseProgress,
         ]);

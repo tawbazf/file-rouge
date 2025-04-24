@@ -276,32 +276,16 @@
 </tbody>
                 </table>
             </div>
-
+   
             <!-- Pagination -->
             <div class="flex items-center justify-between mt-6">
-                <div class="text-sm text-gray-500">
-                    Affichage de 2 étudiants sur 30
-                </div>
-                <div class="flex space-x-2">
-                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                        Précédent
-                    </button>
-                    <button class="px-3 py-1 bg-blue-500 text-white rounded-md text-sm">
-                        1
-                    </button>
-                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                        2
-                    </button>
-                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                        3
-                    </button>
-                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                        Suivant
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="text-sm text-gray-500">
+        Affichage de {{ $students->count() }} étudiants sur {{ $students->total() }}
     </div>
+    <div>
+        {{ $students->links() }}
+    </div>
+</div>
     <script>
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('studentSearchInput');
