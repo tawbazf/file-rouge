@@ -11,70 +11,27 @@ use Illuminate\Support\Str;
 class SocialAuthController extends Controller
 {
     // --- GITHUB ---
-    public function redirectToGithub()
+    public function redirect()
     {
-        try {
-            return Socialite::driver('github')->stateless()->redirect();
-        } catch (\Exception $e) {
-            return redirect()->route('login')->withErrors('Failed to connect to GitHub');
-        }
+        return Socialite::driver('github')->redirect();
     }
 
-    public function handleGithubCallback()
+    public function callback()
     {
-        try {
-            $githubUser = Socialite::driver('github')->stateless()->user();
+        $githubUser = Socialite::driver('github')->user();
 
-            $user = User::updateOrCreate(
-                ['github_id' => $githubUser->getId()],
-                [
-                    'name' => $githubUser->getName() ?? $githubUser->getNickname(),
-                    'email' => $githubUser->getEmail(),
-                    'password' => Hash::make(Str::random(24)),
-                    'avatar' => $githubUser->getAvatar(),
-                ]
-            );
+        // If the user doesn't exist create, else update the existing one
+        $newUser = User::updateOrCreate([
+            'email' => $githubUser->getEmail(),
+        ], [
+            'name' => $githubUser->getName() ?? $githubUser->getNickname(),
+            'password' => bcrypt(Str::random(16)), // Set a random password
+            'email_verified_at' => now(),
+            'avatar' => $githubUser->getAvatar(),
+        ]);
 
-            Auth::login($user, true);
+        Auth::login($newUser);
 
-            return redirect()->route('dashboard');
-        } catch (\Exception $e) {
-            \Log::error('GitHub Auth Error: '.$e->getMessage());
-            return redirect()->route('login')->withErrors('Failed to authenticate with GitHub');
-        }
-    }
-
-    // --- GOOGLE ---
-    public function redirectToGoogle()
-    {
-        try {
-            return Socialite::driver('google')->stateless()->redirect();
-        } catch (\Exception $e) {
-            return redirect()->route('login')->withErrors('Failed to connect to Google');
-        }
-    }
-
-    public function handleGoogleCallback()
-    {
-        try {
-            $googleUser = Socialite::driver('google')->stateless()->user();
-
-            $user = User::updateOrCreate(
-                ['google_id' => $googleUser->getId()],
-                [
-                    'name' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'password' => Hash::make(Str::random(24)),
-                    'avatar' => $googleUser->getAvatar(),
-                ]
-            );
-
-            Auth::login($user, true);
-
-            return redirect()->route('dashboard');
-        } catch (\Exception $e) {
-            \Log::error('Google Auth Error: '.$e->getMessage());
-            return redirect()->route('login')->withErrors('Failed to authenticate with Google');
-        }
+        return redirect('/choose-role');
     }
 }

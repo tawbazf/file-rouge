@@ -16,6 +16,7 @@ use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\DroitController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\GoogleAuthController;
 
 
 
@@ -30,12 +31,12 @@ Route::middleware('guest')->group(function (): void {
 });
 
 
-Route::get('/auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github');
-Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback'])->name('auth.github.callback');
+Route::get('/auth/github', [SocialAuthController::class, 'redirect'])->name('auth.github');
+Route::get('/auth/github/callback', [SocialAuthController::class, 'callback'])->name('auth.github.callback');
 
 // Google
-Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
-Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 
 // Routes protégées par authentification
 Route::middleware('auth')->group(function (): void {
