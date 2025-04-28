@@ -30,7 +30,12 @@ class ProjectsController extends Controller
         return redirect()->back()->with('success', 'Projet complété !');
     }
  
-
+    public function show($id)
+    {
+        $project = Project::findOrFail($id);
+        
+        return view('projects.show', compact('project'));
+    }
 public function codeReview($fileId = null)
 {
     $files = CodeFile::all();

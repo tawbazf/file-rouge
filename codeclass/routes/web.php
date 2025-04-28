@@ -122,3 +122,6 @@ Route::get('/skills/all', [SkillController::class, 'allSkills'])->middleware('au
 Route::get('/skills/gaps/recommendations', [SkillController::class, 'skillGapsRecommendations'])->middleware('auth')->name('skills.gaps_recommendations');
 use App\Http\Controllers\CodeExecutionController;
 Route::post('/execute-code', [CodeExecutionController::class, 'executeCode']);
+Route::patch('/projects/{project}/status', [ProjectsController::class, 'updateStatus'])->name('projects.update-status');
+Route::patch('/projects/{project}/progress', [ProjectsController::class, 'updateProgress'])->name('projects.update-progress');
+Route::get('/projects/{project}', [App\Http\Controllers\ProjectsController::class, 'show'])->name('projects.show');
