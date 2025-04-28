@@ -19,11 +19,15 @@ class Badge extends Model
         'description',
         'image_path',
         'category',
-        'level', 
-        'points_required',
+        'level',
         'points',
+        'points_required',
+        'min_points',
+        'min_activity_hours',
         'time',
         'projects',
+        'color'
+
     ];
 
   
