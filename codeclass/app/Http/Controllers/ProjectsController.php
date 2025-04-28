@@ -41,37 +41,7 @@ public function codeReview($fileId = null)
 }
 
 
-public function runCode($fileId)
-{
-    $file = CodeFile::findOrFail($fileId);
 
-    // Map your language field to JDoodle's language identifiers
-    $languageMap = [
-        'php' => 'php',
-        'python' => 'python3',
-        'javascript' => 'nodejs',
-        'java' => 'java',
-        // add more as needed
-    ];
-    $lang = $languageMap[$file->language] ?? 'python3';
-
-    $clientId = env('JDOODLE_CLIENT_ID');      // Put your JDoodle client ID in .env
-    $clientSecret = env('JDOODLE_CLIENT_SECRET'); // Put your JDoodle client secret in .env
-
-    $response = Http::post('https://api.jdoodle.com/v1/execute', [
-        'clientId' => $clientId,
-        'clientSecret' => $clientSecret,
-        'script' => $file->content,
-        'language' => $lang,
-        'versionIndex' => '0',
-    ]);
-
-    if ($response->successful()) {
-        return response()->json(['output' => $response['output']]);
-    } else {
-        return response()->json(['error' => 'Execution failed'], 500);
-    }
-}
 public function store(Request $request)
 {
     
@@ -96,4 +66,36 @@ public function store(Request $request)
 
     return redirect()->route('dashboardProf')->with('success', 'Projet créé avec succès!');
 }
+public function updateStatus(Request $request, $projectId)
+{
+    $project = Project::findOrFail($projectId);
+    
+   
+    
+    $validated = $request->validate([
+        'status' => 'required|in:not_started,in_progress,completed',
+    ]);
+    
+    $project->status = $validated['status'];
+    $project->save();
+    
+    return redirect()->back()->with('success', 'Statut du projet mis à jour avec succès.');
+}
+
+public function updateProgress(Request $request, $projectId)
+{
+    $project = Project::findOrFail($projectId);
+    
+    
+    
+    $validated = $request->validate([
+        'progress' => 'required|integer|min:0|max:100',
+    ]);
+    
+    $project->progress = $validated['progress'];
+    $project->save();
+    
+    return redirect()->back()->with('success', 'Progression du projet mise à jour avec succès.');
+}
+
 }
