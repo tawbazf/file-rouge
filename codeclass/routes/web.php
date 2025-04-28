@@ -125,3 +125,6 @@ Route::post('/execute-code', [CodeExecutionController::class, 'executeCode']);
 Route::patch('/projects/{project}/status', [ProjectsController::class, 'updateStatus'])->name('projects.update-status');
 Route::patch('/projects/{project}/progress', [ProjectsController::class, 'updateProgress'])->name('projects.update-progress');
 Route::get('/projects/{project}', [App\Http\Controllers\ProjectsController::class, 'show'])->name('projects.show');
+
+Route::get('/projects/{project}/edit', [App\Http\Controllers\ProjectsController::class, 'edit'])->name('projects.edit');
+Route::patch('/projects/{project}', [App\Http\Controllers\ProjectsController::class, 'update'])->name('projects.update');

@@ -102,5 +102,32 @@ public function updateProgress(Request $request, $projectId)
     
     return redirect()->back()->with('success', 'Progression du projet mise à jour avec succès.');
 }
+public function edit($id)
+{
+    $project = Project::findOrFail($id);
+    
+    
+    return view('projects.edit', compact('project'));
+}
+
+public function update(Request $request, $id)
+{
+    $project = Project::findOrFail($id);
+    
+    
+    
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'status' => 'required|in:not_started,in_progress,completed',
+        'progress' => 'required|integer|min:0|max:100',
+        'deadline' => 'nullable|date',
+    ]);
+    
+    $project->update($validated);
+    
+    return redirect()->route('projects.show', $project->id)
+        ->with('success', 'Projet mis à jour avec succès.');
+}
 
 }
