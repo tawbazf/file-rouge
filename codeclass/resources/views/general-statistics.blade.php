@@ -70,7 +70,7 @@
                 </button>
                 <div class="flex items-center">
                     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="h-8 w-8 rounded-full mr-2">
-                    <span class="text-gray-700">Prof. Martin</span>
+                    <span class="text-gray-700"> Prof {{ auth()->user()->name ?? 'Enseignant' }}</span>
                 </div>
             </div>
         </header>
