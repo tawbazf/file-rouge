@@ -67,8 +67,6 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/code-review', [CodeReviewController::class, 'index'])->name('code.review');
     
     // Badges
-// Route::get('/badges/create', [BadgeController::class, 'create'])->name('badge.create');
-// Route::post('/badges', [BadgeController::class, 'store'])->name('badge.store');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 Route::get('/badges', [BadgeController::class, 'index'])->name('badges.index');

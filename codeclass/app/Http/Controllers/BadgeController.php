@@ -65,9 +65,22 @@ class BadgeController extends Controller
     // List all badges
     public function index()
     {
-        $badges = Badge::all();
-        return view('badge', compact('badges'));
-    }
+             // Get the authenticated user
+             $user = auth()->user();
+        
+             // Get badges (you might need different queries based on role)
+             $badges = Badge::all();
+             
+             // Return different views based on user role
+             if ($user->role === 'teacher') {
+                 return view('badges', compact('badges'));
+             } else {
+                 return view('mesbadges', compact('badges'));
+             }
+         } 
+        // $badges = Badge::all();
+        // return view('badge', compact('badges'));
+    
 
     // Assign badge to eligible users
     public function assignBadgeIfEligible($user)
