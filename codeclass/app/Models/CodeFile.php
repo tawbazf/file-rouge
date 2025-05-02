@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CodeFile extends Model
 {
-    protected $table = 'code_files'; // Make sure this matches your table name
+    protected $table = 'code_files';
     
     protected $fillable = ['filename', 'content', 'language', 'file_path', 'code_submission_id'];
 
@@ -18,10 +18,11 @@ class CodeFile extends Model
     }
 
     
-    public function codeSubmission()
+    public function submission()
     {
-        return $this->belongsTo(CodeSubmission::class);
+        return $this->belongsTo(CodeSubmission::class, 'code_submission_id');
     }
+
 
   
     public function lineComments()

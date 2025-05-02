@@ -6,6 +6,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Code Review Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/php/php.min.js"></script>
+
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -176,6 +183,10 @@
         const runButton = document.getElementById('run-button');
         const loader = document.getElementById('loader');
         const outputDiv = document.getElementById('run-output');
+        const codeEditor = document.getElementById('code-editor');
+        
+        // Get the code from the editor and set it in the hidden input
+        document.getElementById('code-input').value = codeEditor.value;
         
         // Show loading state
         runButton.disabled = true;
@@ -192,11 +203,6 @@
             body: formData
         })
         .then(response => {
-            // Log the raw response for debugging
-            response.clone().text().then(text => {
-                console.log('Raw response:', text);
-            });
-            
             if (!response.ok) {
                 throw new Error(`Server responded with status: ${response.status}`);
             }
@@ -218,7 +224,60 @@
             loader.classList.add('hidden');
         });
     });
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize CodeMirror
+    const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
+        lineNumbers: true,
+        mode: 'python',
+        theme: 'default',
+        indentUnit: 4,
+        tabSize: 4,
+        lineWrapping: true,
+        extraKeys: {"Tab": "indentMore", "Shift-Tab": "indentLess"}
+    });
     
+    // Set initial height
+    editor.setSize(null, 300);
+    
+    // Update mode when language changes
+    document.getElementById('language').addEventListener('change', function() {
+        const languageId = this.value;
+        let mode;
+        
+        switch(languageId) {
+            case '50': // C
+            case '54': // C++
+                mode = 'text/x-c++src';
+                break;
+            case '62': // Java
+                mode = 'text/x-java';
+                break;
+            case '71': // Python
+                mode = 'text/x-python';
+                break;
+            case '63': // JavaScript
+                mode = 'text/javascript';
+                break;
+            case '68': // PHP
+                mode = 'application/x-httpd-php';
+                break;
+            default:
+                mode = 'text/plain';
+        }
+        
+        editor.setOption('mode', mode);
+    });
+    
+    // Update the form submission to get code from CodeMirror
+    document.getElementById('run-code-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Get code from CodeMirror
+        document.getElementById('code-input').value = editor.getValue();
+        
+        // Rest of your code...
+    });
+});
+
     </script>
 </body>
 </html>
