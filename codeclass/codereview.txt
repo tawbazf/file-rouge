@@ -1,0 +1,261 @@
+#c
+#include <stdio.h>
+
+int main() {
+    // Simple Hello World program
+    printf("Hello, World!\n");
+    
+    // Variables and basic arithmetic
+    int a = 5, b = 7;
+    printf("Sum: %d\n", a + b);
+    printf("Product: %d\n", a * b);
+    
+    // Conditional statement
+    if (a < b) {
+        printf("%d is less than %d\n", a, b);
+    } else {
+        printf("%d is greater than or equal to %d\n", a, b);
+    }
+    
+    // Loop example
+    printf("Counting from 1 to 5: ");
+    for (int i = 1; i <= 5; i++) {
+        printf("%d ", i);
+    }
+    printf("\n");
+    
+    return 0;
+}
+#c++
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Function to calculate factorial
+int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+int main() {
+    // Hello World
+    cout << "Hello, World!" << endl;
+    
+    // Using vectors
+    vector<int> numbers = {1, 2, 3, 4, 5};
+    cout << "Vector elements: ";
+    for (int num : numbers) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // String manipulation
+    string greeting = "Hello";
+    string name = "Student";
+    cout << greeting + ", " + name + "!" << endl;
+    
+    // Using the factorial function
+    int n = 5;
+    cout << "Factorial of " << n << " is " << factorial(n) << endl;
+    
+    return 0;
+}
+#java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    // Method to check if a number is prime
+    public static boolean isPrime(int n) {
+        if (n <= 1) return false;
+        if (n <= 3) return true;
+        
+        if (n % 2 == 0 || n % 3 == 0) return false;
+        
+        for (int i = 5; i * i <= n; i += 6) {
+            if (n % i == 0 || n % (i + 2) == 0) return false;
+        }
+        
+        return true;
+    }
+    
+    public static void main(String[] args) {
+        // Hello World
+        System.out.println("Hello, World!");
+        
+        // Using ArrayList
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Cherry");
+        
+        System.out.println("Fruits in the list:");
+        for (String fruit : fruits) {
+            System.out.println("- " + fruit);
+        }
+        
+        // Using our isPrime method
+        System.out.println("\nChecking prime numbers from 1 to 20:");
+        for (int i = 1; i <= 20; i++) {
+            if (isPrime(i)) {
+                System.out.print(i + " ");
+            }
+        }
+        System.out.println();
+    }
+}
+#python
+# Simple Python program demonstrating various features
+
+def is_palindrome(s):
+    """Check if a string is a palindrome."""
+    s = s.lower().replace(" ", "")
+    return s == s[::-1]
+
+# Hello World
+print("Hello, World!")
+
+# Lists and list comprehension
+numbers = [1, 2, 3, 4, 5]
+squares = [n**2 for n in numbers]
+print(f"Numbers: {numbers}")
+print(f"Squares: {squares}")
+
+# Dictionary example
+student = {
+    "name": "John Doe",
+    "age": 20,
+    "courses": ["Math", "Computer Science", "Physics"]
+}
+print("\nStudent Information:")
+for key, value in student.items():
+    print(f"{key.capitalize()}: {value}")
+
+# Using the palindrome function
+test_strings = ["radar", "hello", "A man a plan a canal Panama"]
+print("\nPalindrome Test:")
+for s in test_strings:
+    print(f"'{s}' is{' ' if is_palindrome(s) else ' not '}a palindrome")
+
+# Simple input/output example
+if __name__ == "__main__":
+    name = input("\nWhat is your name? ")
+    print(f"Nice to meet you, {name}!")
+#javascript
+// Simple JavaScript program
+
+// Function to calculate the Fibonacci sequence
+function fibonacci(n) {
+    const sequence = [0, 1];
+    for (let i = 2; i < n; i++) {
+        sequence.push(sequence[i-1] + sequence[i-2]);
+    }
+    return sequence;
+}
+
+// Hello World
+console.log("Hello, World!");
+
+// Array methods
+const fruits = ["Apple", "Banana", "Cherry", "Date"];
+console.log("Original array:", fruits);
+
+// Map example
+const upperFruits = fruits.map(fruit => fruit.toUpperCase());
+console.log("Uppercase fruits:", upperFruits);
+
+// Filter example
+const longFruits = fruits.filter(fruit => fruit.length > 5);
+console.log("Fruits with more than 5 characters:", longFruits);
+
+// Object example
+const person = {
+    name: "John Doe",
+    age: 30,
+    occupation: "Developer",
+    greet: function() {
+        return `Hello, my name is ${this.name} and I am a ${this.occupation}`;
+    }
+};
+console.log(person.greet());
+
+// Using the Fibonacci function
+const fibSequence = fibonacci(10);
+console.log("First 10 Fibonacci numbers:", fibSequence);
+
+// Async/await example
+async function fetchData() {
+    // In a real environment, this would fetch data from an API
+    return new Promise(resolve => {
+        setTimeout(() => resolve("Data fetched successfully!"), 1000);
+    });
+}
+
+// This would work in a real Node.js environment
+// (async () => {
+//     console.log("Fetching data...");
+//     const result = await fetchData();
+//     console.log(result);
+// })();
+
+// For the code execution platform, we'll simulate the result
+console.log("Fetching data...");
+console.log("Data fetched successfully! (simulated)");
+#php
+<?php
+// Simple PHP program
+
+// Function to generate a random password
+function generatePassword($length = 10) {
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+    $password = substr(str_shuffle($chars), 0, $length);
+    return $password;
+}
+
+// Hello World
+echo "Hello, World!\n";
+
+// Arrays
+$fruits = ["Apple", "Banana", "Cherry", "Date"];
+echo "\nFruits array:\n";
+foreach ($fruits as $index => $fruit) {
+    echo "[$index] => $fruit\n";
+}
+
+// Associative array
+$person = [
+    "name" => "John Doe",
+    "age" => 30,
+    "occupation" => "Web Developer"
+];
+echo "\nPerson information:\n";
+foreach ($person as $key => $value) {
+    echo ucfirst($key) . ": " . $value . "\n";
+}
+
+// Using our password generator
+$password = generatePassword(12);
+echo "\nGenerated password: $password\n";
+
+// Simple file operations (simulation)
+echo "\nFile operations (simulated):\n";
+$filename = "example.txt";
+echo "Writing to $filename...\n";
+echo "Reading from $filename: 'This is a sample content.'\n";
+
+// Database operations (simulation)
+echo "\nDatabase operations (simulated):\n";
+echo "Connected to database 'example_db'\n";
+echo "Query: SELECT * FROM users LIMIT 5\n";
+echo "Result: 5 records found\n";
+
+// Get input from user (for testing stdin)
+$input = trim(fgets(STDIN));
+if (!empty($input)) {
+    echo "\nYou entered: $input\n";
+} else {
+    echo "\nNo input provided.\n";
+}
+?>

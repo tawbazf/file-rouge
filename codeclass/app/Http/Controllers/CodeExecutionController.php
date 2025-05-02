@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\JDoodleService;
+use Illuminate\Support\Facades\Log;
+use App\Models\CodeFile;
 
 class CodeExecutionController extends Controller
 {
@@ -14,46 +16,58 @@ class CodeExecutionController extends Controller
         $this->jdoodle = $jdoodle;
     }
 
+    
     public function executeCode(Request $request)
     {
         try {
-            // Log the request for debugging
-            Log::info('Code execution request', [
+            // Log the incoming request for debugging
+            Log::info('Code execution request received', [
                 'fileId' => $request->fileId,
-                'language_id' => $request->language_id
+                'language_id' => $request->language_id,
+                'input' => $request->input
             ]);
             
-            $request->validate([
-                'fileId' => 'required|exists:code_files,id',
-                'language_id' => 'required|integer',
+            // Validate the request
+            $validated = $request->validate([
+                'fileId' => 'required',
+                'language_id' => 'required',
                 'input' => 'nullable|string',
             ]);
-
-            // Get the file content from your database
-            $file = \App\Models\CodeFile::find($request->fileId);
+            
+            // Find the file
+            $file = CodeFile::find($request->fileId);
             
             if (!$file) {
+                Log::warning('File not found', ['fileId' => $request->fileId]);
                 return response()->json([
-                    'error' => 'File not found'
+                    'error' => 'File not found with ID: ' . $request->fileId
                 ], 404);
             }
             
-            // For testing, just return a success response
+            // For now, just return a success response with the file content
+            // This helps us verify that we can at least find the file
             return response()->json([
-                'output' => "Code execution successful!\nFile: {$file->filename}\nLanguage ID: {$request->language_id}\nInput: {$request->input}",
-                'error' => null,
+                'output' => "File found successfully!\nFilename: {$file->filename}\nContent length: " . strlen($file->content) . " characters",
+                'error' => null
             ]);
             
-            // Actual code execution will be implemented later
+            // We'll implement actual code execution in the next step
             
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation error', ['errors' => $e->errors()]);
+            return response()->json([
+                'error' => 'Validation error: ' . json_encode($e->errors())
+            ], 422);
         } catch (\Exception $e) {
             Log::error('Code execution error', [
                 'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
             
             return response()->json([
-                'error' => 'Failed to execute code: ' . $e->getMessage()
+                'error' => 'Server error: ' . $e->getMessage()
             ], 500);
         }
     }
