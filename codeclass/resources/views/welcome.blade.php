@@ -1,72 +1,127 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenue sur CodeClass</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bienvenue sur CodeClass</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 </head>
-<body class="bg-gradient-to-br from-indigo-100 via-white to-blue-100 min-h-screen">
-    <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <svg class="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                <span class="text-2xl font-bold text-indigo-700">CodeClass</span>
-            </div>
-            <nav class="space-x-6">
-                <a href="{{ route('login') }}" class="text-indigo-600 hover:underline font-medium">Connexion</a>
-                <a href="{{ route('register') }}" class="text-white bg-indigo-600 px-4 py-2 rounded-md shadow hover:bg-indigo-700 transition">Inscription</a>
-            </nav>
-        </div>
-    </header>
-    <main class="flex flex-col items-center justify-center py-20 px-4">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-800 mb-6 text-center">
-            Plateforme pédagogique moderne pour enseignants et étudiants
+<body class="bg-gradient-to-br from-indigo-100 via-white to-blue-100 min-h-screen text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <i class="fas fa-code w-8 h-8 text-indigo-700"></i>
+        <span class="text-2xl font-bold text-indigo-700">CodeClass</span>
+      </div>
+      <nav class="space-x-6">
+        <a href="{{ route('login') }}" class="text-indigo-600 hover:underline font-medium">Connexion</a>
+        <a href="{{ route('register') }}" class="text-white bg-indigo-600 px-4 py-2 rounded-md shadow hover:bg-indigo-700 transition">Inscription</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-white py-20">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+      <div class="md:w-1/2 mb-10 md:mb-0">
+        <h1 class="text-5xl font-extrabold text-indigo-800 mb-6 leading-tight">
+          La plateforme pédagogique de demain
         </h1>
-        <p class="text-xl text-gray-700 mb-10 max-w-2xl text-center">
-            Gérez vos projets, attribuez des badges, collaborez en temps réel, suivez la progression et accédez à des ressources personnalisées. 
-            <br>
-            Rejoignez la communauté CodeClass dès aujourd’hui !
+        <p class="text-lg text-gray-700 mb-6">
+          Centralisez la gestion de projets, suivez la progression des étudiants et renforcez l’apprentissage grâce à des outils modernes.
         </p>
-        <div class="flex flex-col md:flex-row gap-4 mb-12">
-            <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold shadow hover:bg-indigo-700 transition">Commencer</a>
-            <a href="{{ route('login') }}" class="bg-white border border-indigo-600 text-indigo-700 px-8 py-3 rounded-lg font-semibold shadow hover:bg-indigo-50 transition">Déjà inscrit ? Se connecter</a>
+        <div class="flex gap-4">
+          <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-indigo-700 transition">Commencer</a>
+          <a href="{{ route('login') }}" class="bg-white border border-indigo-600 text-indigo-700 px-6 py-3 rounded-lg font-semibold shadow hover:bg-indigo-50 transition">Déjà inscrit ?</a>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 max-w-5xl">
-            <div class="bg-white rounded-lg shadow p-6 text-center">
-                <div class="text-indigo-600 mb-2">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M12 4v16m8-8H4"/>
-                    </svg>
-                </div>
-                <h2 class="font-bold text-lg mb-2">Gestion de projets</h2>
-                <p class="text-gray-600">Créez, attribuez et suivez des projets pédagogiques avec gestion automatique des dépôts GitHub.</p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6 text-center">
-                <div class="text-yellow-500 mb-2">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M12 17l-5 3 1-5.4L3 9.5l5.4-.8L12 4l2.6 4.7 5.4.8-3.9 3.1 1 5.4z"/>
-                    </svg>
-                </div>
-                <h2 class="font-bold text-lg mb-2">Système de badges</h2>
-                <p class="text-gray-600">Récompensez les compétences et la progression grâce à un système de badges personnalisés.</p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6 text-center">
-                <div class="text-green-500 mb-2">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M17 20h5v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h5"/>
-                        <circle cx="12" cy="7" r="4"/>
-                    </svg>
-                </div>
-                <h2 class="font-bold text-lg mb-2">Suivi & Ressources</h2>
-                <p class="text-gray-600">Suivez votre progression, accédez à des ressources recommandées et collaborez en temps réel.</p>
-            </div>
+      </div>
+      <div class="md:w-1/2">
+        <img src="/images/education.jpg" alt="Illustration of digital education tools" class="rounded-xl shadow-lg" onerror="this.src='/images/fallback-education.jpg'">
+      </div>
+    </div>
+  </section>
+
+  <!-- Fonctionnalités principales -->
+  <section class="px-6 py-20 bg-indigo-50">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-extrabold text-indigo-800">Fonctionnalités principales</h2>
+      <p class="text-gray-600 mt-4">Optimisez votre pédagogie grâce à des outils intuitifs et automatisés</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <i class="fab fa-github text-6xl text-indigo-600 mx-auto mb-4"></i>
+        <h3 class="font-bold text-lg mb-2">Création de dépôts GitHub</h3>
+        <p class="text-gray-600">Générez automatiquement un dépôt pour chaque devoir avec accès personnalisé aux enseignants et étudiants.</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <i class="fas fa-folder text-6xl text-indigo-600 mx-auto mb-4"></i>
+        <h3 class="font-bold text-lg mb-2">Gestion des accès</h3>
+        <p class="text-gray-600">Contrôle des permissions automatisé selon les rôles et les projets attribués.</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <i class="fas fa-code-branch text-6xl text-indigo-600 mx-auto mb-4"></i>
+        <h3 class="font-bold text-lg mb-2">Code Review intégrée</h3>
+        <p class="text-gray-600">Les enseignants ou les pairs peuvent annoter le code et proposer des améliorations directement dans l'interface.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Suivi pédagogique -->
+  <section class="bg-white px-6 py-20">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-extrabold text-indigo-800">Suivi pédagogique</h2>
+      <p class="text-gray-600 mt-4">Des outils visuels pour comprendre et accompagner l’évolution des étudiants</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+      <div class="bg-indigo-100 rounded-lg shadow p-6 text-center">
+        <i class="fas fa-chart-bar text-6xl text-indigo-600 mx-auto mb-4"></i>
+        <h3 class="font-bold text-lg mb-2">Tableau de bord</h3>
+        <p class="text-gray-700">Visualisez les projets réalisés, les scores obtenus et l’évolution des compétences de chaque étudiant.</p>
+      </div>
+      <div class="bg-indigo-100 rounded-lg shadow p-6 text-center">
+        <i class="fas fa-brain text-6xl text-indigo-600 mx-auto mb-4"></i>
+        <h3 class="font-bold text-lg mb-2">Analyse des compétences</h3>
+        <p class="text-gray-700">Identifiez les points forts et les lacunes pour adapter le parcours pédagogique.</p>
+      </div>
+      <div class="bg-indigo-100 rounded-lg shadow p-6 text-center">
+        <i class="fas fa-history text-6xl text-indigo-600 mx-auto mb-4"></i>
+        <h3 class="font-bold text-lg mb-2">Historique d'apprentissage</h3>
+        <p class="text-gray-700">Gardez une trace des corrections, projets, commits et apprentissages de chaque étudiant.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fonctionnalités avancées -->
+  <section class="bg-indigo-600 text-white px-6 py-20">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-extrabold">Fonctionnalités avancées</h2>
+      <p class="text-indigo-100 mt-4">Un apprentissage personnalisé et stimulant</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+      <div class="flex items-start space-x-6">
+        <i class="fas fa-medal w-16 h-16 text-indigo-200"></i>
+        <div>
+          <h3 class="text-xl font-bold mb-1">Système de badges</h3>
+          <p class="text-indigo-100">Motivez les étudiants avec des récompenses visuelles qui valorisent les compétences acquises.</p>
         </div>
-    </main>
-    <footer class="text-center text-gray-500 py-8">
-        &copy; {{ date('Y') }} CodeClass. Tous droits réservés.
-    </footer>
+      </div>
+      <div class="flex items-start space-x-6">
+        <i class="fas fa-book-open w-16 h-16 text-indigo-200"></i>
+        <div>
+          <h3 class="text-xl font-bold mb-1">Ressources recommandées</h3>
+          <p class="text-indigo-100">Des suggestions de contenus basées sur les lacunes détectées dans les performances de l’étudiant.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-500 py-8 bg-white">
+    © {{ date('Y') }} CodeClass. Tous droits réservés.
+  </footer>
+
 </body>
 </html>
