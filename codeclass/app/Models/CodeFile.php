@@ -2,20 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 
 class CodeFile extends Model
 {
-    use HasFactory;
+    protected $table = 'code_files'; // Make sure this matches your table name
+    
+    protected $fillable = ['filename', 'content', 'language', 'file_path', 'code_submission_id'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = ['filename', 'content', 'language_id', 'user_id'];
+
 
     public function user()
     {

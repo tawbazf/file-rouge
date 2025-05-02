@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Code Review Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -170,73 +171,54 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const comments = document.querySelectorAll('.comment-item');
-
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // Remove highlight from all buttons
-                    filterBtns.forEach(b => b.classList.remove('bg-blue-100', 'text-blue-800'));
-                    filterBtns.forEach(b => b.classList.add('bg-gray-100', 'text-gray-700'));
-                    // Highlight the active button
-                    btn.classList.remove('bg-gray-100', 'text-gray-700');
-                    btn.classList.add('bg-blue-100', 'text-blue-800');
-
-                    const filter = btn.getAttribute('data-filter');
-                    comments.forEach(comment => {
-                        if (filter === 'all' || comment.getAttribute('data-tag') === filter) {
-                            comment.style.display = '';
-                        } else {
-                            comment.style.display = 'none';
-                        }
-                    });
-                });
+    <script>document.getElementById('run-code-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const runButton = document.getElementById('run-button');
+        const loader = document.getElementById('loader');
+        const outputDiv = document.getElementById('run-output');
+        
+        // Show loading state
+        runButton.disabled = true;
+        loader.classList.remove('hidden');
+        outputDiv.innerText = 'Executing code...';
+        
+        const formData = new FormData(this);
+        
+        fetch('/execute-code', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: formData
+        })
+        .then(response => {
+            // Log the raw response for debugging
+            response.clone().text().then(text => {
+                console.log('Raw response:', text);
             });
-            document.getElementById('run-code-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const runButton = document.getElementById('run-button');
-    const loader = document.getElementById('loader');
-    const outputDiv = document.getElementById('run-output');
-    
-    // Show loading state
-    runButton.disabled = true;
-    loader.classList.remove('hidden');
-    outputDiv.innerText = 'Executing code...';
-    
-    const formData = new FormData(this);
-    
-    fetch('/execute-code', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            'Accept': 'application/json'
-        },
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.error) {
-            outputDiv.innerText = 'Error: ' + data.error;
-        } else {
-            outputDiv.innerText = data.output || 'No output';
-        }
-    })
-    .catch(err => {
-        outputDiv.innerText = 'Error: ' + err.message;
-    })
-    .finally(() => {
-        runButton.disabled = false;
-        loader.classList.add('hidden');
+            
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                outputDiv.innerText = 'Error: ' + data.error;
+            } else {
+                outputDiv.innerText = data.output || 'No output';
+            }
+        })
+        .catch(err => {
+            console.error('Execution error:', err);
+            outputDiv.innerText = 'Error: ' + err.message;
+        })
+        .finally(() => {
+            runButton.disabled = false;
+            loader.classList.add('hidden');
+        });
     });
-});
-
+    
     </script>
 </body>
 </html>
