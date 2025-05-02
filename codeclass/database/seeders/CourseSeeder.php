@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class CourseSeeder extends Seeder
 {
@@ -12,8 +13,25 @@ class CourseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Get a user ID to assign as the course creator
+        // First try to get a teacher/admin user
+        $user = User::where('role', 'teacher')->first() 
+            ?? User::where('role', 'admin')->first() 
+            ?? User::first();
+        
+        if (!$user) {
+            // If no users exist, create one
+            $user = User::create([
+                'name' => 'Admin User',
+                'email' => 'admin@example.com',
+                'password' => bcrypt('password'),
+                'role' => 'admin'
+            ]);
+        }
+
         $courses = [
             [
+                'user_id' => $user->id, // Add the user_id here
                 'title' => 'Introduction to Web Development',
                 'description' => 'Learn the basics of HTML, CSS, and JavaScript to build your first website.',
                 'videos' => json_encode($this->generateVideos(3)),
@@ -25,6 +43,7 @@ class CourseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
+                'user_id' => $user->id, // Add the user_id here
                 'title' => 'Advanced JavaScript Concepts',
                 'description' => 'Dive deep into JavaScript with topics like closures, prototypes, and async programming.',
                 'videos' => json_encode($this->generateVideos(4)),
@@ -36,6 +55,7 @@ class CourseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
+                'user_id' => $user->id, // Add the user_id here
                 'title' => 'Laravel for Beginners',
                 'description' => 'Start your journey with Laravel, the PHP framework for web artisans.',
                 'videos' => json_encode($this->generateVideos(5)),
@@ -47,6 +67,7 @@ class CourseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
+                'user_id' => $user->id, // Add the user_id here
                 'title' => 'Database Design Fundamentals',
                 'description' => 'Learn how to design efficient and scalable databases for your applications.',
                 'videos' => json_encode($this->generateVideos(3)),
@@ -64,6 +85,7 @@ class CourseSeeder extends Seeder
 
     private function generateVideos($count)
     {
+        // Your existing generateVideos method
         $videos = [];
         $titles = [
             'Introduction to the Course',
@@ -102,6 +124,7 @@ class CourseSeeder extends Seeder
 
     private function generatePdfs($count)
     {
+        // Your existing generatePdfs method
         $pdfs = [];
         $titles = [
             'Course Notes',
