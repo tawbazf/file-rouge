@@ -1,11 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="py-12">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-8">Our Courses</h1>
-        
+<div class="py-12"> <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <h1 class="text-3xl font-bold text-gray-900 mb-8">Our Courses</h1>
         <!-- Course filters -->
         <div class="mb-8 flex flex-wrap gap-3">
             <button class="filter-btn px-4 py-2 bg-blue-100 text-blue-800 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-blue-200 active:bg-blue-300" data-filter="all">All Materials</button>
@@ -110,76 +103,74 @@
             @endif
         </div>
     </div>
-</div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
+    
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const courseItems = document.querySelectorAll('.course-item');
-
-    // Set initial active state
-    const allFilter = document.querySelector('.filter-btn[data-filter="all"]');
-    allFilter.classList.add('bg-blue-100', 'text-blue-800');
-    allFilter.classList.remove('bg-gray-100', 'text-gray-700');
 
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
             const filter = button.dataset.filter;
 
-            // Update button states
             filterButtons.forEach(btn => {
-                btn.classList.remove('bg-blue-100', 'text-blue-800');
-                btn.classList.add('bg-gray-100', 'text-gray-700');
+                btn.classList.toggle('bg-blue-100', btn === button);
+                btn.classList.toggle('text-blue-800', btn === button);
+                btn.classList.toggle('bg-gray-100', btn !== button);
+                btn.classList.toggle('text-gray-700', btn !== button);
             });
-            button.classList.add('bg-blue-100', 'text-blue-800');
-            button.classList.remove('bg-gray-100', 'text-gray-700');
 
-            // Filter courses
             courseItems.forEach(item => {
+                const materials = item.querySelectorAll('.material-section');
                 if (filter === 'all') {
-                    item.classList.remove('hidden');
-                    item.classList.add('animate-in');
-                } else {
-                    const hasContent = item.querySelector(`.material-section[data-type="${filter}"]`);
-                    if (hasContent) {
-                        item.classList.remove('hidden');
-                        item.classList.add('animate-in');
-                    } else {
-                        item.classList.add('hidden');
-                        item.classList.remove('animate-in');
-                    }
+                    item.style.display = '';
+                    return;
                 }
+
+                let match = false;
+                materials.forEach(section => {
+                    if (section.dataset.type === filter) {
+                        match = true;
+                    }
+                });
+
+                item.style.display = match ? '' : 'none';
             });
         });
     });
 });
-</script>
 
-<style>
-.animate-in {
-    animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
+    
+    </script>
+    
+    <style>
+    .animate-in {
+        animation: fadeIn 0.3s ease-in;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-}
-
-.hidden {
-    display: none;
-}
-
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-</style>
-@endsection
+    
+    .hidden {
+        display: none;
+    }
+    
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    </style>
+    
