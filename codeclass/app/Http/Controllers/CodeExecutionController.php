@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\Judge0Service;
+use App\Services\JDoodleService;
 
 class CodeExecutionController extends Controller
 {
-    protected $judge0;
+    protected $jdoodle;
 
-    public function __construct(Judge0Service $judge0)
+    public function __construct(JDoodleService $jdoodle)
     {
-        $this->judge0 = $judge0;
+        $this->jdoodle = $jdoodle;
     }
 
     public function executeCode(Request $request)
     {
         $request->validate([
-            'fileId' => 'required|exists:files,id',
+            'fileId' => 'required|exists:code_files,id',
             'language_id' => 'required|integer',
             'input' => 'nullable|string',
         ]);
@@ -25,8 +25,14 @@ class CodeExecutionController extends Controller
         // Get the file content from your database
         $file = \App\Models\CodeFile::find($request->fileId);
         
+        if (!$file) {
+            return response()->json([
+                'error' => 'File not found'
+            ], 404);
+        }
+        
         try {
-            $response = $this->judge0->submitCode(
+            $response = $this->jdoodle->submitCode(
                 $file->content,
                 $request->language_id,
                 $request->input ?? ''
