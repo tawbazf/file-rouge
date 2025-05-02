@@ -49,4 +49,9 @@ return [
     'client_id' => env('UDEMY_CLIENT_ID'),
     'client_secret' => env('UDEMY_CLIENT_SECRET'),
 ],
+    'jdoodle' => [
+        'client_id' => env('JDOODLE_CLIENT_ID'),
+        'client_secret' => env('JDOODLE_CLIENT_SECRET'),
+        'api_url' => env('JDOODLE_API_URL', 'https://api.jdoodle.com/v1/execute'),
+    ],
 ];
