@@ -23,7 +23,7 @@ class CodeExecutionController extends Controller
         ]);
 
         // Get the file content from your database
-        $file = \App\Models\File::find($request->fileId);
+        $file = \App\Models\CodeFile::find($request->fileId);
         
         try {
             $response = $this->judge0->submitCode(
