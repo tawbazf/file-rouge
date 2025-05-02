@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class CodeFile extends Model
 {
@@ -14,13 +15,12 @@ class CodeFile extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'code_submission_id',
-        'filename',
-        'file_path',
-        'content',
-        'language', 
-    ];
+    protected $fillable = ['filename', 'content', 'language_id', 'user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     
     public function codeSubmission()
