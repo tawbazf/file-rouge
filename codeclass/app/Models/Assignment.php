@@ -41,4 +41,9 @@ class Assignment extends Model
     {
         return $this->hasMany(CodeSubmission::class);
     }
+    public function students()
+{
+    return $this->belongsToMany(User::class, 'assignment_user', 'assignment_id', 'user_id');
+}
+
 }
