@@ -92,6 +92,13 @@
             </div>
         @endif
     </div>
+    @foreach(auth()->user()->unreadNotifications as $notification)
+    <div>
+        <strong>{{ $notification->data['title'] }}</strong><br>
+        {{ $notification->data['message'] }}<br>
+        <a href="{{ url('/assignments/' . $notification->data['assignment_id']) }}">Voir</a>
+    </div>
+@endforeach
 
     <!-- Footer -->
     <div class="footer">
