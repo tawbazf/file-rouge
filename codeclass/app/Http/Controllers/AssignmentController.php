@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Notifications\AssignmentAssigned;
 class AssignmentController extends Controller
 {
     public function assignProject(Request $request)
@@ -54,4 +54,16 @@ public function assignCourse(Request $request)
 
     return back()->with('success', 'Cours assigné !');
 }
+
+}
+$assignment = Assignment::create([
+    'title' => 'Exemple',
+    'description' => 'Texte...',
+    'due_date' => now()->addWeek(),
+    'created_by' => auth()->id(),
+]);
+
+$assignment->students()->sync([2, 3, 4]); 
+foreach ($assignment->students as $student) {
+    $student->notify(new AssignmentAssigned($assignment));
 }
