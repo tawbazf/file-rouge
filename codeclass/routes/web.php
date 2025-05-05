@@ -97,6 +97,10 @@ use App\Http\Controllers\ChallengesController;
 
 Route::get('/challenges', [ChallengesController::class, 'index'])->name('challenges');
 Route::post('/challenges', [ChallengesController::class, 'store'])->name('challenges.store');
+
+Route::post('/challenges/{id}/participate', [App\Http\Controllers\ChallengesController::class, 'participate'])->name('challenges.participate');
+Route::put('/challenges/{id}/status', [App\Http\Controllers\ChallengesController::class, 'updateStatus'])->name('challenges.updateStatus');
+
 use App\Http\Controllers\CertificationsController;
 
 Route::get('/certifications', [CertificationsController::class, 'index'])->name('certifications');
