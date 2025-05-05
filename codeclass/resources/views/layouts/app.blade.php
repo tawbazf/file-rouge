@@ -24,12 +24,10 @@
                             <a href="{{ route('code.review') }}" class="text-decoration-none me-3">Code Review</a>
                             <a href="{{ route('general.statistics') }}" class="text-decoration-none me-3">Statistics</a>
                             @if(auth()->check())
-                            @if(auth()->user()->role === 'teacher')
-                                <a href="{{ route('badges.index') }}" class="text-decoration-none me-3">Badges</a>
-                            @else
-                                <a href="{{ route('MesBadges') }}" class="text-decoration-none me-3">Mes Badges</a>
-                            @endif
-                        @endif
+                            <a href="{{ route('badges.index') }}" class="text-decoration-none me-3">
+                                {{ auth()->user()->role === 'teacher' ? 'Gestion des Badges' : 'Mes Badges' }}
+                            </a>
+                        @endif                        
                         
                             <a href="{{ url('/skills/all') }}" class="text-decoration-none me-3">Skills</a>
                         </nav>
