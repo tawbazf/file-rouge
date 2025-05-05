@@ -116,4 +116,11 @@ public function communities()
                 ->withTimestamps();
 }
 
+public function participatingChallenges()
+{
+    return $this->belongsToMany(Challenge::class, 'challenge_participants')
+                ->withPivot('status', 'joined_at')
+                ->withTimestamps();
+}
+
 }
