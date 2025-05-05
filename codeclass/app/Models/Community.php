@@ -3,33 +3,33 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class CommunityMember extends Model
+class Community extends Model
 {
     protected $fillable = [
-        'user_id',
-        'community_id',
-        'joined_at'
-    ];
-
-    protected $casts = [
-        'joined_at' => 'datetime',
+        'name',
+        'description',
+        'category',
+        'member_count',
+        'discussion_count'
     ];
 
     /**
-     * Get the user that belongs to this membership.
+     * Get the members of this community.
      */
-    public function user(): BelongsTo
+    public function members(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'community_members')
+                    ->withPivot('joined_at')
+                    ->withTimestamps();
     }
 
     /**
-     * Get the community that this membership belongs to.
+     * Check if a user is a member of this community
      */
-    public function community(): BelongsTo
+    public function isMember($userId): bool
     {
-        return $this->belongsTo(Community::class);
+        return $this->members()->where('user_id', $userId)->exists();
     }
 }
