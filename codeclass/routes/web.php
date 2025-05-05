@@ -104,7 +104,11 @@ Route::get('/projects', [ProjectsController::class, 'index'])->name('projects')-
 use App\Http\Controllers\RessourcesController;
 Route::get('/ressources', [RessourcesController::class, 'index'])->name('ressources');
 Route::post('/ressources', [RessourcesController::class, 'store'])->name('ressources.store');
+// Community routes
+Route::get('/community', [App\Http\Controllers\CommunityController::class, 'index'])->name('community.index');
 Route::post('/community/join', [App\Http\Controllers\CommunityController::class, 'join'])->name('community.join')->middleware('auth');
+Route::post('/community/leave', [App\Http\Controllers\CommunityController::class, 'leave'])->name('community.leave')->middleware('auth');
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
