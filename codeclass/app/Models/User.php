@@ -109,4 +109,11 @@ public function skills()
 {
     return $this->belongsToMany(Skill::class)->withPivot('level')->withTimestamps();
 }
+public function communities()
+{
+    return $this->belongsToMany(Community::class, 'community_members')
+                ->withPivot('joined_at')
+                ->withTimestamps();
+}
+
 }

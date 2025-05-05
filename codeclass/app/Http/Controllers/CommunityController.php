@@ -30,4 +30,27 @@ class CommunityController extends Controller
 
         return redirect()->route('community')->with('success', 'Message added!');
     }
+
+    public function join(Request $request)
+    {
+        $validated = $request->validate([
+            'community_id' => 'required|exists:communities,id',
+        ]);
+        $existingMembership = CommunityMember::where('user_id', auth()->id())
+            ->where('community_id', $validated['community_id'])
+            ->first();
+            
+        if (!$existingMembership) {
+            CommunityMember::create([
+                'user_id' => auth()->id(),
+                'community_id' => $validated['community_id'],
+                'joined_at' => now(),
+            ]);
+            
+            return redirect()->back()->with('success', 'You have successfully joined the community!');
+        }
+        
+        return redirect()->back()->with('info', 'You are already a member of this community.');
+    }
+
 }
