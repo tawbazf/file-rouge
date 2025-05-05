@@ -9,20 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('communities', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('title');
-            $table->text('message')->nullable();
+            $table->string('name');
+            $table->text('description');
+            $table->string('category')->nullable();
+            $table->integer('member_count')->default(0);
+            $table->integer('discussion_count')->default(0);
             $table->timestamps();
-    
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
-    
     /**
      * Reverse the migrations.
      */

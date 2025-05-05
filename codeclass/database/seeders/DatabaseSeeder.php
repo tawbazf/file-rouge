@@ -34,5 +34,10 @@ class DatabaseSeeder extends Seeder
     $this->call(SkillSeeder::class);
     $this->call(ChallengeSeeder::class);
     $this->call(SubjectsTableSeeder::class);
+    $this->call([
+        CommunitySeeder::class,
+        CommunityMemberSeeder::class,
+    ]);
+
 }
 }
