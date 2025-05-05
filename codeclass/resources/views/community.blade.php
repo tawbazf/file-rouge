@@ -74,6 +74,19 @@
             @endauth
         </header>
 
+        <!-- Display success/error messages -->
+        @if(session('success'))
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
+                <p>{{ session('success') }}</p>
+            </div>
+        @endif
+
+        @if(session('info'))
+            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-6" role="alert">
+                <p>{{ session('info') }}</p>
+            </div>
+        @endif
+
         <!-- Active Communities -->
         <section class="mb-12">
             <h2 class="text-2xl font-semibold mb-6 flex items-center">
@@ -81,41 +94,51 @@
             </h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach(['Web Development', 'Mobile Apps', 'Data Science', 'DevOps', 'UI/UX Design', 'Game Development'] as $index => $community)
+                @forelse($communities as $community)
                     <div class="community-card p-6 shadow-lg">
                         <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-xl font-semibold text-white">{{ $community }}</h3>
+                            <h3 class="text-xl font-semibold text-white">{{ $community->name }}</h3>
                             <span class="bg-blue-900 text-blue-100 text-xs px-2 py-1 rounded-full">
-                                {{ rand(50, 500) }} members
+                                {{ $community->member_count }} members
                             </span>
                         </div>
                         
                         <p class="text-gray-400 mb-4">
-                            Connect with fellow {{ $community }} enthusiasts, share resources, and collaborate on projects.
+                            {{ $community->description }}
                         </p>
                         
                         <div class="flex -space-x-2 mb-4">
-                            @for($i = 1; $i <= 5; $i++)
+                            @php $displayedUsers = 0; @endphp
+                            @foreach($randomUsers->shuffle()->take(5) as $user)
+                                @php $displayedUsers++; @endphp
                                 <img src="https://randomuser.me/api/portraits/{{ rand(0, 1) ? 'men' : 'women' }}/{{ rand(1, 60) }}.jpg" 
                                      class="w-8 h-8 rounded-full member-avatar" alt="Community member">
-                            @endfor
-                            <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs">+{{ rand(10, 99) }}</div>
+                            @endforeach
+                            @if($community->member_count > $displayedUsers)
+                                <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs">
+                                    +{{ $community->member_count - $displayedUsers }}
+                                </div>
+                            @endif
                         </div>
                         
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-400">
-                                <i class="fas fa-comment-alt mr-1"></i> {{ rand(5, 50) }} discussions today
+                                <i class="fas fa-comment-alt mr-1"></i> {{ $community->discussion_count }} discussions
                             </span>
                             
                             @auth
-                                @if(rand(0, 1))
-                                    <button class="text-green-400 text-sm font-medium">
-                                        <i class="fas fa-check-circle mr-1"></i> Joined
-                                    </button>
+                                @if($community->isMember(auth()->id()))
+                                    <form action="{{ route('community.leave') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="community_id" value="{{ $community->id }}">
+                                        <button type="submit" class="text-green-400 text-sm font-medium">
+                                            <i class="fas fa-check-circle mr-1"></i> Joined
+                                        </button>
+                                    </form>
                                 @else
                                     <form action="{{ route('community.join') }}" method="POST">
                                         @csrf
-                                        <input type="hidden" name="community_id" value="{{ $index + 1 }}">
+                                        <input type="hidden" name="community_id" value="{{ $community->id }}">
                                         <button type="submit" class="text-blue-400 hover:text-blue-300 text-sm font-medium">
                                             <i class="fas fa-plus-circle mr-1"></i> Join
                                         </button>
@@ -128,7 +151,13 @@
                             @endauth
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-users text-gray-600 text-5xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">No communities found</h3>
+                        <p class="text-gray-400">Be the first to create a community!</p>
+                    </div>
+                @endforelse
             </div>
         </section>
 
@@ -144,50 +173,3 @@
                 <p class="text-gray-400 mt-2">Stay updated with the latest events and activities in our community.</p>
                 <a href="#" class="text-blue-400 hover:underline mt-4 inline-block">View Events</a>
             </div>
-
-            <div class="community-card p-4 shadow-lg">
-                <h2 class="text-xl font-semibold text-white">Join the Discussion</h2>
-                <p class="text-gray-400 mt-2">Engage in meaningful conversations with other members.</p>
-                <a href="#" class="text-blue-400 hover:underline mt-4 inline-block">Start Now</a>
-            </div>
-        </section>
-        
-        <!-- Community Stats -->
-        <section class="mt-12 bg-gray-800 bg-opacity-50 rounded-lg p-6">
-            <h2 class="text-2xl font-semibold mb-6">Community Stats</h2>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-blue-400">{{ rand(1000, 5000) }}</div>
-                    <div class="text-gray-400 text-sm">Members</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-purple-400">{{ rand(50, 200) }}</div>
-                    <div class="text-gray-400 text-sm">Active Today</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-green-400">{{ rand(100, 500) }}</div>
-                    <div class="text-gray-400 text-sm">Projects</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-yellow-400">{{ rand(10, 50) }}</div>
-                    <div class="text-gray-400 text-sm">Events This Month</div>
-                </div>
-            </div>
-        </section>
-
-        <footer class="text-center mt-12">
-            <p class="text-gray-500 text-sm">© 2025 CodeClass Community. All rights reserved.</p>
-        </footer>
-    </div>
-    
-    @auth
-        <!-- Floating Chat Button -->
-        <div class="fixed bottom-6 right-6">
-            <button class="bg-blue-600 hover:bg-blue-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg">
-                <i class="fas fa-comments text-xl"></i>
-            </button>
-        </div>
-    @endauth
-</body>
-</html>
