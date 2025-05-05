@@ -100,8 +100,7 @@ Route::post('/challenges', [ChallengesController::class, 'store'])->name('challe
 use App\Http\Controllers\CertificationsController;
 
 Route::get('/certifications', [CertificationsController::class, 'index'])->name('certifications');
-
-Route::get('/projects', [ProjectsController::class, 'index'])->name('projects');
+Route::get('/projects', [ProjectsController::class, 'index'])->name('projects')->middleware('auth');
 use App\Http\Controllers\RessourcesController;
 Route::get('/ressources', [RessourcesController::class, 'index'])->name('ressources');
 Route::post('/ressources', [RessourcesController::class, 'store'])->name('ressources.store');
