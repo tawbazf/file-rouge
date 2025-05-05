@@ -18,7 +18,6 @@ class BadgeController extends Controller
         return view('badge');
     }
 
-    // Handle form submission and save badge
     public function store(Request $request)
     {
         if (!Auth::check() || Auth::user()->role !== 'teacher') {
@@ -41,24 +40,35 @@ class BadgeController extends Controller
         try {
             $badge = new Badge();
             $badge->name = $validated['name'];
-            $badge->points = $validated['points'];
             $badge->description = $validated['description'];
             $badge->category = $validated['category'];
-            // set other fields...
+            $badge->level = $validated['level'];
+            $badge->color = $validated['color'];
+            $badge->points = $validated['points'];
+            $badge->min_points = $validated['min_points'];
+            $badge->min_activity_hours = $validated['min_activity_hours'];
+            $badge->created_by = auth()->id();
             $badge->save();
-    
-            return redirect()->route('dashboardProf')->with('success', 'Badge créé avec succès !');
-        } catch (\Exception $e) {
-            // Optionally log the error: \Log::error($e);
-            return redirect()->back()->with('error', 'Erreur lors de la création du badge.');
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => 'Badge créé avec succès!'
+            ]);
         }
-        // $badge = Badge::create($validated);
-
-        // if ($request->ajax()) {
-        //     return response()->json(['success' => true, 'badge' => $badge]);
-        // }
+        
+        return redirect()->route('badges.index')->with('success', 'Badge créé avec succès!');
+    } catch (\Exception $e) {
     
-        // return redirect()->route('badges')->with('success', 'Badge créé avec succès !');
+        \Log::error('Badge creation error: ' . $e->getMessage());
+        
+    
+        if ($request->expectsJson()) {
+            return response()->json([
+                'error' => 'Une erreur est survenue. Veuillez réessayer.'
+            ], 500);
+        }
+        
+        return back()->with('error', 'Une erreur est survenue. Veuillez réessayer.');
+    }
 
     }
 
@@ -68,18 +78,17 @@ class BadgeController extends Controller
              // Get the authenticated user
              $user = auth()->user();
         
-             // Get badges (you might need different queries based on role)
+            
              $badges = Badge::all();
              
              // Return different views based on user role
              if ($user->role === 'teacher') {
-                 return view('badges', compact('badges'));
+                 return view('badge', compact('badges'));
              } else {
-                 return view('mesbadges', compact('badges'));
+                 return view('MesBadges', compact('badges'));
              }
          } 
-        // $badges = Badge::all();
-        // return view('badge', compact('badges'));
+        
     
 
     // Assign badge to eligible users

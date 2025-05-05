@@ -282,72 +282,171 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const badgeNameInput = document.getElementById('badge-name');
-            const badgePreviewImg = document.getElementById('badge-preview-img');
-            const colorOptions = document.querySelectorAll('.color-option');
-            const levelOptions = document.querySelectorAll('.level-option');
-            const badgeLevelInput = document.getElementById('badge-level');
-            const badgeColorInput = document.getElementById('badge-color');
+//         document.addEventListener('DOMContentLoaded', function() {
+//             const badgeNameInput = document.getElementById('badge-name');
+//             const badgePreviewImg = document.getElementById('badge-preview-img');
+//             const colorOptions = document.querySelectorAll('.color-option');
+//             const levelOptions = document.querySelectorAll('.level-option');
+//             const badgeLevelInput = document.getElementById('badge-level');
+//             const badgeColorInput = document.getElementById('badge-color');
 
-            // Color to hex mapping
-            const colorMap = {
-                blue: '3b82f6',
-                green: '10b981',
-                purple: '8b5cf6',
-                red: 'ef4444'
-            };
+//             // Color to hex mapping
+//             const colorMap = {
+//                 blue: '3b82f6',
+//                 green: '10b981',
+//                 purple: '8b5cf6',
+//                 red: 'ef4444'
+//             };
 
-            // Update badge preview
-            function updateBadgePreview() {
-                const name = badgeNameInput.value || 'Badge';
-                const level = badgeLevelInput.value;
-                const color = colorMap[badgeColorInput.value] || '3b82f6';
-                badgePreviewImg.src = `https://placehold.co/150x150/${color}/FFC107?text=${encodeURIComponent(name)}&font=roboto`;
-                badgePreviewImg.alt = `Aperçu du badge ${name}`;
-            }
+//             // Update badge preview
+//             function updateBadgePreview() {
+//                 const name = badgeNameInput.value || 'Badge';
+//                 const level = badgeLevelInput.value;
+//                 const color = colorMap[badgeColorInput.value] || '3b82f6';
+//                 badgePreviewImg.src = `https://placehold.co/150x150/${color}/FFC107?text=${encodeURIComponent(name)}&font=roboto`;
+//                 badgePreviewImg.alt = `Aperçu du badge ${name}`;
+//             }
 
-            // Color selection
-            colorOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    colorOptions.forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                    badgeColorInput.value = this.dataset.color;
-                    updateBadgePreview();
-                });
-            });
+//             // Color selection
+//             colorOptions.forEach(option => {
+//                 option.addEventListener('click', function() {
+//                     colorOptions.forEach(opt => opt.classList.remove('selected'));
+//                     this.classList.add('selected');
+//                     badgeColorInput.value = this.dataset.color;
+//                     updateBadgePreview();
+//                 });
+//             });
 
-            // Level selection
-            levelOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    levelOptions.forEach(opt => opt.classList.remove('bg-blue-600', 'text-white'));
-                    levelOptions.forEach(opt => opt.classList.add('bg-gray-100', 'text-gray-800'));
-                    this.classList.remove('bg-gray-100', 'text-gray-800');
-                    this.classList.add('bg-blue-600', 'text-white');
-                    badgeLevelInput.value = this.dataset.level;
-                    updateBadgePreview();
-                });
-            });
+//             // Level selection
+//             levelOptions.forEach(option => {
+//                 option.addEventListener('click', function() {
+//                     levelOptions.forEach(opt => opt.classList.remove('bg-blue-600', 'text-white'));
+//                     levelOptions.forEach(opt => opt.classList.add('bg-gray-100', 'text-gray-800'));
+//                     this.classList.remove('bg-gray-100', 'text-gray-800');
+//                     this.classList.add('bg-blue-600', 'text-white');
+//                     badgeLevelInput.value = this.dataset.level;
+//                     updateBadgePreview();
+//                 });
+//             });
 
-            // Real-time name update
-            badgeNameInput.addEventListener('input', updateBadgePreview);
+//             // Real-time name update
+//             badgeNameInput.addEventListener('input', updateBadgePreview);
 
-            // Initial preview
-            updateBadgePreview();
-        });
+//             // Initial preview
+//             updateBadgePreview();
+//         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+//         document.addEventListener('DOMContentLoaded', function() {
    
+//     const form = document.getElementById('badgeCreateForm');
+//     const messageDiv = document.getElementById('badgeFormMessage');
+
+//     form.addEventListener('submit', function(e) {
+//         e.preventDefault();
+
+//         // Gather form data
+//         const formData = new FormData(form);
+
+//         // Send AJAX POST request
+//         fetch(form.action, {
+//             method: 'POST',
+//             headers: {
+//                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+//                 'Accept': 'application/json'
+//             },
+//             body: formData
+//         })
+//         .then(async response => {
+//             const data = await response.json();
+//             if (response.ok) {
+//                 // Success: Show message and reset form
+//                 messageDiv.innerHTML = `<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">Badge créé avec succès !</div>`;
+//                 form.reset();
+//                 updateBadgePreview(); // Reset preview
+//             } else {
+//                 // Error: Show validation errors
+//                 let errors = '';
+//                 if (data.errors) {
+//                     for (const field in data.errors) {
+//                         errors += `<div class="text-red-500 text-sm mb-1">${data.errors[field].join('<br>')}</div>`;
+//                     }
+//                 } else {
+//                     errors = `<div class="text-red-500 text-sm mb-1">Erreur lors de la création du badge.</div>`;
+//                 }
+//                 messageDiv.innerHTML = errors;
+//             }
+//         })
+//         .catch(() => {
+//             messageDiv.innerHTML = `<div class="text-red-500 text-sm mb-1">Erreur réseau, veuillez réessayer.</div>`;
+//         });
+//     });
+// });
+document.addEventListener('DOMContentLoaded', function() {
+    const badgeNameInput = document.getElementById('badge-name');
+    const badgePreviewImg = document.getElementById('badge-preview-img');
+    const colorOptions = document.querySelectorAll('.color-option');
+    const levelOptions = document.querySelectorAll('.level-option');
+    const badgeLevelInput = document.getElementById('badge-level');
+    const badgeColorInput = document.getElementById('badge-color');
     const form = document.getElementById('badgeCreateForm');
     const messageDiv = document.getElementById('badgeFormMessage');
 
-    form.addEventListener('submit', function(e) {
+    // Color to hex mapping
+    const colorMap = {
+        blue: '3b82f6',
+        green: '10b981',
+        purple: '8b5cf6',
+        red: 'ef4444'
+    };
+
+    // Update badge preview
+    function updateBadgePreview() {
+        const name = badgeNameInput.value || 'Badge';
+        const level = badgeLevelInput.value;
+        const color = colorMap[badgeColorInput.value] || '3b82f6';
+        badgePreviewImg.src = `https://placehold.co/150x150/${color}/FFC107?text=${encodeURIComponent(name)}&font=roboto`;
+        badgePreviewImg.alt = `Aperçu du badge ${name}`;
+    }
+
+    // Color selection
+    colorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            colorOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            badgeColorInput.value = this.dataset.color;
+            updateBadgePreview();
+        });
+    });
+
+    // Level selection
+    levelOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            levelOptions.forEach(opt => opt.classList.remove('bg-blue-600', 'text-white'));
+            levelOptions.forEach(opt => opt.classList.add('bg-gray-100', 'text-gray-800'));
+            this.classList.remove('bg-gray-100', 'text-gray-800');
+            this.classList.add('bg-blue-600', 'text-white');
+            badgeLevelInput.value = this.dataset.level;
+            updateBadgePreview();
+        });
+    });
+
+    // Real-time name update
+    badgeNameInput.addEventListener('input', updateBadgePreview);
+
+    // Initial preview
+    updateBadgePreview();
+
+    // Form submission
+    document.querySelector('.sticky button[type="submit"]').addEventListener('click', function(e) {
         e.preventDefault();
-
-        // Gather form data
+        
+        // Show loading state
+        this.disabled = true;
+        this.innerHTML = 'Création en cours...';
+        
+        // Submit the form
         const formData = new FormData(form);
-
-        // Send AJAX POST request
+        
         fetch(form.action, {
             method: 'POST',
             headers: {
@@ -356,28 +455,39 @@
             },
             body: formData
         })
-        .then(async response => {
-            const data = await response.json();
-            if (response.ok) {
-                // Success: Show message and reset form
-                messageDiv.innerHTML = `<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">Badge créé avec succès !</div>`;
-                form.reset();
-                updateBadgePreview(); // Reset preview
-            } else {
-                // Error: Show validation errors
-                let errors = '';
-                if (data.errors) {
-                    for (const field in data.errors) {
-                        errors += `<div class="text-red-500 text-sm mb-1">${data.errors[field].join('<br>')}</div>`;
-                    }
-                } else {
-                    errors = `<div class="text-red-500 text-sm mb-1">Erreur lors de la création du badge.</div>`;
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Success message
+                messageDiv.innerHTML = `<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">${data.success}</div>`;
+                
+                // Redirect to badges page after a short delay
+                setTimeout(() => {
+                    window.location.href = '{{ route("badges.index") }}';
+                }, 1500);
+            } else if (data.errors) {
+                // Show validation errors
+                let errorHtml = '<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"><ul>';
+                
+                for (const field in data.errors) {
+                    errorHtml += `<li>${data.errors[field]}</li>`;
                 }
-                messageDiv.innerHTML = errors;
+                
+                errorHtml += '</ul></div>';
+                messageDiv.innerHTML = errorHtml;
+                
+                // Re-enable button
+                this.disabled = false;
+                this.innerHTML = 'Créer le badge';
             }
         })
-        .catch(() => {
-            messageDiv.innerHTML = `<div class="text-red-500 text-sm mb-1">Erreur réseau, veuillez réessayer.</div>`;
+        .catch(error => {
+            // Show error message
+            messageDiv.innerHTML = `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">Une erreur est survenue. Veuillez réessayer.</div>`;
+            
+            // Re-enable button
+            this.disabled = false;
+            this.innerHTML = 'Créer le badge';
         });
     });
 });

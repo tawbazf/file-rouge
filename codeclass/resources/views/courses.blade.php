@@ -1,4 +1,4 @@
-@extends('layouts.app')
+
 <div class="py-12"> <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <h1 class="text-3xl font-bold text-gray-900 mb-8">Our Courses</h1>
         <!-- Course filters -->
         <div class="mb-8 flex flex-wrap gap-3">

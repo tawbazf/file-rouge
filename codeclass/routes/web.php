@@ -72,6 +72,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 Route::get('/badges', [BadgeController::class, 'index'])->name('badges.index');
 Route::get('/badge/create', [BadgeController::class, 'create'])->name('badge.create');
 Route::post('/badge', [BadgeController::class, 'store'])->name('badge.store');
+Route::get('/badge/{badge}/edit', [BadgeController::class, 'edit'])->name('badge.edit');
+Route::delete('/badge/{badge}', [BadgeController::class, 'destroy'])->name('badge.destroy');
+
     // Projets
     Route::post('/projects', [ProjectsController::class, 'store'])->name('projects.store');
     
