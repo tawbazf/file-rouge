@@ -106,45 +106,47 @@
                         </button>
                     </div>
                 </div>
-                <div class="bg-gray-50 p-4 rounded-md overflow-x-auto">
-                    <pre class="code-font text-sm text-gray-800">{{ $selectedFile->content ?? '' }}</pre>
-                    
-                    <!-- Code Execution Section -->
-                    <div class="mt-4">
-                        <form id="run-code-form" class="mb-2">
-                            @csrf
-                            <input type="hidden" name="fileId" value="{{ $selectedFile->id ?? '' }}">
-                            <input type="hidden" name="language_id" value="{{ $selectedFile->language_id ?? 71 }}"> <!-- Default to Python -->
-                            <div class="flex items-center space-x-4">
-                                <div>
-                                    <label for="language" class="block text-sm font-medium text-gray-700 mb-1">Language</label>
-                                    <select id="language" name="language_id" class="border rounded p-2 text-sm">
-                                        <option value="50">C</option>
-                                        <option value="54">C++</option>
-                                        <option value="62">Java</option>
-                                        <option value="71" selected>Python</option>
-                                        <option value="63">JavaScript</option>
-                                        <option value="68">PHP</option>
-                                    </select>
-                                </div>
-                                <div class="flex-1">
-                                    <label for="input" class="block text-sm font-medium text-gray-700 mb-1">Input (stdin)</label>
-                                    <input type="text" id="input" name="input" class="border rounded p-2 w-full text-sm" placeholder="Enter input if needed">
-                                </div>
-                            </div>
-                            <button type="submit" id="run-button" class="mt-3 px-4 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700 flex items-center">
-                                Run Code
-                                <span id="loader" class="loader hidden"></span>
-                            </button>
-                        </form>
-                        <div class="mt-3">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Output</label>
-                            <div id="run-output" class="bg-gray-100 p-3 rounded text-sm text-gray-800 min-h-20 font-mono whitespace-pre-wrap"></div>
-                        </div>
-                    </div>
+                <!-- In the Code Execution Section -->
+<div class="bg-gray-50 p-4 rounded-md overflow-x-auto">
+    <!-- Display code with CodeMirror -->
+    <textarea id="code-editor" name="code">{{ $selectedFile->content ?? '' }}</textarea>
+    
+    <!-- Code Execution Section -->
+    <div class="mt-4">
+        <form id="run-code-form" class="mb-2">
+            @csrf
+            <input type="hidden" name="fileId" value="{{ $selectedFile->id ?? '' }}">
+            <input type="hidden" name="code" id="code-input">
+            <input type="hidden" name="language_id" value="{{ $selectedFile->language_id ?? 71 }}">
+            <div class="flex items-center space-x-4">
+                <div>
+                    <label for="language" class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                    <select id="language" name="language_id" class="border rounded p-2 text-sm">
+                        <option value="50">C</option>
+                        <option value="54">C++</option>
+                        <option value="62">Java</option>
+                        <option value="71" selected>Python</option>
+                        <option value="63">JavaScript</option>
+                        <option value="68">PHP</option>
+                    </select>
+                </div>
+                <div class="flex-1">
+                    <label for="input" class="block text-sm font-medium text-gray-700 mb-1">Input (stdin)</label>
+                    <input type="text" id="input" name="input" class="border rounded p-2 w-full text-sm" placeholder="Enter input if needed">
                 </div>
             </div>
-
+            <button type="submit" id="run-button" class="mt-3 px-4 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700 flex items-center">
+                Run Code
+                <span id="loader" class="loader hidden"></span>
+            </button>
+        </form>
+        <div class="mt-3">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Output</label>
+            <div id="run-output" class="bg-gray-100 p-3 rounded text-sm text-gray-800 min-h-20 font-mono whitespace-pre-wrap"></div>
+        </div>
+    </div>
+</div>
+                           
             <!-- Comments Panel -->
             <div class="bg-white rounded-lg shadow-sm p-6 w-full md:w-96">
                 <h2 class="text-lg font-medium text-gray-900 mb-4">Filter Comments</h2>
@@ -156,129 +158,121 @@
                     <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm filter-btn" data-filter="style">Style</button>
                 </div>
                 <!-- Comments List -->
-                <div class="space-y-6">
-                    @foreach($comments as $comment)
-                        <div class="border-b border-gray-200 pb-4 comment-item" data-tag="{{ $comment->tag }}">
-                            <div class="flex items-start mb-2">
-                                <img src="{{ $comment->user->avatar ?? 'default-avatar.png' }}" alt="{{ $comment->user->name ?? 'User' }}" class="h-8 w-8 rounded-full mr-3">
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-medium text-gray-900">{{ $comment->user->name ?? 'User' }}</span>
-                                        <span class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
-                                    </div>
-                                    <span class="tag-{{ $comment->tag }} text-xs px-2 py-1 rounded-full inline-block mb-2">{{ ucfirst($comment->tag) }}</span>
-                                    <p class="text-sm text-gray-700">
-                                        {{ $comment->text }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+<div class="space-y-6">
+    @foreach($comments as $comment)
+        <div class="border-b border-gray-200 pb-4 comment-item" data-tag="{{ $comment['tag'] }}">
+            <div class="flex items-start mb-2">
+                <img src="{{ $comment['avatar'] }}" alt="{{ $comment['author'] }}" class="h-8 w-8 rounded-full mr-3">
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-medium text-gray-900">{{ $comment['author'] }}</span>
+                        <span class="text-xs text-gray-500">{{ $comment['time'] }}</span>
+                    </div>
+                    <span class="{{ $comment['tagClass'] }} text-xs px-2 py-1 rounded-full inline-block mb-2">{{ ucfirst($comment['tag']) }}</span>
+                    <p class="text-sm text-gray-700">
+                        {{ $comment['content'] }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>document.getElementById('run-code-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const runButton = document.getElementById('run-button');
-        const loader = document.getElementById('loader');
-        const outputDiv = document.getElementById('run-output');
-        const codeEditor = document.getElementById('code-editor');
-        
-        // Get the code from the editor and set it in the hidden input
-        document.getElementById('code-input').value = codeEditor.value;
-        
-        // Show loading state
-        runButton.disabled = true;
-        loader.classList.remove('hidden');
-        outputDiv.innerText = 'Executing code...';
-        
-        const formData = new FormData(this);
-        
-        fetch('/execute-code', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Server responded with status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.error) {
-                outputDiv.innerText = 'Error: ' + data.error;
-            } else {
-                outputDiv.innerText = data.output || 'No output';
-            }
-        })
-        .catch(err => {
-            console.error('Execution error:', err);
-            outputDiv.innerText = 'Error: ' + err.message;
-        })
-        .finally(() => {
-            runButton.disabled = false;
-            loader.classList.add('hidden');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize CodeMirror
+            const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
+                lineNumbers: true,
+                mode: 'text/x-python',
+                theme: 'default',
+                indentUnit: 4,
+                tabSize: 4,
+                lineWrapping: true,
+                extraKeys: {"Tab": "indentMore", "Shift-Tab": "indentLess"}
+            });
+            
+            // Set initial height
+            editor.setSize(null, 300);
+            
+            // Update mode when language changes
+            document.getElementById('language').addEventListener('change', function() {
+                const languageId = this.value;
+                let mode;
+                
+                switch(languageId) {
+                    case '50': // C
+                    case '54': // C++
+                        mode = 'text/x-c++src';
+                        break;
+                    case '62': // Java
+                        mode = 'text/x-java';
+                        break;
+                    case '71': // Python
+                        mode = 'text/x-python';
+                        break;
+                    case '63': // JavaScript
+                        mode = 'text/javascript';
+                        break;
+                    case '68': // PHP
+                        mode = 'application/x-httpd-php';
+                        break;
+                    default:
+                        mode = 'text/plain';
+                }
+                
+                editor.setOption('mode', mode);
+            });
+            
+            // Handle form submission
+            document.getElementById('run-code-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const runButton = document.getElementById('run-button');
+                const loader = document.getElementById('loader');
+                const outputDiv = document.getElementById('run-output');
+                
+                // Get code from CodeMirror
+                document.getElementById('code-input').value = editor.getValue();
+                
+                // Show loading state
+                runButton.disabled = true;
+                loader.classList.remove('hidden');
+                outputDiv.innerText = 'Executing code...';
+                
+                const formData = new FormData(this);
+                
+                fetch('/execute-code', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server responded with status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        outputDiv.innerText = 'Error: ' + data.error;
+                    } else {
+                        outputDiv.innerText = data.output || 'No output';
+                    }
+                })
+                .catch(err => {
+                    console.error('Execution error:', err);
+                    outputDiv.innerText = 'Error: ' + err.message;
+                })
+                .finally(() => {
+                    runButton.disabled = false;
+                    loader.classList.add('hidden');
+                });
+            });
         });
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initialize CodeMirror
-    const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
-        lineNumbers: true,
-        mode: 'python',
-        theme: 'default',
-        indentUnit: 4,
-        tabSize: 4,
-        lineWrapping: true,
-        extraKeys: {"Tab": "indentMore", "Shift-Tab": "indentLess"}
-    });
-    
-    // Set initial height
-    editor.setSize(null, 300);
-    
-    // Update mode when language changes
-    document.getElementById('language').addEventListener('change', function() {
-        const languageId = this.value;
-        let mode;
-        
-        switch(languageId) {
-            case '50': // C
-            case '54': // C++
-                mode = 'text/x-c++src';
-                break;
-            case '62': // Java
-                mode = 'text/x-java';
-                break;
-            case '71': // Python
-                mode = 'text/x-python';
-                break;
-            case '63': // JavaScript
-                mode = 'text/javascript';
-                break;
-            case '68': // PHP
-                mode = 'application/x-httpd-php';
-                break;
-            default:
-                mode = 'text/plain';
-        }
-        
-        editor.setOption('mode', mode);
-    });
-    
-    // Update the form submission to get code from CodeMirror
-    document.getElementById('run-code-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Get code from CodeMirror
-        document.getElementById('code-input').value = editor.getValue();
-        
-        // Rest of your code...
-    });
-});
-
-    </script>
+        </script>
 </body>
 </html>
