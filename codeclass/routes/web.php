@@ -69,11 +69,16 @@ Route::middleware('auth')->group(function (): void {
     // Badges
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
-Route::get('/badges', [BadgeController::class, 'index'])->name('badges.index')->middleware('auth');
+// Route::get('/badges', [BadgeController::class, 'index'])->name('badges.index')->middleware('auth');
+// Route::get('/badge/create', [BadgeController::class, 'create'])->name('badge.create');
+// Route::post('/badge', [BadgeController::class, 'store'])->name('badge.store');
+// Route::get('/badge/{badge}/edit', [BadgeController::class, 'edit'])->name('badge.edit');
+// Route::delete('/badge/{badge}', [BadgeController::class, 'destroy'])->name('badge.destroy'); 
+
+Route::get('/badges', [BadgeController::class, 'index'])->name('badges.index');
 Route::get('/badge/create', [BadgeController::class, 'create'])->name('badge.create');
 Route::post('/badge', [BadgeController::class, 'store'])->name('badge.store');
-Route::get('/badge/{badge}/edit', [BadgeController::class, 'edit'])->name('badge.edit');
-Route::delete('/badge/{badge}', [BadgeController::class, 'destroy'])->name('badge.destroy'); 
+Route::post('/badges/assign', [BadgeController::class, 'checkAndAssignBadges'])->name('badges.assign');
     Route::post('/projects', [ProjectsController::class, 'store'])->name('projects.store');
     
     // Droits utilisateurs

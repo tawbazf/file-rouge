@@ -9,7 +9,7 @@ use App\Models\User;
 
 class BadgeController extends Controller
 {
-
+    // Show the badge creation form (teachers only)
     public function create()
     {
         if (!Auth::check() || Auth::user()->role !== 'teacher') {
@@ -18,6 +18,7 @@ class BadgeController extends Controller
         return view('badge');
     }
 
+    // Store a new badge
     public function store(Request $request)
     {
         if (!Auth::check() || Auth::user()->role !== 'teacher') {
@@ -73,6 +74,7 @@ class BadgeController extends Controller
         }
     }
 
+    // List badges based on user role
     public function index()
     {
         $user = auth()->user();
@@ -85,6 +87,7 @@ class BadgeController extends Controller
         }
     }
 
+    // Assign badge to eligible users
     public function assignBadgeIfEligible($user)
     {
         $badges = Badge::all();
@@ -107,6 +110,7 @@ class BadgeController extends Controller
                $userTime >= $badge->time;
     }
 
+    // Generate badge image
     protected function generateBadgeImage($color, $level)
     {
         $colorMap = [
@@ -117,5 +121,13 @@ class BadgeController extends Controller
         ];
         $hexColor = $colorMap[$color] ?? '3b82f6';
         return "badges/{$level}-{$hexColor}.png";
+    }
+
+    // For testing badge assignment
+    public function checkAndAssignBadges(Request $request)
+    {
+        $user = auth()->user();
+        $this->assignBadgeIfEligible($user);
+        return redirect()->back()->with('success', 'Badges vérifiés et attribués si éligible.');
     }
 }

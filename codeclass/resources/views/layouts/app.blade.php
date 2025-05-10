@@ -24,7 +24,7 @@
                             <a href="{{ route('code.review') }}" class="text-decoration-none me-3">Code Review</a>
                             <a href="{{ route('general.statistics') }}" class="text-decoration-none me-3">Statistics</a>
                             @if(auth()->check())
-                            <a href="{{ route('badges.index') }}" class="text-decoration-none me-3">
+                            <a href="{{ route('badges.index') }}" class="text-decoration-none me-3 text-gray-600 hover:text-gray-900">
                                 {{ auth()->user()->role === 'teacher' ? 'Gestion des Badges' : 'Mes Badges' }}
                             </a>
                         @endif                        
