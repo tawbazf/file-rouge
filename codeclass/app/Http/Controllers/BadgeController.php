@@ -77,12 +77,25 @@ class BadgeController extends Controller
     // List badges based on user role
     public function index()
     {
-        $user = auth()->user();
-        if ($user && $user->role === 'teacher') {
+        if (auth()->user()->role === 'teacher') {
             $badges = Badge::all();
             return view('badge', compact('badges'));
         } else {
-            $badges = $user ? $user->badges()->withPivot('awarded_at')->get() : collect([]);
+            $user = auth()->user();
+            $badges = $user->badges()->withPivot('awarded_at')->get()->map(function ($badge) {
+                return [
+                    'id' => $badge->id,
+                    'name' => $badge->name,
+                    'description' => $badge->description ?? 'Aucune description',
+                    'image' => asset($badge->image),
+                    'level' => $badge->level,
+                    'category' => $badge->category,
+                    'points' => $badge->points,
+                    'awarded_at' => $badge->pivot->awarded_at->diffForHumans(),
+                    'criteria' => "Critères: {$badge->points_required} points requis, {$badge->time} heures, {$badge->projects} projets complétés"
+                ];
+            })->keyBy('id');
+
             return view('MesBadges', compact('badges'));
         }
     }
