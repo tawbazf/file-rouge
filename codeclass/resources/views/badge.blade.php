@@ -30,14 +30,8 @@
         .color-red { background-color: #ef4444; }
     </style>
 </head>
-@if(session('error'))
-    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
-        {{ session('error') }}
-    </div>
-@endif
 <body class="bg-gray-50">
     <div class="min-h-screen flex flex-col">
-            <!-- Main Content -->
         <main class="flex-1">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 @if (session('success'))
@@ -63,152 +57,86 @@
                             <h2 class="text-lg font-semibold text-gray-900 mb-6">Informations du badge</h2>
                             <form id="badgeCreateForm" action="{{ route('badge.store') }}" method="POST">
                                 @csrf
-                                <div  id="badgeFormMessage" class="mb-4">
+                                <div id="badgeFormMessage" class="mb-4"></div>
+
+                                <div class="mb-4">
                                     <label for="badge-name" class="block text-sm font-medium text-gray-700 mb-1">Nom du badge</label>
-                                    <input type="text" id="badge-name" name="name" placeholder="Ex: Expert en JavaScript" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    <input type="text" id="badge-name" name="name" value="{{ old('name') }}" placeholder="Ex: Expert en JavaScript" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                                     @error('name')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                
+
                                 <div class="mb-4">
                                     <label for="badge-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                                    <textarea id="badge-description" name="description" rows="4" placeholder="Décrivez les critères d'obtention..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                    <textarea id="badge-description" name="description" rows="4" placeholder="Décrivez les critères d'obtention..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('description') }}</textarea>
                                     @error('description')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div>
 
-
-    @error('name')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-    @enderror
-</div>
-<div class="mb-4">
-    <label for="points" class="block text-sm font-medium text-gray-700 mb-1">Points</label>
-    <input
-        type="number"
-        name="points"
-        id="points"
-        value="{{ old('points') }}"
-        required
-        class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Ex: 100"
-    >
-    @error('points')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-    @enderror
-</div>
-                                <div>
+                                <div class="mb-4">
                                     <label for="badge-category" class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
-                                    <div class="relative">
-                                        <select id="badge-category" name="category" class="w-full px-3 py-2 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                            <option value="Développement Web">Développement Web</option>
-                                            <option value="Programmation Mobile">Programmation Mobile</option>
-                                            <option value="Intelligence Artificielle">Intelligence Artificielle</option>
-                                            <option value="Bases de Données">Bases de Données</option>
-                                            <option value="DevOps">DevOps</option>
-                                        </select>
-                                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                    </div>
+                                    <select id="badge-category" name="category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                        <option value="Développement Web" {{ old('category') == 'Développement Web' ? 'selected' : '' }}>Développement Web</option>
+                                        <option value="Programmation Mobile" {{ old('category') == 'Programmation Mobile' ? 'selected' : '' }}>Programmation Mobile</option>
+                                        <option value="Intelligence Artificielle" {{ old('category') == 'Intelligence Artificielle' ? 'selected' : '' }}>Intelligence Artificielle</option>
+                                        <option value="Bases de Données" {{ old('category') == 'Bases de Données' ? 'selected' : '' }}>Bases de Données</option>
+                                        <option value="DevOps" {{ old('category') == 'DevOps' ? 'selected' : '' }}>DevOps</option>
+                                    </select>
                                     @error('category')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="mb-4">
-                                    <label for="min_points" class="block text-sm font-medium text-gray-700 mb-1">Points minimum requis</label>
-                                    <input
-                                        type="number"
-                                        name="min_points"
-                                        id="min_points"
-                                        value="{{ old('min_points') }}"
-                                        required
-                                        class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Ex: 80"
-                                    >
-                                    @error('min_points')
-                                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="mb-4">
-                                    <label for="min_activity_hours" class="block text-sm font-medium text-gray-700 mb-1">Temps d'activité minimum (heures)</label>
-                                    <input
-                                        type="number"
-                                        name="min_activity_hours"
-                                        id="min_activity_hours"
-                                        value="{{ old('min_activity_hours') }}"
-                                        required
-                                        class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Ex: 10"
-                                    >
-                                    @error('min_activity_hours')
-                                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                        </div>
 
-                        <div class="bg-white rounded-lg shadow-sm p-6">
-                            <h2 class="text-lg font-semibold text-gray-900 mb-6">Critères d'obtention</h2>
-                            
-                            <div class="mb-6">
-                                <div class="flex items-center mb-2">
-                                    <div class="flex-shrink-0 mr-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                                        </svg>
-                                    </div>
-                                    <label for="points" class="block text-sm font-medium text-gray-700">Points minimum requis</label>
+                                <div class="mb-4">
+                                    <label for="points" class="block text-sm font-medium text-gray-700 mb-1">Points attribués</label>
+                                    <input type="number" id="points" name="points" value="{{ old('points', 100) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required min="0">
+                                    @error('points')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                <div class="ml-9">
-                                    <input type="number" id="points" name="points_required" value="1000" class="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+
+                                <div class="mb-4">
+                                    <label for="points_required" class="block text-sm font-medium text-gray-700 mb-1">Points minimum requis</label>
+                                    <input type="number" id="points_required" name="points_required" value="{{ old('points_required', 1000) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required min="0">
                                     @error('points_required')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
-                            
-                            <div class="mb-6">
-                                <div class="flex items-center mb-2">
-                                    <div class="flex-shrink-0 mr-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                    <label for="time" class="block text-sm font-medium text-gray-700">Temps d'activité minimum</label>
+
+                                <div class="mb-4">
+                                    <label for="min_points" class="block text-sm font-medium text-gray-700 mb-1">Points minimum pour éligibilité</label>
+                                    <input type="number" id="min_points" name="min_points" value="{{ old('min_points', 80) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required min="0">
+                                    @error('min_points')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                <div class="ml-9 flex items-center">
-                                    <input type="number" id="time" name="time" value="30" class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                    <span class="ml-2 text-gray-700">heures</span>
+
+                                <div class="mb-4">
+                                    <label for="min_activity_hours" class="block text-sm font-medium text-gray-700 mb-1">Temps d'activité minimum (heures)</label>
+                                    <input type="number" id="min_activity_hours" name="min_activity_hours" value="{{ old('min_activity_hours', 10) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required min="0">
+                                    @error('min_activity_hours')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="time" class="block text-sm font-medium text-gray-700 mb-1">Temps minimum requis (heures)</label>
+                                    <input type="number" id="time" name="time" value="{{ old('time', 30) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required min="0">
                                     @error('time')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
-                            
-                            <div>
-                                <div class="flex items-center mb-2">
-                                    <div class="flex-shrink-0 mr-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                                        </svg>
-                                    </div>
-                                    <label for="projects" class="block text-sm font-medium text-gray-700">Projets complétés</label>
-                                </div>
-                                <div class="ml-9">
-                                    <input type="number" id="projects" name="projects" value="5" class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+
+                                <div class="mb-4">
+                                    <label for="projects" class="block text-sm font-medium text-gray-700 mb-1">Projets complétés</label>
+                                    <input type="number" id="projects" name="projects" value="{{ old('projects', 5) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required min="0">
                                     @error('projects')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
-                            
                         </div>
-
                     </div>
 
                     <!-- Right Column - Badge Preview -->
@@ -257,7 +185,6 @@
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="bg-white border-t border-gray-200 py-4">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
                 <div class="text-sm text-gray-500 mb-4 md:mb-0">
@@ -269,118 +196,10 @@
                     <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Confidentialité</a>
                 </div>
             </div>
-            @if ($errors->any())
-    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
         </footer>
     </div>
 
     <script>
-//         document.addEventListener('DOMContentLoaded', function() {
-//             const badgeNameInput = document.getElementById('badge-name');
-//             const badgePreviewImg = document.getElementById('badge-preview-img');
-//             const colorOptions = document.querySelectorAll('.color-option');
-//             const levelOptions = document.querySelectorAll('.level-option');
-//             const badgeLevelInput = document.getElementById('badge-level');
-//             const badgeColorInput = document.getElementById('badge-color');
-
-//             // Color to hex mapping
-//             const colorMap = {
-//                 blue: '3b82f6',
-//                 green: '10b981',
-//                 purple: '8b5cf6',
-//                 red: 'ef4444'
-//             };
-
-//             // Update badge preview
-//             function updateBadgePreview() {
-//                 const name = badgeNameInput.value || 'Badge';
-//                 const level = badgeLevelInput.value;
-//                 const color = colorMap[badgeColorInput.value] || '3b82f6';
-//                 badgePreviewImg.src = `https://placehold.co/150x150/${color}/FFC107?text=${encodeURIComponent(name)}&font=roboto`;
-//                 badgePreviewImg.alt = `Aperçu du badge ${name}`;
-//             }
-
-//             // Color selection
-//             colorOptions.forEach(option => {
-//                 option.addEventListener('click', function() {
-//                     colorOptions.forEach(opt => opt.classList.remove('selected'));
-//                     this.classList.add('selected');
-//                     badgeColorInput.value = this.dataset.color;
-//                     updateBadgePreview();
-//                 });
-//             });
-
-//             // Level selection
-//             levelOptions.forEach(option => {
-//                 option.addEventListener('click', function() {
-//                     levelOptions.forEach(opt => opt.classList.remove('bg-blue-600', 'text-white'));
-//                     levelOptions.forEach(opt => opt.classList.add('bg-gray-100', 'text-gray-800'));
-//                     this.classList.remove('bg-gray-100', 'text-gray-800');
-//                     this.classList.add('bg-blue-600', 'text-white');
-//                     badgeLevelInput.value = this.dataset.level;
-//                     updateBadgePreview();
-//                 });
-//             });
-
-//             // Real-time name update
-//             badgeNameInput.addEventListener('input', updateBadgePreview);
-
-//             // Initial preview
-//             updateBadgePreview();
-//         });
-
-//         document.addEventListener('DOMContentLoaded', function() {
-   
-//     const form = document.getElementById('badgeCreateForm');
-//     const messageDiv = document.getElementById('badgeFormMessage');
-
-//     form.addEventListener('submit', function(e) {
-//         e.preventDefault();
-
-//         // Gather form data
-//         const formData = new FormData(form);
-
-//         // Send AJAX POST request
-//         fetch(form.action, {
-//             method: 'POST',
-//             headers: {
-//                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-//                 'Accept': 'application/json'
-//             },
-//             body: formData
-//         })
-//         .then(async response => {
-//             const data = await response.json();
-//             if (response.ok) {
-//                 // Success: Show message and reset form
-//                 messageDiv.innerHTML = `<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">Badge créé avec succès !</div>`;
-//                 form.reset();
-//                 updateBadgePreview(); // Reset preview
-//             } else {
-//                 // Error: Show validation errors
-//                 let errors = '';
-//                 if (data.errors) {
-//                     for (const field in data.errors) {
-//                         errors += `<div class="text-red-500 text-sm mb-1">${data.errors[field].join('<br>')}</div>`;
-//                     }
-//                 } else {
-//                     errors = `<div class="text-red-500 text-sm mb-1">Erreur lors de la création du badge.</div>`;
-//                 }
-//                 messageDiv.innerHTML = errors;
-//             }
-//         })
-//         .catch(() => {
-//             messageDiv.innerHTML = `<div class="text-red-500 text-sm mb-1">Erreur réseau, veuillez réessayer.</div>`;
-//         });
-//     });
-// });
 document.addEventListener('DOMContentLoaded', function() {
     const badgeNameInput = document.getElementById('badge-name');
     const badgePreviewImg = document.getElementById('badge-preview-img');
@@ -391,7 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('badgeCreateForm');
     const messageDiv = document.getElementById('badgeFormMessage');
 
-    // Color to hex mapping
     const colorMap = {
         blue: '3b82f6',
         green: '10b981',
@@ -399,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
         red: 'ef4444'
     };
 
-    // Update badge preview
     function updateBadgePreview() {
         const name = badgeNameInput.value || 'Badge';
         const level = badgeLevelInput.value;
@@ -408,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function() {
         badgePreviewImg.alt = `Aperçu du badge ${name}`;
     }
 
-    // Color selection
     colorOptions.forEach(option => {
         option.addEventListener('click', function() {
             colorOptions.forEach(opt => opt.classList.remove('selected'));
@@ -418,7 +234,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Level selection
     levelOptions.forEach(option => {
         option.addEventListener('click', function() {
             levelOptions.forEach(opt => opt.classList.remove('bg-blue-600', 'text-white'));
@@ -430,23 +245,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Real-time name update
     badgeNameInput.addEventListener('input', updateBadgePreview);
-
-    // Initial preview
     updateBadgePreview();
 
-    // Form submission
-    document.querySelector('.sticky button[type="submit"]').addEventListener('click', function(e) {
+    form.addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        // Show loading state
-        this.disabled = true;
-        this.innerHTML = 'Création en cours...';
-        
-        // Submit the form
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.innerHTML = 'Création en cours...';
+
         const formData = new FormData(form);
-        
+
         fetch(form.action, {
             method: 'POST',
             headers: {
@@ -458,36 +267,29 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Success message
                 messageDiv.innerHTML = `<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">${data.success}</div>`;
-                
-                // Redirect to badges page after a short delay
                 setTimeout(() => {
                     window.location.href = '{{ route("badges.index") }}';
                 }, 1500);
-            } else if (data.errors) {
-                // Show validation errors
+            } else {
                 let errorHtml = '<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"><ul>';
-                
-                for (const field in data.errors) {
-                    errorHtml += `<li>${data.errors[field]}</li>`;
+                if (data.errors) {
+                    for (const field in data.errors) {
+                        errorHtml += `<li>${data.errors[field][0]}</li>`;
+                    }
+                } else {
+                    errorHtml += `<li>${data.error || 'Une erreur est survenue.'}</li>`;
                 }
-                
                 errorHtml += '</ul></div>';
                 messageDiv.innerHTML = errorHtml;
-                
-                // Re-enable button
-                this.disabled = false;
-                this.innerHTML = 'Créer le badge';
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Créer le badge';
             }
         })
         .catch(error => {
-            // Show error message
-            messageDiv.innerHTML = `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">Une erreur est survenue. Veuillez réessayer.</div>`;
-            
-            // Re-enable button
-            this.disabled = false;
-            this.innerHTML = 'Créer le badge';
+            messageDiv.innerHTML = `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">Erreur réseau, veuillez réessayer.</div>`;
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Créer le badge';
         });
     });
 });
