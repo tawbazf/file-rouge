@@ -14,9 +14,9 @@ class JDoodleService
 
     public function __construct()
     {
-        $this->apiUrl = Config::get('services.jdoodle.api_url', 'https://api.jdoodle.com/v1/execute');
-        $this->clientId = Config::get('services.jdoodle.client_id');
-        $this->clientSecret = Config::get('services.jdoodle.client_secret');
+        $this->apiUrl = config('services.jdoodle.api_url', 'https://api.jdoodle.com/v1/execute');
+        $this->clientId = config('services.jdoodle.client_id');
+        $this->clientSecret = config('services.jdoodle.client_secret');
         
         Log::debug('JDoodle Service Configuration', [
             'api_url' => $this->apiUrl,
@@ -25,18 +25,24 @@ class JDoodleService
         ]);
     }
 
+    /**
+     * Submit code to the JDoodle API for execution
+     */
     public function submitCode($sourceCode, $languageId, $stdin = '')
     {
+        // Clean the source code to remove line numbers and special characters
+        $sourceCode = $this->cleanSourceCode($sourceCode);
+        
         $languageMapping = [
-            50 => ['language' => 'c', 'versionIndex' => '0'],           // C
-            54 => ['language' => 'cpp', 'versionIndex' => '0'],         // C++
-            62 => ['language' => 'java', 'versionIndex' => '0'],        // Java
-            71 => ['language' => 'python3', 'versionIndex' => '0'],     // Python
-            63 => ['language' => 'nodejs', 'versionIndex' => '0'],      // JavaScript
-            68 => ['language' => 'php', 'versionIndex' => '0'],         // PHP
+            50 => ['language' => 'c', 'versionIndex' => '4'],
+            54 => ['language' => 'cpp17', 'versionIndex' => '0'],
+            62 => ['language' => 'java', 'versionIndex' => '4'],
+            71 => ['language' => 'python3', 'versionIndex' => '4'],
+            63 => ['language' => 'javascript', 'versionIndex' => '4'],
+            68 => ['language' => 'php', 'versionIndex' => '4'],
         ];
         
-        $language = $languageMapping[$languageId] ?? ['language' => 'python3', 'versionIndex' => '0'];
+        $language = $languageMapping[$languageId] ?? ['language' => 'cpp17', 'versionIndex' => '0'];
         
         $payload = [
             'clientId' => $this->clientId,
@@ -47,32 +53,44 @@ class JDoodleService
             'stdin' => $stdin
         ];
         
-        \Log::debug('JDoodle API request payload', [
-            'url' => $this->apiUrl,
+        Log::debug('JDoodle API request payload', [
             'language' => $language['language'],
             'versionIndex' => $language['versionIndex'],
             'code_length' => strlen($sourceCode),
-            'stdin_length' => strlen($stdin)
+            'stdin_length' => strlen($stdin),
+            'code_sample' => substr($sourceCode, 0, 50) . "..."
         ]);
         
-        $response = Http::timeout(10)->post($this->apiUrl, $payload);
-    
-        if (!$response->successful()) {
-            \Log::error('JDoodle API error', [
+        try {
+            $response = Http::timeout(15)->post($this->apiUrl, $payload);
+            
+            Log::debug('JDoodle API raw response', [
                 'status' => $response->status(),
                 'body' => $response->body()
             ]);
-            throw new \Exception('Failed to execute code: ' . $response->body());
+            
+            if (!$response->successful()) {
+                Log::error('JDoodle API error', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
+                throw new \Exception('Failed to execute code: ' . $response->status() . ' - ' . $response->body());
+            }
+          
+            return [
+                'stdout' => $response->json('output'),
+                'stderr' => $response->json('error') ?? null,
+                'compile_output' => null,
+                'message' => $response->json('statusCode') !== 200 ? $response->json('output') : null,
+            ];
+        } catch (\Exception $e) {
+            Log::error('JDoodle exception', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
         }
-    
-        return [
-            'stdout' => $response->json('output'),
-            'stderr' => $response->json('error') ?? null,
-            'compile_output' => null,
-            'message' => $response->json('statusCode') !== 200 ? $response->json('output') : null,
-        ];
     }
-    
     
     /**
      * Clean source code by removing line numbers and invisible characters
@@ -80,13 +98,22 @@ class JDoodleService
     private function cleanSourceCode($code)
     {
         // Remove line numbers at the beginning of lines
-        $code = preg_replace('/^\d+/m', '', $code);
+        $code = preg_replace('/^\s*\d+[\s\r\n]+/m', '', $code);
         
         // Remove zero-width spaces and other invisible characters
-        $code = preg_replace('/\x{200B}/u', '', $code);
+        $code = preg_replace('/[\x{200B}-\x{200D}\x{FEFF}\x{2028}\x{2029}]/u', '', $code);
         
-        // Trim whitespace
-        $code = trim($code);
+        // Replace non-breaking spaces with regular spaces
+        $code = str_replace("\xC2\xA0", ' ', $code);
+        
+        // Normalize line endings
+        $code = str_replace(["\r\n", "\r"], "\n", $code);
+        
+        // Log the cleaned code
+        Log::debug('Code after cleaning', [
+            'length' => strlen($code),
+            'first_lines' => substr($code, 0, 200)
+        ]);
         
         return $code;
     }
